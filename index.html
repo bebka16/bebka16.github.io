@@ -1,1 +1,412 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>bebka16 website</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
 
+        body {
+            background-color: #f6f8fa;
+            color: #24292f;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: 0.7rem;
+            padding-top: 0.7rem;
+            border-bottom: 1px solid #d0d7de;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-left h1 {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #24292f;
+        }
+
+        .header-left .sub {
+            font-size: 0.85rem;
+            color: #57606a;
+            margin-top: 0.05rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+        }
+
+        .header-right a {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .header-right a:hover {
+            border-bottom-color: #0969da;
+        }
+
+        .section-title {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #24292f;
+            letter-spacing: -0.01em;
+        }
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1rem 1rem 0.8rem;
+            padding-bottom: 0px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            min-height: 130px;
+        }
+
+        .project-card:hover {
+            border-color: #8b949e;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-card .bg-image {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 75px;
+            height: 75px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top right;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .project-card .card-content {
+            position: relative;
+            z-index: 1;
+        }
+
+        .project-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+        }
+
+        .project-name a {
+            color: #0969da;
+            text-decoration: none;
+        }
+
+        .project-name a:hover {
+            text-decoration: underline;
+        }
+
+        .project-description {
+            font-size: 0.82rem;
+            color: #57606a;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .project-link {
+            margin-top: auto;
+            padding-top: 0.3rem;
+            border-top: 1px solid #eaeef2;
+        }
+
+        .project-link a {
+            color: #0969da;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: gap 0.2s;
+        }
+
+        .project-link a:hover {
+            gap: 0.6rem;
+            text-decoration: underline;
+        }
+
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1rem 1rem 0.8rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s;
+        }
+
+        .info-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .info-card h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #24292f;
+            margin-bottom: 0.4rem;
+        }
+
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-card ul li {
+            font-size: 0.82rem;
+            color: #57606a;
+            padding: 0.1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .info-card ul li::before {
+            content: "·";
+            color: #0969da;
+            font-weight: 700;
+        }
+
+        .tag-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.3rem 0.5rem;
+            margin-top: 0.15rem;
+        }
+
+        .tag {
+            background: #f0f6fc;
+            color: #0969da;
+            font-size: 0.72rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+        }
+
+        .history-block {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1rem 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .history-block:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .history-block h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #24292f;
+            letter-spacing: -0.01em;
+        }
+
+        .history-timeline {
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+        }
+
+        .history-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #eaeef2;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-year {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #24292f;
+            min-width: 70px;
+            flex-shrink: 0;
+        }
+
+        .history-content {
+            font-size: 0.85rem;
+            color: #57606a;
+        }
+
+        .history-content strong {
+            color: #24292f;
+            font-weight: 600;
+        }
+
+        .footer {
+            margin-top: auto;
+            border-top: 1px solid #d0d7de;
+            padding-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #57606a;
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: #0969da;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 1rem 0.8rem; }
+            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .header-right { gap: 1rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .extra-grid { grid-template-columns: 1fr; }
+            .history-item { flex-direction: column; gap: 0.2rem; }
+            .history-year { min-width: auto; }
+            .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+        }
+        a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
+    </style>
+</head>
+<body>
+<div class="container">
+
+    <header class="header">
+        <div class="header-left">
+            <h1>bebka16</h1>
+        </div>
+        <div class="header-right">
+            <a href="https://github.com/bebka16">GitHub</a>
+            <a href="https://bebkalive.t.me/">Telegram</a>
+            <a href="https://bebka16bot.t.me">Contact me</a>
+        </div>
+    </header>
+
+    <div class="section-title">Projects</div>
+    <div class="projects-grid">
+
+        <div class="project-card">
+            <div class="bg-image" style="background-image: url('images/note.png');"></div>
+            <div class="card-content">
+                <div class="project-name">Snail Note</div>
+                <div class="project-description">A dedicated code editor without unnecessary features.</div>
+                <div class="project-link"><a href="note.html">Go to →</a></div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="bg-image" style="background-image: url('images/dmp.webp');"></div>
+            <div class="card-content">
+                <div class="project-name">Decibel Media Player</div>
+                <div class="project-description">A media player focused on convenient music library search.</div>
+                <div class="project-link"><a href="player.html">Go to →</a></div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="bg-image" style="background-image: url('images/ant.png');"></div>
+            <div class="card-content">
+                <div class="project-name">Decibel Antivirus</div>
+                <div class="project-description">An antivirus with its own engine that uses hashes to detect viruses.</div>
+                <div class="project-link"><a href="legacy.html">Go to →</a></div>
+            </div>
+        </div>
+
+        <div class="project-card">
+            <div class="bg-image" style="background-image: url('images/other.webp');"></div>
+            <div class="card-content">
+                <div class="project-name">Other projects</div>
+                <div class="project-description">I’ve hidden many old projects from 2022–2025 to start with a clean slate. Some of them might still crop up in the future, but for now, that’s how it stands.</div>
+            </div>
+        </div>
+
+    </div>
+
+    <div class="history-block">
+        <h2>History</h2>
+        <div class="history-timeline">
+            <div class="history-item">
+                <div class="history-content">
+                    Hi there. I've been developing Windows software since 2022. At first, I tried to make my own simple antivirus for one specific virus. It was an incredibly simple command-line program. Then the idea grew. <br>I started writing other programs — I made an archiver with encryption, built my own notepad with extended functionality, and then I moved into web development. I tried building a social network, a message board, cloud storage, and a secure anonymous messenger. I made my own analog of check-host.net, wrote browser extensions that warn about dangerous websites, and even published one in the Firefox Add-ons store. <br>All of this was brought together under one big roof — the Decibel Project — and everything was done within its framework. But over time, audience interest faded, and I completely shut down the old project. It was clunky, and its structure was hard to navigate. <br>Now I've decided to focus on specific projects that interest me the most, in order to make them useful for you. They're also now open source. Anyway, thanks for stopping by — I hope you enjoyed reading this. Of course, there was a lot of interesting stuff, but I'm too lazy to write it all here :)
+                    <br><h2 style="margin-top: 5px;">Want to donate?</h2>This is easy to do using Telegram Stars. Many people use this messenger, and topping up the in-app wallet is very simple. You just need to visit <a href="https://bebkalive.t.me">my channel</a> and leave a "star reaction." To do this, you need to have funds in your account.
+                    <br><h2 style="margin-top: 5px;">How to contact me?</h2>Email me at <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> or message the <a href="https://bebka16bot.t.me">Telegram bot</a>. I’d be happy to chat with you and help out if needed.
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <span>© 2022 — 2026, bebka16, all rights are reserved. The use of resources without attribution is prohibited by copyright law.</span>
+        <div class="footer-links">
+            <a href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a>
+        </div>
+    </footer>
+
+</div>
+</body>
+</html>
