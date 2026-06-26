@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Decibel Note - Extensions</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: #1e1e1e;
+            color: #cccccc;
+            padding: 20px;
+            overflow-y: auto;
+        }
+        h1 {
+            color: #ffffff;
+            margin-bottom: 20px;
+            font-size: 24px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+        .extensions-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 20px;
+        }
+        .extension-card {
+            background: #2d2d2d;
+            border: 1px solid #404040;
+            border-radius: 8px;
+            padding: 20px;
+            transition: transform 0.2s, box-shadow 0.2s;
+        }
+        .extension-card:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+            border-color: #007acc;
+        }
+        .extension-name {
+            font-size: 18px;
+            font-weight: 600;
+            color: #ffffff;
+            margin-bottom: 8px;
+        }
+        .extension-description {
+            font-size: 14px;
+            color: #999;
+            margin-bottom: 15px;
+            line-height: 1.4;
+        }
+        .extension-author {
+            font-size: 12px;
+            color: #666;
+            margin-bottom: 15px;
+        }
+        .install-btn {
+            background: #007acc;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 4px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: background 0.2s;
+        }
+        .install-btn:hover {
+            background: #005a9e;
+        }
+        .install-btn.installed {
+            background: #333;
+            color: #666;
+            cursor: default;
+        }
+        .search-bar {
+            margin-bottom: 20px;
+            display: flex;
+            gap: 10px;
+        }
+        .search-input {
+            flex: 1;
+            padding: 8px 12px;
+            background: #333;
+            border: 1px solid #555;
+            color: #ccc;
+            border-radius: 4px;
+            font-size: 14px;
+        }
+        .search-input:focus {
+            outline: none;
+            border-color: #007acc;
+        }
+        .tag {
+            display: inline-block;
+            background: #404040;
+            color: #ccc;
+            padding: 2px 8px;
+            border-radius: 12px;
+            font-size: 11px;
+            margin-right: 5px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Decibel Note Extensions</h1>
+    
+    <div class="search-bar">
+        <input type="text" class="search-input" id="searchInput" placeholder="Search extensions...">
+    </div>
+
+    <div class="extensions-grid" id="extensionsGrid"></div>
+
+    <script>
+        const extensions = [
+            {
+                id: 'ext1',
+                name: 'Code Snippets Pro',
+                description: 'A collection of useful code snippets for various programming languages.',
+                author: 'Decibel Labs',
+                version: '1.0.0',
+                path: 'https://bebka16.github.io/note/extensions/snippets.js',
+                tags: ['snippets', 'productivity']
+            },
+            {
+                id: 'ext2',
+                name: 'Git Integration',
+                description: 'Basic Git integration for version control within the editor.',
+                author: 'Decibel Labs',
+                version: '0.9.0',
+                path: 'https://bebka16.github.io/note/extensions/git.js',
+                tags: ['git', 'version-control']
+            },
+            {
+                id: 'ext3',
+                name: 'Auto Formatter',
+                description: 'Automatically format your code on save with customizable rules.',
+                author: 'Decibel Labs',
+                version: '1.2.1',
+                path: 'https://bebka16.github.io/note/extensions/formatter.js',
+                tags: ['formatting', 'productivity']
+            },
+            {
+                id: 'ext4',
+                name: 'Color Preview',
+                description: 'Preview colors in CSS, SCSS, and HTML files directly in the editor.',
+                author: 'Decibel Labs',
+                version: '0.5.0',
+                path: 'https://bebka16.github.io/note/extensions/color-preview.js',
+                tags: ['css', 'preview']
+            }
+        ];
+
+        function getInstalledExtensions() {
+            try {
+                return JSON.parse(localStorage.getItem('decibel_extensions') || '[]');
+            } catch(e) {
+                return [];
+            }
+        }
+
+        function isInstalled(path) {
+            const installed = getInstalledExtensions();
+            return installed.includes(path);
+        }
+
+        function installExtension(path) {
+            window.parent.postMessage({
+                type: 'addExtension',
+                path: path
+            }, '*');
+            
+            const installed = getInstalledExtensions();
+            if (!installed.includes(path)) {
+                installed.push(path);
+                localStorage.setItem('decibel_extensions', JSON.stringify(installed));
+            }
+            
+            renderExtensions();
+        }
+
+        function renderExtensions(filter = '') {
+            const grid = document.getElementById('extensionsGrid');
+            const filtered = extensions.filter(ext => 
+                ext.name.toLowerCase().includes(filter.toLowerCase()) ||
+                ext.description.toLowerCase().includes(filter.toLowerCase()) ||
+                ext.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase()))
+            );
+
+            grid.innerHTML = filtered.map(ext => `
+                <div class="extension-card">
+                    <div class="extension-name">${ext.name}</div>
+                    <div class="extension-description">${ext.description}</div>
+                    <div class="extension-author">by ${ext.author} | v${ext.version}</div>
+                    <div style="margin-bottom: 12px;">
+                        ${ext.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
+                    </div>
+                    <button class="install-btn ${isInstalled(ext.path) ? 'installed' : ''}" 
+                            onclick="${isInstalled(ext.path) ? '' : `installExtension('${ext.path}')`}"
+                            ${isInstalled(ext.path) ? 'disabled' : ''}>
+                        ${isInstalled(ext.path) ? '✓ Installed' : 'Install'}
+                    </button>
+                </div>
+            `).join('');
+        }
+
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            renderExtensions(e.target.value);
+        });
+
+        renderExtensions();
+    </script>
+</body>
+</html>

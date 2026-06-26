@@ -1,0 +1,30 @@
+.monaco-editor {
+    --vscode-editor-background: #0a192f;
+    --vscode-editor-foreground: #8892b0;
+}
+
+.monaco-editor .margin {
+    background: #0a192f;
+}
+
+.monaco-editor .line-numbers {
+    color: #4a5568;
+}
+
+.top-bar {
+    background: #0a192f !important;
+}
+
+.tabs {
+    background: #112240 !important;
+}
+
+.tabs > div.active {
+    background: #1d3461 !important;
+    color: #64ffda !important;
+}
+
+.status-bar {
+    background: #0a192f !important;
+    color: #64ffda !important;
+}
