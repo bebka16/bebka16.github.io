@@ -8,6 +8,7 @@ body {
 	
 	.monaco-editor-theme-select {
     theme: vs-dark;
+		--theme: vs-dark;
 }
     .top-bar {
       display: flex;
