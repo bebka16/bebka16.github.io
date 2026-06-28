@@ -2,8 +2,8 @@
 <html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
-    <title>Расширения · Менеджер</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Менеджер расширений</title>
     <style>
         * {
             margin: 0;
@@ -71,11 +71,68 @@
             font-weight: 500;
             border-bottom: 1px solid transparent;
             transition: border-color 0.2s;
-            cursor: pointer;
         }
 
         .header-right a:hover {
             border-bottom-color: #0969da;
+        }
+
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            font-weight: 500;
+            color: #0969da;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            padding-right: 1.2rem;
+            user-select: none;
+        }
+        .lang-dropdown:hover {
+            border-bottom-color: #0969da;
+        }
+        .lang-dropdown .arrow {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            pointer-events: none;
+        }
+        .lang-dropdown .lang-label {
+            display: inline-block;
+        }
+        .lang-dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            min-width: 120px;
+            z-index: 10;
+            margin-top: 4px;
+        }
+        .lang-dropdown .dropdown-menu.show {
+            display: block;
+        }
+        .lang-dropdown .dropdown-menu a {
+            display: block;
+            padding: 0.4rem 0.8rem;
+            color: #24292f;
+            text-decoration: none;
+            border-bottom: none;
+            font-weight: 400;
+            transition: background 0.1s;
+        }
+        .lang-dropdown .dropdown-menu a:hover {
+            background: #f0f6fc;
+            border-bottom: none;
+        }
+        .lang-dropdown .dropdown-menu a:last-child {
+            border-bottom: none;
         }
 
         .section-title {
@@ -86,6 +143,7 @@
             letter-spacing: -0.01em;
         }
 
+        /* Карточки расширений */
         .projects-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
@@ -98,7 +156,6 @@
             border: 1px solid #d0d7de;
             border-radius: 2px;
             padding: 1rem 1rem 0.8rem;
-            padding-bottom: 0px;
             transition: border-color 0.2s, box-shadow 0.2s;
             display: flex;
             flex-direction: column;
@@ -111,6 +168,20 @@
         .project-card:hover {
             border-color: #8b949e;
             box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-card .bg-image {
+            position: absolute;
+            top: -20px;
+            right: -20px;
+            width: 75px;
+            height: 75px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: top right;
+            opacity: 0.6;
+            pointer-events: none;
+            z-index: 0;
         }
 
         .project-card .card-content {
@@ -127,11 +198,16 @@
             margin-bottom: 0.3rem;
             display: flex;
             justify-content: space-between;
-            align-items: flex-start;
+            align-items: center;
         }
 
-        .project-name span {
-            color: #24292f;
+        .project-name a {
+            color: #0969da;
+            text-decoration: none;
+        }
+
+        .project-name a:hover {
+            text-decoration: underline;
         }
 
         .project-description {
@@ -146,44 +222,94 @@
             padding-top: 0.3rem;
             border-top: 1px solid #eaeef2;
             display: flex;
-            justify-content: space-between;
-            align-items: center;
+            justify-content: flex-end;
+            gap: 0.8rem;
         }
 
-        .project-link .action-btns {
-            display: flex;
-            gap: 0.5rem;
-        }
-
-        .project-link a,
         .project-link button {
-            color: #0969da;
-            text-decoration: none;
-            font-size: 0.8rem;
-            font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            transition: gap 0.2s;
             background: none;
             border: none;
+            color: #0969da;
+            font-size: 0.8rem;
+            font-weight: 500;
             cursor: pointer;
-            padding: 0;
-            font-family: inherit;
+            padding: 0.2rem 0.4rem;
+            border-radius: 2px;
+            transition: background 0.15s;
         }
 
-        .project-link a:hover,
         .project-link button:hover {
-            gap: 0.6rem;
+            background: #f0f6fc;
             text-decoration: underline;
         }
 
-        .project-link button.danger {
+        .project-link .delete-btn {
             color: #cf222e;
         }
 
-        .project-link button.danger:hover {
-            color: #a40e26;
+        .project-link .delete-btn:hover {
+            background: #ffebe9;
+        }
+
+        /* Блок загрузки */
+        .upload-block {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1rem 1.2rem;
+            margin-bottom: 2rem;
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 1rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .upload-block label {
+            font-weight: 500;
+            font-size: 0.9rem;
+            color: #24292f;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            cursor: pointer;
+        }
+
+        .upload-block input[type="file"] {
+            display: none;
+        }
+
+        .upload-block .file-name {
+            font-size: 0.85rem;
+            color: #57606a;
+            flex: 1;
+        }
+
+        .btn-upload {
+            background: #2da44e;
+            color: white;
+            border: none;
+            padding: 0.4rem 1rem;
+            font-size: 0.85rem;
+            font-weight: 500;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: background 0.15s;
+        }
+
+        .btn-upload:hover {
+            background: #2c974b;
+        }
+
+        .btn-upload:active {
+            background: #22863a;
+        }
+
+        .extra-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
         }
 
         .info-card {
@@ -193,7 +319,6 @@
             padding: 1rem 1rem 0.8rem;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
             transition: box-shadow 0.2s;
-            margin-bottom: 2rem;
         }
 
         .info-card:hover {
@@ -207,47 +332,97 @@
             margin-bottom: 0.4rem;
         }
 
-        .info-card .install-area {
+        .info-card ul {
+            list-style: none;
+            padding: 0;
+        }
+
+        .info-card ul li {
+            font-size: 0.82rem;
+            color: #57606a;
+            padding: 0.1rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .info-card ul li::before {
+            content: "·";
+            color: #0969da;
+            font-weight: 700;
+        }
+
+        .tag-group {
             display: flex;
             flex-wrap: wrap;
-            align-items: center;
+            gap: 0.3rem 0.5rem;
+            margin-top: 0.15rem;
+        }
+
+        .tag {
+            background: #f0f6fc;
+            color: #0969da;
+            font-size: 0.72rem;
+            padding: 0.1rem 0.5rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+        }
+
+        .history-block {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1rem 1rem;
+            margin-bottom: 2rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s;
+            width: 100%;
+        }
+
+        .history-block:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .history-block h2 {
+            font-size: 14px;
+            font-weight: 600;
+            color: #24292f;
+            letter-spacing: -0.01em;
+        }
+
+        .history-timeline {
+            display: flex;
+            flex-direction: column;
             gap: 0.8rem;
         }
 
-        .btn {
-            background: #f6f8fa;
-            border: 1px solid #d0d7de;
-            padding: 0.3rem 0.8rem;
-            border-radius: 2px;
-            font-size: 0.8rem;
-            font-weight: 500;
+        .history-item {
+            display: flex;
+            gap: 1.5rem;
+            padding: 0.4rem 0;
+            border-bottom: 1px solid #eaeef2;
+        }
+
+        .history-item:last-child {
+            border-bottom: none;
+        }
+
+        .history-year {
+            font-size: 0.85rem;
+            font-weight: 600;
             color: #24292f;
-            cursor: pointer;
-            transition: background 0.2s, border-color 0.2s;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
+            min-width: 70px;
+            flex-shrink: 0;
         }
 
-        .btn:hover {
-            background: #eaeef2;
-            border-color: #8b949e;
-        }
-
-        .btn-primary {
-            background: #0969da;
-            border-color: #0969da;
-            color: #ffffff;
-        }
-
-        .btn-primary:hover {
-            background: #0860c0;
-            border-color: #0860c0;
-        }
-
-        .file-info {
-            font-size: 0.8rem;
+        .history-content {
+            font-size: 0.85rem;
             color: #57606a;
+        }
+
+        .history-content strong {
+            color: #24292f;
+            font-weight: 600;
         }
 
         .footer {
@@ -276,324 +451,333 @@
             gap: 1.5rem;
         }
 
-        .empty-state {
-            color: #57606a;
-            font-size: 0.85rem;
-            padding: 1rem 0;
-        }
-
         @media (max-width: 650px) {
             body { padding: 1rem 0.8rem; }
             .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
             .header-right { gap: 1rem; }
             .projects-grid { grid-template-columns: 1fr; }
+            .extra-grid { grid-template-columns: 1fr; }
+            .history-item { flex-direction: column; gap: 0.2rem; }
+            .history-year { min-width: auto; }
             .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+            .upload-block { flex-direction: column; align-items: stretch; }
         }
-        a:link {color: #0969da!important;} a:visited {color: #0969da!important;}
+        a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
     </style>
 </head>
 <body>
-    <div class="container">
-        <!-- Заголовок -->
-        <div class="header">
-            <div class="header-left">
-                <h1>Менеджер расширений</h1>
-                <div class="sub">Установка, удаление и загрузка пользовательских скриптов</div>
-            </div>
-            <div class="header-right">
-                <a id="refreshLink" title="Обновить список расширений">🔄 Обновить</a>
-                <a href="#" id="exportLink" title="Скачать все расширения одним файлом">📦 Экспорт</a>
-            </div>
+<div class="container">
+    <div class="header">
+        <div class="header-left">
+            <h1>🧩 Менеджер расширений</h1>
+            <div class="sub">Управление локальными .JS расширениями</div>
         </div>
-
-        <!-- Панель установки из файла -->
-        <div class="info-card">
-            <h3>📁 Загрузить .JS расширение из файла</h3>
-            <div class="install-area">
-                <input type="file" id="fileInput" accept=".js" style="display: none;">
-                <button id="selectFileBtn" class="btn">Выбрать файл</button>
-                <span id="fileNameDisplay" class="file-info">Файл не выбран</span>
-                <button id="installFromFileBtn" class="btn btn-primary" disabled>Установить</button>
-            </div>
-            <div style="font-size: 0.75rem; color: #57606a; margin-top: 0.5rem;">
-                Поддерживаются только файлы с расширением <strong>.js</strong>. Скрипт будет добавлен в список расширений.
-            </div>
-        </div>
-
-        <!-- Список установленных расширений -->
-        <h2 class="section-title">📋 Установленные расширения</h2>
-        <div id="extensionsGrid" class="projects-grid">
-            <!-- Карточки генерируются динамически -->
-        </div>
-        <div id="emptyMessage" class="empty-state" style="display: none;">
-            Нет установленных расширений. Загрузите первый скрипт через панель выше.
-        </div>
-
-        <!-- Подвал -->
-        <div class="footer">
-            <span>© 2026 Менеджер расширений</span>
-            <div class="footer-links">
-                <a href="#">Документация</a>
-                <a href="#">Поддержка</a>
-                <a href="#">GitHub</a>
+        <div class="header-right">
+            <a href="#">Документация</a>
+            <a href="#">Поддержка</a>
+            <div class="lang-dropdown" id="langDropdown">
+                <span class="lang-label">RU</span>
+                <span class="arrow">▾</span>
+                <div class="dropdown-menu" id="langMenu">
+                    <a href="#">RU</a>
+                    <a href="#">EN</a>
+                </div>
             </div>
         </div>
     </div>
 
-    <script>
-        (function() {
-            // ----- Хранилище расширений (в реальном приложении — localStorage или API) -----
-            const STORAGE_KEY = 'user_extensions';
+    <!-- Блок загрузки -->
+    <div class="upload-block">
+        <label for="fileInput">📁 Выберите .JS файл</label>
+        <input type="file" id="fileInput" accept=".js">
+        <span class="file-name" id="fileName">Файл не выбран</span>
+        <button class="btn-upload" id="uploadBtn">Загрузить расширение</button>
+    </div>
 
-            // Начальные демо-данные
-            const defaultExtensions = [
-                {
-                    id: 'ext-1',
-                    name: 'Подсветка синтаксиса',
-                    description: 'Добавляет подсветку кода на страницах GitHub и StackOverflow.',
-                    author: 'devteam',
-                    version: '1.2.0',
-                    installed: true,
-                    source: 'file'
-                },
-                {
-                    id: 'ext-2',
-                    name: 'Блокировщик рекламы',
-                    description: 'Убирает баннеры и трекеры на посещаемых сайтах.',
-                    author: 'adguard',
-                    version: '2.0.1',
-                    installed: true,
-                    source: 'store'
-                },
-                {
-                    id: 'ext-3',
-                    name: 'Тёмная тема',
-                    description: 'Принудительно включает тёмный режим на сайтах без поддержки.',
-                    author: 'darkdev',
-                    version: '0.9.5',
-                    installed: true,
-                    source: 'file'
-                }
-            ];
+    <!-- Список расширений -->
+    <div class="section-title">📦 Установленные расширения</div>
+    <div class="projects-grid" id="extensionsGrid">
+        <!-- Карточки будут добавляться сюда -->
+    </div>
 
-            // Инициализация данных
-            function loadExtensions() {
-                const stored = localStorage.getItem(STORAGE_KEY);
-                if (stored) {
-                    try {
-                        return JSON.parse(stored);
-                    } catch (e) {
-                        return [...defaultExtensions];
-                    }
+    <!-- Дополнительная информация -->
+    <div class="extra-grid">
+        <div class="info-card">
+            <h3>📋 Статистика</h3>
+            <ul>
+                <li id="totalCount">Всего: 0</li>
+                <li id="activeCount">Активных: 0</li>
+            </ul>
+        </div>
+        <div class="info-card">
+            <h3>⚡ Быстрые действия</h3>
+            <div class="tag-group">
+                <span class="tag">Обновить список</span>
+                <span class="tag">Очистить все</span>
+            </div>
+        </div>
+    </div>
+
+    <!-- История (пример) -->
+    <div class="history-block">
+        <h2>📜 История изменений</h2>
+        <div class="history-timeline" id="historyTimeline">
+            <div class="history-item">
+                <div class="history-year">Сегодня</div>
+                <div class="history-content"><strong>Расширение загружено:</strong> example.js</div>
+            </div>
+            <div class="history-item">
+                <div class="history-year">Вчера</div>
+                <div class="history-content"><strong>Удалено:</strong> old-extension.js</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="footer">
+        <span>© 2026 Менеджер расширений</span>
+        <div class="footer-links">
+            <a href="#">GitHub</a>
+            <a href="#">Лицензия</a>
+            <a href="#">О проекте</a>
+        </div>
+    </div>
+</div>
+
+<script>
+    (function() {
+        // --- Управление выпадающим меню языка ---
+        const langDropdown = document.getElementById('langDropdown');
+        const langMenu = document.getElementById('langMenu');
+        langDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langMenu.classList.toggle('show');
+        });
+        document.addEventListener('click', function() {
+            langMenu.classList.remove('show');
+        });
+
+        // --- Данные расширений (хранятся в localStorage) ---
+        const STORAGE_KEY = 'extensions_list';
+        let extensions = [];
+
+        // Элементы
+        const grid = document.getElementById('extensionsGrid');
+        const fileInput = document.getElementById('fileInput');
+        const fileNameSpan = document.getElementById('fileName');
+        const uploadBtn = document.getElementById('uploadBtn');
+        const totalSpan = document.getElementById('totalCount');
+        const activeSpan = document.getElementById('activeCount');
+
+        // Загрузка из localStorage
+        function loadExtensions() {
+            try {
+                const data = localStorage.getItem(STORAGE_KEY);
+                if (data) {
+                    extensions = JSON.parse(data);
                 } else {
-                    // Сохраняем дефолтные при первом запуске
-                    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultExtensions));
-                    return [...defaultExtensions];
+                    // Начальные демо-расширения
+                    extensions = [
+                        { id: '1', name: 'Utils Helper', description: 'Набор утилит для работы с DOM', filename: 'utils.js', active: true },
+                        { id: '2', name: 'Theme Switcher', description: 'Переключение тёмной/светлой темы', filename: 'theme.js', active: false },
+                    ];
+                    saveExtensions();
                 }
+            } catch (e) {
+                extensions = [];
             }
-
-            function saveExtensions(extensions) {
-                localStorage.setItem(STORAGE_KEY, JSON.stringify(extensions));
-            }
-
-            let extensions = loadExtensions();
-
-            // ----- DOM элементы -----
-            const grid = document.getElementById('extensionsGrid');
-            const emptyMessage = document.getElementById('emptyMessage');
-            const fileInput = document.getElementById('fileInput');
-            const selectFileBtn = document.getElementById('selectFileBtn');
-            const fileNameDisplay = document.getElementById('fileNameDisplay');
-            const installFromFileBtn = document.getElementById('installFromFileBtn');
-            const refreshLink = document.getElementById('refreshLink');
-            const exportLink = document.getElementById('exportLink');
-
-            let selectedFile = null;
-
-            // ----- Рендеринг карточек -----
-            function renderExtensions() {
-                if (!grid) return;
-
-                const installed = extensions.filter(ext => ext.installed);
-                
-                if (installed.length === 0) {
-                    grid.innerHTML = '';
-                    emptyMessage.style.display = 'block';
-                } else {
-                    emptyMessage.style.display = 'none';
-                    grid.innerHTML = installed.map(ext => {
-                        return `
-                            <div class="project-card" data-id="${ext.id}">
-                                <div class="card-content">
-                                    <div class="project-name">
-                                        <span>${escapeHtml(ext.name)}</span>
-                                        <span style="font-size:0.7rem; color:#57606a; font-weight:400;">v${escapeHtml(ext.version)}</span>
-                                    </div>
-                                    <div class="project-description">
-                                        ${escapeHtml(ext.description)}
-                                    </div>
-                                    <div class="project-link">
-                                        <span style="font-size:0.7rem; color:#57606a;">${escapeHtml(ext.author)}</span>
-                                        <div class="action-btns">
-                                            <button class="delete-btn danger" data-id="${ext.id}">
-                                                🗑 Удалить
-                                            </button>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        `;
-                    }).join('');
-                }
-
-                // Привязываем события удаления
-                document.querySelectorAll('.delete-btn').forEach(btn => {
-                    btn.addEventListener('click', function(e) {
-                        const id = this.getAttribute('data-id');
-                        if (id) deleteExtension(id);
-                    });
-                });
-            }
-
-            // ----- Удаление расширения -----
-            function deleteExtension(id) {
-                const ext = extensions.find(e => e.id === id);
-                if (!ext) return;
-
-                const confirmDelete = confirm(`Удалить расширение "${ext.name}"? Это действие нельзя отменить.`);
-                if (!confirmDelete) return;
-
-                // Помечаем как не установленное (либо полностью удаляем из массива)
-                extensions = extensions.filter(e => e.id !== id);
-                saveExtensions(extensions);
-                renderExtensions();
-            }
-
-            // ----- Установка расширения из файла -----
-            function installFromFile(file) {
-                if (!file) return;
-
-                // Читаем содержимое JS-файла
-                const reader = new FileReader();
-                reader.onload = function(e) {
-                    const content = e.target.result;
-                    
-                    // Извлекаем имя без расширения
-                    const baseName = file.name.replace(/\.js$/i, '');
-                    
-                    // Генерируем новое расширение
-                    const newExt = {
-                        id: 'ext-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
-                        name: baseName || 'Безымянный скрипт',
-                        description: `Загружен из файла ${file.name}. Размер: ${(file.size / 1024).toFixed(1)} КБ`,
-                        author: 'пользователь',
-                        version: '0.0.1',
-                        installed: true,
-                        source: 'file',
-                        // В реальном приложении здесь можно хранить содержимое или ссылку
-                        _content: content.substring(0, 100) + '…' // для демонстрации
-                    };
-
-                    extensions.push(newExt);
-                    saveExtensions(extensions);
-                    renderExtensions();
-
-                    // Сброс выбора файла
-                    resetFileInput();
-                    alert(`Расширение "${newExt.name}" успешно установлено.`);
-                };
-
-                reader.onerror = function() {
-                    alert('Ошибка чтения файла.');
-                };
-
-                reader.readAsText(file);
-            }
-
-            function resetFileInput() {
-                fileInput.value = '';
-                selectedFile = null;
-                fileNameDisplay.textContent = 'Файл не выбран';
-                installFromFileBtn.disabled = true;
-            }
-
-            // ----- Экспорт (демо) -----
-            function exportExtensions() {
-                const installed = extensions.filter(e => e.installed);
-                if (installed.length === 0) {
-                    alert('Нет установленных расширений для экспорта.');
-                    return;
-                }
-
-                // Формируем JSON-представление
-                const exportData = JSON.stringify(installed, null, 2);
-                const blob = new Blob([exportData], { type: 'application/json' });
-                const url = URL.createObjectURL(blob);
-                const a = document.createElement('a');
-                a.href = url;
-                a.download = `extensions_backup_${new Date().toISOString().slice(0,10)}.json`;
-                document.body.appendChild(a);
-                a.click();
-                document.body.removeChild(a);
-                URL.revokeObjectURL(url);
-            }
-
-            // ----- Хелперы -----
-            function escapeHtml(text) {
-                if (!text) return '';
-                const map = {
-                    '&': '&amp;',
-                    '<': '&lt;',
-                    '>': '&gt;',
-                    '"': '&quot;',
-                    "'": '&#039;'
-                };
-                return String(text).replace(/[&<>"']/g, m => map[m]);
-            }
-
-            // ----- Обработчики событий -----
-            selectFileBtn.addEventListener('click', () => {
-                fileInput.click();
-            });
-
-            fileInput.addEventListener('change', (e) => {
-                const files = e.target.files;
-                if (files && files.length > 0) {
-                    const file = files[0];
-                    if (!file.name.toLowerCase().endsWith('.js')) {
-                        alert('Пожалуйста, выберите файл с расширением .js');
-                        resetFileInput();
-                        return;
-                    }
-                    selectedFile = file;
-                    fileNameDisplay.textContent = file.name + ` (${(file.size/1024).toFixed(1)} КБ)`;
-                    installFromFileBtn.disabled = false;
-                } else {
-                    resetFileInput();
-                }
-            });
-
-            installFromFileBtn.addEventListener('click', () => {
-                if (selectedFile) {
-                    installFromFile(selectedFile);
-                }
-            });
-
-            refreshLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                extensions = loadExtensions();
-                renderExtensions();
-                resetFileInput();
-            });
-
-            exportLink.addEventListener('click', (e) => {
-                e.preventDefault();
-                exportExtensions();
-            });
-
-            // ----- Первичный рендер -----
             renderExtensions();
-        })();
-    </script>
+            updateStats();
+        }
+
+        function saveExtensions() {
+            localStorage.setItem(STORAGE_KEY, JSON.stringify(extensions));
+        }
+
+        // Генерация короткого ID
+        function generateId() {
+            return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
+        }
+
+        // Добавление расширения из объекта
+        function addExtension(name, description, filename) {
+            const newExt = {
+                id: generateId(),
+                name: name || filename.replace(/\.js$/i, '') || 'Без названия',
+                description: description || `Загружено из ${filename}`,
+                filename: filename,
+                active: true
+            };
+            extensions.unshift(newExt);
+            saveExtensions();
+            renderExtensions();
+            updateStats();
+            addHistory(`Расширение загружено: ${newExt.filename}`);
+            return newExt;
+        }
+
+        // Удаление расширения по id
+        function deleteExtension(id) {
+            const ext = extensions.find(e => e.id === id);
+            if (!ext) return;
+            if (confirm(`Удалить расширение "${ext.name}"?`)) {
+                extensions = extensions.filter(e => e.id !== id);
+                saveExtensions();
+                renderExtensions();
+                updateStats();
+                addHistory(`Удалено: ${ext.filename}`);
+            }
+        }
+
+        // Переключение активности
+        function toggleActive(id) {
+            const ext = extensions.find(e => e.id === id);
+            if (ext) {
+                ext.active = !ext.active;
+                saveExtensions();
+                renderExtensions();
+                updateStats();
+            }
+        }
+
+        // Рендер карточек
+        function renderExtensions() {
+            if (extensions.length === 0) {
+                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #57606a; padding: 2rem 0;">Нет установленных расширений</div>`;
+                return;
+            }
+            let html = '';
+            extensions.forEach(ext => {
+                const bgStyle = ext.active ? 'background-image: radial-gradient(circle, #d0f0d0 0%, transparent 70%);' : 'background-image: radial-gradient(circle, #f0d0d0 0%, transparent 70%);';
+                html += `
+                    <div class="project-card">
+                        <div class="bg-image" style="${bgStyle}"></div>
+                        <div class="card-content">
+                            <div class="project-name">
+                                <a href="#">${ext.name}</a>
+                                <span style="font-size:0.7rem; color: #57606a; font-weight:400;">${ext.active ? '🟢' : '🔴'}</span>
+                            </div>
+                            <div class="project-description">${ext.description} <span style="color:#8b949e; font-size:0.7rem;">(${ext.filename})</span></div>
+                            <div class="project-link">
+                                <button onclick="window.toggleExt('${ext.id}')" style="color:${ext.active ? '#1a7f37' : '#57606a'}">${ext.active ? 'Деактивировать' : 'Активировать'}</button>
+                                <button class="delete-btn" onclick="window.deleteExt('${ext.id}')">🗑 Удалить</button>
+                            </div>
+                        </div>
+                    </div>
+                `;
+            });
+            grid.innerHTML = html;
+        }
+
+        // Обновление статистики
+        function updateStats() {
+            const total = extensions.length;
+            const active = extensions.filter(e => e.active).length;
+            totalSpan.textContent = `Всего: ${total}`;
+            activeSpan.textContent = `Активных: ${active}`;
+        }
+
+        // Добавление записи в историю (в DOM)
+        function addHistory(text) {
+            const timeline = document.getElementById('historyTimeline');
+            const item = document.createElement('div');
+            item.className = 'history-item';
+            const now = new Date();
+            const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
+            item.innerHTML = `
+                <div class="history-year">${timeStr}</div>
+                <div class="history-content"><strong>${text}</strong></div>
+            `;
+            timeline.prepend(item);
+            // Ограничим количество записей
+            while (timeline.children.length > 20) {
+                timeline.removeChild(timeline.lastChild);
+            }
+        }
+
+        // --- Обработка загрузки файла ---
+        fileInput.addEventListener('change', function(e) {
+            const file = e.target.files[0];
+            if (file) {
+                fileNameSpan.textContent = file.name;
+            } else {
+                fileNameSpan.textContent = 'Файл не выбран';
+            }
+        });
+
+        uploadBtn.addEventListener('click', function() {
+            const file = fileInput.files[0];
+            if (!file) {
+                alert('Пожалуйста, выберите .JS файл.');
+                return;
+            }
+            if (!file.name.toLowerCase().endsWith('.js')) {
+                alert('Можно загружать только файлы с расширением .js');
+                return;
+            }
+
+            const reader = new FileReader();
+            reader.onload = function(e) {
+                try {
+                    // Проверяем, что это валидный JS (простая проверка)
+                    const content = e.target.result;
+                    // Небольшая проверка: попробуем выполнить (не в глобальном контексте)
+                    new Function(content); // если ошибка — выбросит исключение
+                    // Добавляем расширение
+                    const name = prompt('Введите название расширения (оставьте пустым для автоматического):', file.name.replace(/\.js$/i, ''));
+                    const desc = prompt('Введите описание (необязательно):', `Загружено из ${file.name}`);
+                    addExtension(
+                        name || file.name.replace(/\.js$/i, ''),
+                        desc || `Загружено из ${file.name}`,
+                        file.name
+                    );
+                    // Сбрасываем поле
+                    fileInput.value = '';
+                    fileNameSpan.textContent = 'Файл не выбран';
+                    alert(`Расширение "${file.name}" успешно загружено!`);
+                } catch (err) {
+                    alert('Ошибка: загруженный файл не является корректным JavaScript-кодом.');
+                    console.error(err);
+                }
+            };
+            reader.onerror = function() {
+                alert('Не удалось прочитать файл.');
+            };
+            reader.readAsText(file);
+        });
+
+        // --- Экспорт функций в глобальный объект для onclick ---
+        window.deleteExt = function(id) {
+            deleteExtension(id);
+        };
+        window.toggleExt = function(id) {
+            toggleActive(id);
+        };
+
+        // Инициализация
+        loadExtensions();
+
+        // Добавляем обработчик для обновления статистики при загрузке
+        // Также можно добавить "очистить все" (безопасно)
+        document.querySelector('.tag-group .tag:last-child')?.addEventListener('click', function() {
+            if (extensions.length === 0) return;
+            if (confirm('Удалить все расширения?')) {
+                extensions = [];
+                saveExtensions();
+                renderExtensions();
+                updateStats();
+                addHistory('Очищены все расширения');
+            }
+        });
+
+        // Обновить список (перезагрузка из localStorage)
+        document.querySelector('.tag-group .tag:first-child')?.addEventListener('click', function() {
+            loadExtensions();
+            addHistory('Список обновлён');
+        });
+
+        // Добавим начальную запись в историю
+        addHistory('Менеджер расширений запущен');
+    })();
+</script>
 </body>
 </html>
