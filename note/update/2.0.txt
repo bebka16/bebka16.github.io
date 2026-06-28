@@ -1,1 +1,10 @@
-New version 2.1 is available!<br>Click <a href="">here</a> to download it.
+<div style="display: flex; align-items: center; gap: 15px;">
+  <!-- Изображение слева -->
+  <img src="https://via.placeholder.com/80x80/007acc/FFFFFF?text=2.1" alt="Version 2.1" style="width: 80px; height: 80px; border-radius: 8px; flex-shrink: 0;">
+  
+  <!-- Текст и кнопка справа -->
+  <div style="display: flex; flex-direction: column; gap: 5px;">
+    <span style="font-size: 16px; font-weight: bold; color: #333;">New version 2.1 is available!</span>
+    <a href="#" style="color: #007acc !important; text-decoration: none; font-weight: bold; font-size: 14px;">Click here to download it.</a>
+  </div>
+</div>
