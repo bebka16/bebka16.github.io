@@ -113,6 +113,24 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     }
 
+    .extension-card.custom {
+      border-left: 3px solid #0969da;
+    }
+
+    .custom-badge {
+      position: absolute;
+      top: 8px;
+      right: 8px;
+      background: #0969da;
+      color: white;
+      font-size: 0.6rem;
+      padding: 2px 6px;
+      border-radius: 10px;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: 0.5px;
+    }
+
     .extension-name {
       font-size: 14px;
       font-weight: 600;
@@ -121,6 +139,7 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
+      padding-right: 50px;
     }
 
     .extension-name .version {
@@ -369,7 +388,7 @@
       <span class="status-message" id="uploadStatus"></span>
     </div>
     <div style="font-size:0.75rem; color:#57606a; margin-top:0.5rem;">
-      Installed extensions are stored locally in your browser.
+      Installed extensions are stored locally in your browser. Custom extensions are cached for persistence.
     </div>
   </div>
 
@@ -387,8 +406,12 @@
 
 <script>
   (function() {
-    // ----- EXTENSIONS DATASET (same as original, plus id for reference) -----
-    const extensions = [
+    // ----- STORAGE KEYS -----
+    const INSTALLED_KEY = 'decibel_extensions';
+    const CUSTOM_EXTS_KEY = 'decibel_custom_extensions';
+
+    // ----- DEFAULT EXTENSIONS -----
+    const defaultExtensions = [
       {
         id: 'ext1',
         name: 'Code Snippets Pro',
@@ -427,26 +450,49 @@
       }
     ];
 
-    // ----- STORAGE HELPERS -----
-    const STORAGE_KEY = 'decibel_extensions';
+    // ----- CUSTOM EXTENSIONS CACHE -----
+    function getCustomExtensions() {
+      try {
+        return JSON.parse(localStorage.getItem(CUSTOM_EXTS_KEY) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
 
+    function saveCustomExtensions(customExts) {
+      localStorage.setItem(CUSTOM_EXTS_KEY, JSON.stringify(customExts));
+    }
+
+    // Get all extensions (default + cached custom)
+    function getAllExtensions() {
+      const custom = getCustomExtensions();
+      // Filter out any custom extensions that might have expired blob URLs
+      const validCustom = custom.filter(ext => {
+        // Blob URLs become invalid after page reload, but we keep the metadata
+        // We'll regenerate blob URL from cached code if needed
+        return true;
+      });
+      return [...defaultExtensions, ...validCustom];
+    }
+
+    // ----- INSTALLED PATHS -----
     function getInstalledPaths() {
       try {
-        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+        return JSON.parse(localStorage.getItem(INSTALLED_KEY) || '[]');
       } catch (e) {
         return [];
       }
     }
 
     function saveInstalledPaths(paths) {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
+      localStorage.setItem(INSTALLED_KEY, JSON.stringify(paths));
     }
 
     function isInstalled(path) {
       return getInstalledPaths().includes(path);
     }
 
-    // ----- COMMUNICATION WITH PARENT (Decibel Note host) -----
+    // ----- COMMUNICATION WITH PARENT -----
     function notifyParentAddExtension(path) {
       try {
         window.parent.postMessage({
@@ -469,7 +515,7 @@
       }
     }
 
-    // ----- INSTALL / UNINSTALL LOGIC -----
+    // ----- INSTALL / UNINSTALL -----
     function installExtension(path) {
       const installed = getInstalledPaths();
       if (!installed.includes(path)) {
@@ -486,6 +532,13 @@
         installed = installed.filter(p => p !== path);
         saveInstalledPaths(installed);
         notifyParentRemoveExtension(path);
+        
+        // If it's a custom extension, also remove from cache
+        const customExts = getCustomExtensions();
+        const updatedCustom = customExts.filter(ext => ext.path !== path);
+        if (updatedCustom.length !== customExts.length) {
+          saveCustomExtensions(updatedCustom);
+        }
       }
       renderExtensions(getSearchTerm());
     }
@@ -494,14 +547,15 @@
       const installed = getInstalledPaths();
       if (installed.length === 0) return;
       if (confirm('Remove all installed extensions? This cannot be undone.')) {
-        // Notify removal for each path
         installed.forEach(path => notifyParentRemoveExtension(path));
         saveInstalledPaths([]);
+        // Also clear custom extensions
+        saveCustomExtensions([]);
         renderExtensions(getSearchTerm());
       }
     }
 
-    // ----- DYNAMIC EXTENSION FROM UPLOADED JS FILE -----
+    // ----- HANDLE JS FILE UPLOAD WITH CACHING -----
     function handleJsFileUpload(file) {
       const statusEl = document.getElementById('uploadStatus');
       if (!file) {
@@ -516,26 +570,25 @@
 
       statusEl.textContent = '⏳ Reading file...';
       const reader = new FileReader();
+      
       reader.onload = (e) => {
         const content = e.target.result;
-        // Basic check: file should not be empty
         if (!content || content.trim().length === 0) {
           statusEl.textContent = '❌ File is empty.';
           return;
         }
 
-        // Create a blob URL to simulate a remote path
+        // Create blob URL for immediate use
         const blob = new Blob([content], { type: 'application/javascript' });
         const blobUrl = URL.createObjectURL(blob);
 
-        // Generate a friendly name based on file name
+        // Generate metadata
         const baseName = file.name.replace(/\.js$/i, '');
         const displayName = baseName
           .replace(/[-_]/g, ' ')
           .replace(/\b\w/g, c => c.toUpperCase());
 
-        // Create an extension entry for the uploaded file
-        const newExt = {
+        const customExt = {
           id: 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
           name: displayName || 'Custom Extension',
           description: `Loaded from ${file.name}`,
@@ -543,14 +596,21 @@
           version: '0.0.0',
           path: blobUrl,
           tags: ['custom', 'uploaded'],
-          isCustom: true // mark as custom to allow special handling if needed
+          isCustom: true,
+          // Store the source code for caching
+          sourceCode: content,
+          fileName: file.name
         };
 
-        // Add to extensions list (in-memory) and auto-install
-        extensions.push(newExt);
+        // Save to custom extensions cache
+        const customExts = getCustomExtensions();
+        customExts.push(customExt);
+        saveCustomExtensions(customExts);
+
+        // Install the extension
         installExtension(blobUrl);
-        statusEl.textContent = `✅ Installed "${displayName}" from ${file.name}`;
-        // Clear file input so same file can be re-uploaded if needed
+        
+        statusEl.textContent = `✅ Installed "${displayName}" from ${file.name} (cached)`;
         document.getElementById('uploadJsInput').value = '';
         renderExtensions(getSearchTerm());
       };
@@ -562,6 +622,44 @@
       reader.readAsText(file);
     }
 
+    // ----- RESTORE CACHED CUSTOM EXTENSIONS ON LOAD -----
+    function restoreCustomExtensions() {
+      const customExts = getCustomExtensions();
+      const installed = getInstalledPaths();
+      let needsUpdate = false;
+
+      customExts.forEach(ext => {
+        // Recreate blob URL from cached source code
+        if (ext.sourceCode && (!ext.path || ext.path.startsWith('blob:'))) {
+          const blob = new Blob([ext.sourceCode], { type: 'application/javascript' });
+          const newBlobUrl = URL.createObjectURL(blob);
+          
+          // Update installed paths if old blob URL exists
+          if (ext.path && installed.includes(ext.path)) {
+            const idx = installed.indexOf(ext.path);
+            installed[idx] = newBlobUrl;
+            needsUpdate = true;
+          }
+          
+          ext.path = newBlobUrl;
+        }
+        
+        // Auto-install if it was previously installed
+        if (ext.path && !installed.includes(ext.path)) {
+          // Check if this extension was previously installed (by checking if any path matches)
+          const wasInstalled = installed.some(p => 
+            customExts.some(ce => ce.path === p || ce.id === ext.id)
+          );
+          // Don't auto-install on page load, just restore state
+        }
+      });
+
+      if (needsUpdate) {
+        saveInstalledPaths(installed);
+        saveCustomExtensions(customExts);
+      }
+    }
+
     // ----- RENDERING -----
     function getSearchTerm() {
       return document.getElementById('searchInput')?.value || '';
@@ -571,8 +669,10 @@
       const grid = document.getElementById('extensionsGrid');
       if (!grid) return;
 
+      const allExtensions = getAllExtensions();
       const term = filter.toLowerCase().trim();
-      const filtered = extensions.filter(ext => {
+      
+      const filtered = allExtensions.filter(ext => {
         if (term === '') return true;
         const inName = ext.name.toLowerCase().includes(term);
         const inDesc = ext.description.toLowerCase().includes(term);
@@ -592,9 +692,11 @@
         const installed = isInstalled(ext.path);
         const installDisabled = installed;
         const uninstallDisabled = !installed;
+        const isCustom = ext.isCustom || false;
 
         return `
-          <div class="extension-card">
+          <div class="extension-card ${isCustom ? 'custom' : ''}">
+            ${isCustom ? '<span class="custom-badge">Custom</span>' : ''}
             <div class="extension-name">
               <span>${escapeHtml(ext.name)}</span>
               <span class="version">v${escapeHtml(ext.version)}</span>
@@ -618,9 +720,9 @@
         `;
       }).join('');
 
-      // Attach event listeners to buttons (avoid inline onclick for better CSP)
+      // Attach event listeners
       document.querySelectorAll('.install-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function() {
           const path = this.getAttribute('data-path');
           if (path && !isInstalled(path)) {
             installExtension(path);
@@ -629,7 +731,7 @@
       });
 
       document.querySelectorAll('.uninstall-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function() {
           const path = this.getAttribute('data-path');
           if (path && isInstalled(path)) {
             if (confirm(`Remove extension "${path}"?`)) {
@@ -640,7 +742,6 @@
       });
     }
 
-    // Simple escape for HTML to prevent XSS
     function escapeHtml(text) {
       return String(text)
         .replace(/&/g, '&amp;')
@@ -650,7 +751,7 @@
         .replace(/'/g, '&#039;');
     }
 
-    // ----- EVENT LISTENERS -----
+    // ----- EVENT BINDING -----
     function bindEvents() {
       const searchInput = document.getElementById('searchInput');
       if (searchInput) {
@@ -675,6 +776,7 @@
       if (refreshLink) {
         refreshLink.addEventListener('click', function(e) {
           e.preventDefault();
+          restoreCustomExtensions();
           renderExtensions(getSearchTerm());
           document.getElementById('uploadStatus').textContent = '🔄 List refreshed.';
           setTimeout(() => {
@@ -692,29 +794,28 @@
         });
       }
 
-      // Footer dummy links
       document.getElementById('goToDocs')?.addEventListener('click', e => {
         e.preventDefault();
         alert('Documentation: manage extensions via this panel.');
       });
+      
       document.getElementById('reportIssue')?.addEventListener('click', e => {
         e.preventDefault();
         alert('Feedback: thanks for using Decibel Note extensions.');
       });
     }
 
-    // Initial render
+    // ----- INIT -----
+    restoreCustomExtensions();
     renderExtensions('');
     bindEvents();
 
-    // Re-attach events if dynamic updates happen (renderExtensions re-binds buttons)
-    // Also expose a manual refresh when storage changes externally
+    // Listen for storage changes from other tabs
     window.addEventListener('storage', (e) => {
-      if (e.key === STORAGE_KEY) {
+      if (e.key === INSTALLED_KEY || e.key === CUSTOM_EXTS_KEY) {
         renderExtensions(getSearchTerm());
       }
     });
-
   })();
 </script>
 </body>
