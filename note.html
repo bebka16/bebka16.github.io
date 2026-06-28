@@ -139,7 +139,6 @@
             border-bottom: none;
         }
 
-        /* Первый блок: логотип, описание и большой скриншот */
         .hero-section {
             display: flex;
             flex-wrap: wrap;
@@ -162,19 +161,16 @@
         .logo-icon {
             width: 52px;
             height: 52px;
-            background-color: #eaeef2;
-            border-radius: 2px;
             display: flex;
             align-items: center;
             justify-content: center;
             font-size: 24px;
             font-weight: 600;
             color: #24292f;
-            background-image: url('images/note.png');
+            background-image: url('snail.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
-            border: 1px solid #d0d7de;
         }
 
         .app-title {
@@ -229,14 +225,10 @@
 
         .hero-screenshot {
             flex: 1 1 480px;
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
             aspect-ratio: 16 / 10;
-            background-size: cover;
             background-position: top left;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            background-image: url('images/note.png');
+            background-image: url('note/dark.png');
             background-color: #f3f4f6;
             transition: box-shadow 0.2s;
         }
@@ -245,21 +237,21 @@
             box-shadow: 0 8px 28px rgba(0,0,0,0.15);
         }
 
-        /* Блок скачивания */
         .download-section {
             background: #ffffff;
             border: 1px solid #d0d7de;
             border-radius: 2px;
             padding: 1.8rem;
+            padding-top: 20px;
             margin-bottom: 2.5rem;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
         }
 
         .download-title {
-            font-size: 20px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 500;
             color: #24292f;
-            margin-bottom: 1.5rem;
+            margin-bottom: 10px;
         }
 
         .download-grid {
@@ -277,6 +269,8 @@
             flex-direction: column;
             gap: 0.8rem;
             transition: border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
         }
 
         .download-card:hover {
@@ -284,13 +278,39 @@
             box-shadow: 0 4px 12px rgba(0,0,0,0.08);
         }
 
+        .download-card::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            width: 70px;
+            height: 70px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.12;
+            filter: grayscale(100%) brightness(0%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .download-card:nth-child(1)::after {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h11.377v11.372H0V0zm12.623 0H24v11.372H12.623V0zM0 12.623h11.377V24H0v-11.377zm12.623 0H24V24H12.623V12.623z" fill="black"/></svg>');
+        }
+
+        .download-card:nth-child(2)::after {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Tux.png/250px-Tux.png');
+        }
+
         .os-label {
-            font-weight: 600;
-            font-size: 1rem;
+            font-weight: 500;
+            font-size: 14px;
             color: #24292f;
             display: flex;
             align-items: center;
             gap: 0.4rem;
+            position: relative;
+            z-index: 1;
         }
 
         .os-label span {
@@ -300,12 +320,10 @@
         }
 
         .download-button {
-            background: #0969da;
-            color: white;
+            color: #0969da;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.85rem;
-            padding: 0.5rem 1.2rem;
+            font-weight: 400;
+            font-size: 14px;
             border-radius: 2px;
             display: inline-flex;
             align-items: center;
@@ -313,30 +331,34 @@
             transition: background 0.2s;
             border: 1px solid transparent;
             width: fit-content;
+            position: relative;
+            z-index: 1;
         }
 
         .download-button:hover {
-            background: #0550b2;
+            text-decoration: underline;
         }
 
         .download-meta {
             font-size: 0.75rem;
             color: #57606a;
+            position: relative;
+            z-index: 1;
         }
 
-        /* Подробное описание */
         .details-block {
             background: #ffffff;
             border: 1px solid #d0d7de;
             border-radius: 2px;
             padding: 1.8rem;
+            padding-top: 20px;
             margin-bottom: 2.5rem;
             box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
         }
 
         .details-block h2 {
-            font-size: 18px;
-            font-weight: 600;
+            font-size: 16px;
+            font-weight: 500;
             margin-bottom: 1rem;
             color: #24292f;
         }
@@ -369,7 +391,6 @@
             font-weight: 700;
         }
 
-        /* Галерея скриншотов */
         .screenshot-row {
             display: flex;
             flex-wrap: wrap;
@@ -396,7 +417,6 @@
             border-color: #8b949e;
         }
 
-        /* Лайтбокс */
         .lightbox {
             display: none;
             position: fixed;
@@ -437,65 +457,6 @@
 
         .lightbox-close:hover {
             opacity: 1;
-        }
-
-        /* Changelog */
-        .changelog-block {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1.8rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: box-shadow 0.2s;
-            width: 100%;
-        }
-
-        .changelog-block:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
-
-        .changelog-block h2 {
-            font-size: 16px;
-            font-weight: 600;
-            color: #24292f;
-            letter-spacing: -0.01em;
-            margin-bottom: 1.2rem;
-        }
-
-        .log-list {
-            display: flex;
-            flex-direction: column;
-            gap: 0.9rem;
-        }
-
-        .log-item {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0.4rem 0;
-            border-bottom: 1px solid #eaeef2;
-        }
-
-        .log-item:last-child {
-            border-bottom: none;
-        }
-
-        .log-version {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #24292f;
-            min-width: 85px;
-            flex-shrink: 0;
-        }
-
-        .log-content {
-            font-size: 0.85rem;
-            color: #57606a;
-        }
-
-        .log-content strong {
-            color: #24292f;
-            font-weight: 600;
         }
 
         .footer {
@@ -542,8 +503,8 @@
 <div class="container">
     <header class="header">
         <div class="header-left">
-            <h1>bebka16</h1>
-            <span class="sub">Snail Note · Официальная страница</span>
+            <h1>Snail Note</h1>
+            <span class="sub">by bebka16</span>
         </div>
         <div class="header-right">
             <div class="lang-dropdown" id="langDropdown">
@@ -558,102 +519,63 @@
             </div>
             <a href="https://github.com/bebka16">GitHub</a>
             <a href="https://bebkalive.t.me/">Telegram</a>
-            <a href="https://bebka16bot.t.me">Связаться</a>
+            <a href="https://bebka16bot.t.me" id="contactLink">Связаться</a>
         </div>
     </header>
 
-    <!-- Первый блок: логотип, описание и большой скриншот -->
     <div class="hero-section">
         <div class="hero-text">
             <div class="logo-area">
                 <div class="logo-icon" aria-label="Логотип Snail Note"></div>
                 <span class="app-title">Snail Note</span>
             </div>
-            <p class="hero-description">
-                Выделенный редактор кода без отвлекающих функций. Минималистичный интерфейс, 
+            <p class="hero-description" id="heroDesc">
+                Собственный редактор кода без лишних функций. Минималистичный интерфейс, 
                 быстрая работа с большими файлами и интеллектуальная подсветка синтаксиса 
                 для повседневной разработки.
             </p>
-            <div class="hero-links">
-                <a href="#">Документация</a>
-                <a href="https://github.com/bebka16">Репозиторий</a>
-                <a href="#">Обсуждения</a>
-            </div>
-            <div class="badge-group">
-                <span class="badge">Кроссплатформенный</span>
-                <span class="badge">Открытый исходный код</span>
-                <span class="badge">v2.4.0</span>
-                <span class="badge">MIT License</span>
+            <div class="hero-links" id="heroLinks">
+                <a href="note/docs.html" id="docLink">Документация</a>
+                <a href="https://github.com/bebka16/snailnote" id="repoLink">Репозиторий</a>
+                <a href="#downloadTitle" id="downloadLink">Скачать</a>
             </div>
         </div>
         <div class="hero-screenshot" title="Главное окно Snail Note" role="img" aria-label="Скриншот интерфейса Snail Note"></div>
     </div>
 
-    <!-- Блок скачивания -->
     <div class="download-section">
         <div class="download-title" id="downloadTitle">Скачать Snail Note</div>
         <div class="download-grid">
-            <div class="download-card">
-                <div class="os-label">🪟 Windows <span>10 / 11</span></div>
-                <a href="#" class="download-button"><span>↓</span> Установщик .exe</a>
-                <div class="download-meta">v2.4.0 · 4.8 МБ</div>
+            <div class="download-card" id="winCard">
+                <div class="os-label" id="winLabel">Windows <span>10 / 11</span></div>
+                <a href="download/SnailCode2Setup.exe" class="download-button" id="winBtn"><span>↓</span> Установщик .exe</a>
+                <div class="download-meta">v2.0.0 — 112 МБ</div>
             </div>
-            <div class="download-card">
-                <div class="os-label">🐧 Linux <span>AppImage / deb</span></div>
-                <a href="#" class="download-button"><span>↓</span> Загрузить</a>
-                <div class="download-meta">v2.4.0 · 5.2 МБ</div>
-            </div>
-            <div class="download-card">
-                <div class="os-label">🍎 macOS <span>Apple Silicon / Intel</span></div>
-                <a href="#" class="download-button"><span>↓</span> DMG образ</a>
-                <div class="download-meta">v2.4.0 · 6.1 МБ</div>
+            <div class="download-card" id="linuxCard">
+                <div class="os-label" id="linuxLabel">Linux <span>.Zip application</span></div>
+                <a href="download/SnailCode20Linux.zip" class="download-button" id="linuxBtn"><span>↓</span> Загрузить</a>
+                <div class="download-meta">v2.0.0 — 141 МБ</div>
             </div>
         </div>
     </div>
 
-    <!-- Подробное описание и скриншоты -->
     <div class="details-block">
         <h2 id="detailsTitle">Возможности Snail Note</h2>
-        <p id="detailsDesc">Snail Note создан для тех, кто ценит скорость и отсутствие визуального шума. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом и текстом.</p>
+        <p id="detailsDesc">Snail Note создан для тех, кто ценит скорость и не любит перегруженные интерфейсы. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом на разных языках программирования.</p>
         <ul id="detailsList">
-            <li>Подсветка синтаксиса для 40+ языков программирования</li>
-            <li>Мгновенное открытие файлов размером до 100 МБ</li>
+            <li>Подсветка синтаксиса для десятка языков программирования</li>
+            <li>Магазин расширений и тем, которые пополняются сообществом</li>
             <li>Система вкладок и разделение окна</li>
-            <li>Встроенная тёмная и светлая темы</li>
-            <li>Поддержка регулярных выражений в поиске</li>
+            <li>Возможность предпросмотра HTML</li>
+            <li>Удобный проводник файлов для больших проектов</li>
             <li>Автосохранение и восстановление сессий</li>
         </ul>
         <div class="screenshot-row" id="screenshotRow">
-            <div class="screenshot-thumb" style="background-image: url('images/note.png');" data-full="images/note.png" title="Редактор кода"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/note.png');" data-full="images/note.png" title="Тёмная тема"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/note.png');" data-full="images/note.png" title="Поиск и замена"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/note.png');" data-full="images/note.png" title="Разделение окна"></div>
-        </div>
-    </div>
-
-    <!-- Changelog -->
-    <div class="changelog-block">
-        <h2 id="changelogTitle">Журнал изменений</h2>
-        <div class="log-list">
-            <div class="log-item">
-                <div class="log-version">v2.4.0</div>
-                <div class="log-content" id="log1"><strong>Новое:</strong> поддержка Markdown-превью, улучшена производительность при открытии файлов > 10 МБ. Исправлено мерцание при переключении вкладок.</div>
-            </div>
-            <div class="log-item">
-                <div class="log-version">v2.3.1</div>
-                <div class="log-content" id="log2"><strong>Исправление:</strong> ошибка, из-за которой не сохранялась позиция курсора при закрытии приложения. Обновлены иконки интерфейса.</div>
-            </div>
-            <div class="log-item">
-                <div class="log-version">v2.3.0</div>
-                <div class="log-content" id="log3"><strong>Добавлено:</strong> автоопределение кодировки UTF-8/Windows-1251, новая светлая тема «Кремень», интеграция с контекстным меню проводника.</div>
-            </div>
-            <div class="log-item">
-                <div class="log-version">v2.2.0</div>
-                <div class="log-content" id="log4"><strong>Релиз:</strong> публичный запуск открытого репозитория. Поддержка плагинов для подсветки синтаксиса.</div>
-            </div>
-        </div>
-        <div style="margin-top: 1.5rem; font-size: 0.8rem; color: #57606a; border-top: 1px solid #eaeef2; padding-top: 0.8rem;">
-            <span id="cacheInfo">📦 Кеш сборок: последняя стабильная — <strong>2.4.0</strong> (собрана 12 марта 2026). Ночные сборки доступны в <a href="#">разделе релизов</a>.</span>
+            <div class="screenshot-thumb" style="background-image: url('images/1.png');" data-full="images/1.png" title="Редактор кода"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/2.png');" data-full="images/2.png" title="Тёмная тема"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/3.png');" data-full="images/3.png" title="Поиск и замена"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/4.png');" data-full="images/4.png" title="Разделение окна"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/5.png');" data-full="images/5.png" title="Разделение окна"></div>
         </div>
     </div>
 
@@ -666,157 +588,124 @@
     </footer>
 </div>
 
-<!-- Лайтбокс для скриншотов -->
 <div class="lightbox" id="lightbox">
     <span class="lightbox-close" id="lightboxClose">&times;</span>
     <img src="" alt="Скриншот Snail Note" id="lightboxImg">
 </div>
 
 <script>
-    (function() {
-        const translations = {
-            en: {
-                langName: "English",
-                sub: "Snail Note · Official page",
-                heroDesc: "A dedicated code editor without distractions. Minimal interface, fast handling of large files, and smart syntax highlighting for daily development.",
-                docLink: "Documentation",
-                repoLink: "Repository",
-                discussLink: "Discussions",
-                downloadTitle: "Download Snail Note",
-                winLabel: "🪟 Windows",
-                linuxLabel: "🐧 Linux",
-                macLabel: "🍎 macOS",
-                winBtn: "Installer .exe",
-                linuxBtn: "Download",
-                macBtn: "DMG image",
-                detailsTitle: "Features",
-                detailsDesc: "Snail Note is built for those who value speed and a clean interface. It doesn't try to be an IDE but provides everything needed for comfortable work with code and text.",
-                detailsList: [
-                    "Syntax highlighting for 40+ languages",
-                    "Instant opening of files up to 100 MB",
-                    "Tab system and split view",
-                    "Built-in dark and light themes",
-                    "Regex support in search",
-                    "Auto-save and session restore"
-                ],
-                changelogTitle: "Changelog",
-                log1: "<strong>New:</strong> Markdown preview support, improved performance for files >10 MB. Fixed flickering when switching tabs.",
-                log2: "<strong>Fix:</strong> cursor position not saved on app close. Updated UI icons.",
-                log3: "<strong>Added:</strong> auto-detect UTF-8/Windows-1251 encoding, new light theme 'Flint', explorer context menu integration.",
-                log4: "<strong>Release:</strong> public open-source launch. Plugin support for syntax highlighting.",
-                cacheInfo: "📦 Build cache: latest stable — <strong>2.4.0</strong> (built Mar 12, 2026). Nightly builds available in <a href='#'>releases section</a>.",
-                footer: "© 2022 — 2026, bebka16. All rights reserved. Unauthorized use of materials is prohibited.",
-                license: "MIT License",
-                source: "Source code",
-                contact: "Contact"
-            },
-            be: {
-                langName: "Беларуская",
-                sub: "Snail Note · Афіцыйная старонка",
-                heroDesc: "Выдзелены рэдактар кода без адцягваючых фактараў. Мінімалістычны інтэрфейс, хуткая праца з вялікімі файламі і разумная падсветка сінтаксісу.",
-                docLink: "Дакументацыя",
-                repoLink: "Рэпазітар",
-                discussLink: "Абмеркаванні",
-                downloadTitle: "Спампаваць Snail Note",
-                winLabel: "🪟 Windows",
-                linuxLabel: "🐧 Linux",
-                macLabel: "🍎 macOS",
-                winBtn: "Усталёўшчык .exe",
-                linuxBtn: "Спампаваць",
-                macBtn: "Вобраз DMG",
-                detailsTitle: "Магчымасці",
-                detailsDesc: "Snail Note створаны для тых, хто шануе хуткасць і адсутнасць візуальнага шуму.",
-                detailsList: [
-                    "Падсветка сінтаксісу для 40+ моў",
-                    "Імгненнае адкрыццё файлаў да 100 МБ",
-                    "Сістэма ўкладак і падзел акна",
-                    "Убудаваныя цёмная і светлая тэмы",
-                    "Падтрымка рэгулярных выразаў у пошуку",
-                    "Аўтазахаванне і аднаўленне сесій"
-                ],
-                changelogTitle: "Журнал змен",
-                log1: "<strong>Новае:</strong> падтрымка папярэдняга прагляду Markdown, палепшана прадукцыйнасць для файлаў >10 МБ.",
-                log2: "<strong>Выпраўленне:</strong> памылка захавання пазіцыі курсора. Абноўлены абразкі.",
-                log3: "<strong>Дададзена:</strong> аўтавызначэнне кадыроўкі, новая светлая тэма «Крэмень».",
-                log4: "<strong>Рэліз:</strong> публічны запуск адкрытага рэпазітара. Падтрымка плагінаў.",
-                cacheInfo: "📦 Кэш зборак: апошняя стабільная — <strong>2.4.0</strong>. Начныя зборкі даступныя ў <a href='#'>раздзеле рэлізаў</a>.",
-                footer: "© 2022 — 2026, bebka16. Усе правы абаронены.",
-                license: "Ліцэнзія MIT",
-                source: "Зыходны код",
-                contact: "Сувязь"
-            },
-            ru: {
-                langName: "Русский",
-                sub: "Snail Note · Официальная страница",
-                heroDesc: "Выделенный редактор кода без отвлекающих функций. Минималистичный интерфейс, быстрая работа с большими файлами и интеллектуальная подсветка синтаксиса для повседневной разработки.",
-                docLink: "Документация",
-                repoLink: "Репозиторий",
-                discussLink: "Обсуждения",
-                downloadTitle: "Скачать Snail Note",
-                winLabel: "🪟 Windows",
-                linuxLabel: "🐧 Linux",
-                macLabel: "🍎 macOS",
-                winBtn: "Установщик .exe",
-                linuxBtn: "Загрузить",
-                macBtn: "DMG образ",
-                detailsTitle: "Возможности Snail Note",
-                detailsDesc: "Snail Note создан для тех, кто ценит скорость и отсутствие визуального шума. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом и текстом.",
-                detailsList: [
-                    "Подсветка синтаксиса для 40+ языков программирования",
-                    "Мгновенное открытие файлов размером до 100 МБ",
-                    "Система вкладок и разделение окна",
-                    "Встроенная тёмная и светлая темы",
-                    "Поддержка регулярных выражений в поиске",
-                    "Автосохранение и восстановление сессий"
-                ],
-                changelogTitle: "Журнал изменений",
-                log1: "<strong>Новое:</strong> поддержка Markdown-превью, улучшена производительность при открытии файлов > 10 МБ. Исправлено мерцание при переключении вкладок.",
-                log2: "<strong>Исправление:</strong> ошибка, из-за которой не сохранялась позиция курсора при закрытии приложения. Обновлены иконки интерфейса.",
-                log3: "<strong>Добавлено:</strong> автоопределение кодировки UTF-8/Windows-1251, новая светлая тема «Кремень», интеграция с контекстным меню проводника.",
-                log4: "<strong>Релиз:</strong> публичный запуск открытого репозитория. Поддержка плагинов для подсветки синтаксиса.",
-                cacheInfo: "📦 Кеш сборок: последняя стабильная — <strong>2.4.0</strong> (собрана 12 марта 2026). Ночные сборки доступны в <a href='#'>разделе релизов</a>.",
-                footer: "© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.",
-                license: "Лицензия MIT",
-                source: "Исходный код",
-                contact: "Связаться"
-            },
-            uk: {
-                langName: "Українська",
-                sub: "Snail Note · Офіційна сторінка",
-                heroDesc: "Виділений редактор коду без зайвих функцій. Мінімалістичний інтерфейс, швидка робота з великими файлами та розумне підсвічування синтаксису.",
-                docLink: "Документація",
-                repoLink: "Репозиторій",
-                discussLink: "Обговорення",
-                downloadTitle: "Завантажити Snail Note",
-                winLabel: "🪟 Windows",
-                linuxLabel: "🐧 Linux",
-                macLabel: "🍎 macOS",
-                winBtn: "Інсталятор .exe",
-                linuxBtn: "Завантажити",
-                macBtn: "Образ DMG",
-                detailsTitle: "Можливості",
-                detailsDesc: "Snail Note створений для тих, хто цінує швидкість і відсутність візуального шуму.",
-                detailsList: [
-                    "Підсвічування синтаксису для 40+ мов",
-                    "Миттєве відкриття файлів до 100 МБ",
-                    "Система вкладок і розділення вікна",
-                    "Вбудовані темна та світла теми",
-                    "Підтримка регулярних виразів у пошуку",
-                    "Автозбереження та відновлення сесій"
-                ],
-                changelogTitle: "Журнал змін",
-                log1: "<strong>Нове:</strong> підтримка попереднього перегляду Markdown, покращено продуктивність для файлів >10 МБ.",
-                log2: "<strong>Виправлення:</strong> помилка збереження позиції курсора. Оновлено іконки.",
-                log3: "<strong>Додано:</strong> автовизначення кодування, нова світла тема «Кремінь».",
-                log4: "<strong>Реліз:</strong> публічний запуск відкритого репозиторію. Підтримка плагінів.",
-                cacheInfo: "📦 Кеш збірок: остання стабільна — <strong>2.4.0</strong>. Нічні збірки доступні в <a href='#'>розділі релізів</a>.",
-                footer: "© 2022 — 2026, bebka16. Усі права захищені.",
-                license: "Ліцензія MIT",
-                source: "Вихідний код",
-                contact: "Зв'язатися"
-            }
-        };
+    const translations = {
+        ru: {
+            langName: 'Русский',
+            sub: 'by bebka16',
+            heroDesc: 'Собственный редактор кода без лишних функций. Минималистичный интерфейс, быстрая работа с большими файлами и интеллектуальная подсветка синтаксиса для повседневной разработки.',
+            docLink: 'Документация',
+            repoLink: 'Репозиторий',
+            downloadLink: 'Скачать',
+            downloadTitle: 'Скачать Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Установщик .exe',
+            linuxBtn: 'Загрузить',
+            detailsTitle: 'Возможности Snail Note',
+            detailsDesc: 'Snail Note создан для тех, кто ценит скорость и не любит перегруженные интерфейсы. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом на разных языках программирования.',
+            detailsList: [
+                'Подсветка синтаксиса для десятка языков программирования',
+                'Магазин расширений и тем, которые пополняются сообществом',
+                'Система вкладок и разделение окна',
+                'Возможность предпросмотра HTML',
+                'Удобный проводник файлов для больших проектов',
+                'Автосохранение и восстановление сессий'
+            ],
+            footer: '© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.',
+            license: 'Лицензия MIT',
+            source: 'Исходный код',
+            contact: 'Связаться'
+        },
+        en: {
+            langName: 'English',
+            sub: 'by bebka16',
+            heroDesc: 'A custom code editor without unnecessary features. Minimalist interface, fast performance with large files, and intelligent syntax highlighting for everyday development.',
+            docLink: 'Documentation',
+            repoLink: 'Repository',
+            downloadLink: 'Download',
+            downloadTitle: 'Download Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Installer .exe',
+            linuxBtn: 'Download',
+            detailsTitle: 'Snail Note Features',
+            detailsDesc: 'Snail Note is designed for those who value speed and dislike overloaded interfaces. The editor does not try to be an IDE, but provides everything needed for comfortable coding in various programming languages.',
+            detailsList: [
+                'Syntax highlighting for dozens of programming languages',
+                'Extension and theme store, replenished by the community',
+                'Tab system and window splitting',
+                'HTML preview capability',
+                'Convenient file explorer for large projects',
+                'Auto-save and session recovery'
+            ],
+            footer: '© 2022 — 2026, bebka16. All rights reserved. Use of materials without attribution is prohibited.',
+            license: 'MIT License',
+            source: 'Source Code',
+            contact: 'Contact'
+        },
+        be: {
+            langName: 'Беларуская',
+            sub: 'by bebka16',
+            heroDesc: 'Уласны рэдактар кода без лішніх функцый. Мінімалістычны інтэрфейс, хуткая праца з вялікімі файламі і інтэлектуальная падсветка сінтаксісу для штодзённай распрацоўкі.',
+            docLink: 'Дакументацыя',
+            repoLink: 'Рэпазіторый',
+            downloadLink: 'Спампаваць',
+            downloadTitle: 'Спампаваць Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Усталёўнік .exe',
+            linuxBtn: 'Спампаваць',
+            detailsTitle: 'Магчымасці Snail Note',
+            detailsDesc: 'Snail Note створаны для тых, хто цэніць хуткасць і не любіць перагружаныя інтэрфейсы. Рэдактар не імкнецца быць асяроддзем распрацоўкі, але дае ўсё неабходнае для камфортнай працы з кодам на розных мовах праграмавання.',
+            detailsList: [
+                'Падсветка сінтаксісу для дзясятка моў праграмавання',
+                'Крама пашырэнняў і тэм, якія папаўняюцца супольнасцю',
+                'Сістэма ўкладак і падзел акна',
+                'Магчымасць перадпрагляду HTML',
+                'Зручны праваднік файлаў для вялікіх праектаў',
+                'Аўтазахаванне і аднаўленне сесій'
+            ],
+            footer: '© 2022 — 2026, bebka16. Усе правы абаронены. Выкарыстанне матэрыялаў без указання аўтарства забаронена.',
+            license: 'Ліцэнзія MIT',
+            source: 'Зыходны код',
+            contact: 'Звязацца'
+        },
+        uk: {
+            langName: 'Українська',
+            sub: 'by bebka16',
+            heroDesc: 'Власний редактор коду без зайвих функцій. Мінімалістичний інтерфейс, швидка робота з великими файлами та інтелектуальне підсвічування синтаксису для повсякденної розробки.',
+            docLink: 'Документація',
+            repoLink: 'Репозиторій',
+            downloadLink: 'Завантажити',
+            downloadTitle: 'Завантажити Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Інсталятор .exe',
+            linuxBtn: 'Завантажити',
+            detailsTitle: 'Можливості Snail Note',
+            detailsDesc: 'Snail Note створений для тих, хто цінує швидкість і не любить перевантажені інтерфейси. Редактор не намагається бути середовищем розробки, але дає все необхідне для комфортної роботи з кодом на різних мовах програмування.',
+            detailsList: [
+                'Підсвічування синтаксису для десятка мов програмування',
+                'Магазин розширень і тем, які поповнюються спільнотою',
+                'Система вкладок і розділення вікна',
+                'Можливість попереднього перегляду HTML',
+                'Зручний провідник файлів для великих проєктів',
+                'Автозбереження та відновлення сесій'
+            ],
+            footer: '© 2022 — 2026, bebka16. Усі права захищені. Використання матеріалів без зазначення авторства заборонено.',
+            license: 'Ліцензія MIT',
+            source: 'Вихідний код',
+            contact: 'Зв\'язатися'
+        }
+    };
 
+    (function() {
         const langDropdown = document.getElementById('langDropdown');
         const langMenu = document.getElementById('langMenu');
         const currentLangLabel = document.getElementById('currentLangLabel');
@@ -826,30 +715,19 @@
             const t = translations[lang];
             
             document.querySelector('.header-left .sub').textContent = t.sub;
-            document.querySelector('.hero-description').textContent = t.heroDesc;
+            document.getElementById('heroDesc').textContent = t.heroDesc;
             
-            const heroLinks = document.querySelectorAll('.hero-links a');
-            if(heroLinks.length >= 3) {
-                heroLinks[0].textContent = t.docLink;
-                heroLinks[1].textContent = t.repoLink;
-                heroLinks[2].textContent = t.discussLink;
-            }
+            document.getElementById('docLink').textContent = t.docLink;
+            document.getElementById('repoLink').textContent = t.repoLink;
+            document.getElementById('downloadLink').textContent = t.downloadLink;
             
             document.getElementById('downloadTitle').textContent = t.downloadTitle;
             
-            const osLabels = document.querySelectorAll('.os-label');
-            if(osLabels.length >= 3) {
-                osLabels[0].innerHTML = t.winLabel + ' <span>10 / 11</span>';
-                osLabels[1].innerHTML = t.linuxLabel + ' <span>AppImage / deb</span>';
-                osLabels[2].innerHTML = t.macLabel + ' <span>Apple Silicon / Intel</span>';
-            }
+            document.getElementById('winLabel').innerHTML = t.winLabel + ' <span>10 / 11</span>';
+            document.getElementById('linuxLabel').innerHTML = t.linuxLabel + ' <span>.Zip application</span>';
             
-            const downloadBtns = document.querySelectorAll('.download-button');
-            if(downloadBtns.length >= 3) {
-                downloadBtns[0].innerHTML = '<span>↓</span> ' + t.winBtn;
-                downloadBtns[1].innerHTML = '<span>↓</span> ' + t.linuxBtn;
-                downloadBtns[2].innerHTML = '<span>↓</span> ' + t.macBtn;
-            }
+            document.getElementById('winBtn').innerHTML = '<span>↓</span> ' + t.winBtn;
+            document.getElementById('linuxBtn').innerHTML = '<span>↓</span> ' + t.linuxBtn;
             
             document.getElementById('detailsTitle').textContent = t.detailsTitle;
             document.getElementById('detailsDesc').textContent = t.detailsDesc;
@@ -859,17 +737,11 @@
                 if(listItems[index]) listItems[index].textContent = item;
             });
             
-            document.getElementById('changelogTitle').textContent = t.changelogTitle;
-            document.getElementById('log1').innerHTML = t.log1;
-            document.getElementById('log2').innerHTML = t.log2;
-            document.getElementById('log3').innerHTML = t.log3;
-            document.getElementById('log4').innerHTML = t.log4;
-            document.getElementById('cacheInfo').innerHTML = t.cacheInfo;
             document.getElementById('footerText').textContent = t.footer;
             document.getElementById('licenseLink').textContent = t.license;
             document.getElementById('sourceLink').textContent = t.source;
             
-            const contactLink = document.querySelector('.header-right a[href*="bebka16bot.t.me"]');
+            const contactLink = document.getElementById('contactLink');
             if(contactLink) contactLink.textContent = t.contact;
             
             currentLangLabel.textContent = t.langName;
@@ -900,7 +772,6 @@
 
         applyTranslation(getStoredLang());
 
-        // Лайтбокс для скриншотов
         const lightbox = document.getElementById('lightbox');
         const lightboxImg = document.getElementById('lightboxImg');
         const lightboxClose = document.getElementById('lightboxClose');
