@@ -20,7 +20,6 @@
             z-index: 9999;
             box-shadow: -2px 0 10px rgba(0,0,0,0.5);
             overflow: hidden;
-            transition: width 0.3s ease;
             font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
             font-size: 14px;
         }
@@ -32,13 +31,14 @@
         #browser-container .browser-toolbar {
             display: flex;
             align-items: center;
-            padding: 8px 12px;
+            padding: 6px 10px;
             background: #2d2d44;
             border-bottom: 1px solid #444;
-            gap: 8px;
+            gap: 6px;
             flex-shrink: 0;
             font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
             font-size: 14px;
+            min-height: 36px;
         }
 
         #browser-container .browser-toolbar button {
@@ -46,14 +46,16 @@
             border: none;
             color: #ccc;
             cursor: pointer;
-            font-size: 14px;
-            padding: 4px 8px;
+            font-size: 16px;
+            padding: 4px 6px;
             transition: background 0.2s;
             display: flex;
             align-items: center;
             justify-content: center;
             font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
             border-radius: 0;
+            height: 28px;
+            width: 28px;
         }
 
         #browser-container .browser-toolbar button:hover {
@@ -69,13 +71,14 @@
             flex: 1;
             background: #1a1a2e;
             border: 1px solid #444;
-            padding: 6px 14px;
+            padding: 4px 12px;
             color: #e0e0e0;
             font-size: 14px;
             outline: none;
             min-width: 0;
             font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
             border-radius: 0;
+            height: 28px;
         }
 
         #browser-container .browser-toolbar .browser-url:focus {
@@ -84,16 +87,6 @@
 
         #browser-container .browser-toolbar .browser-url::placeholder {
             color: #666;
-        }
-
-        #browser-container .browser-toolbar .browser-actions {
-            display: flex;
-            gap: 4px;
-        }
-
-        #browser-container .browser-toolbar .browser-actions button {
-            font-size: 14px;
-            padding: 4px 6px;
         }
 
         #browser-container .browser-frame {
@@ -114,6 +107,8 @@
             display: flex;
             justify-content: space-between;
             font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            min-height: 28px;
+            align-items: center;
         }
 
         #browser-container .browser-status .browser-status-text {
@@ -126,16 +121,16 @@
 
         #browser-toggle-btn {
             position: fixed;
-            right: 10px;
-            bottom: 50px;
+            right: 12px;
+            bottom: 55px;
             z-index: 9998;
             background: #2d2d44;
             border: 1px solid #444;
             color: #ccc;
-            width: 40px;
-            height: 40px;
+            width: 38px;
+            height: 38px;
             cursor: pointer;
-            font-size: 18px;
+            font-size: 16px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -147,7 +142,6 @@
 
         #browser-toggle-btn:hover {
             background: #3d3d5c;
-            transform: scale(1.05);
         }
 
         #browser-toggle-btn.active {
@@ -157,9 +151,9 @@
 
         #browser-container .browser-resize-handle {
             position: absolute;
-            left: -4px;
+            left: -3px;
             top: 0;
-            width: 8px;
+            width: 6px;
             height: 100%;
             cursor: ew-resize;
             background: transparent;
@@ -167,6 +161,10 @@
         }
 
         #browser-container .browser-resize-handle:hover {
+            background: rgba(107, 159, 255, 0.2);
+        }
+
+        #browser-container .browser-resize-handle.active {
             background: rgba(107, 159, 255, 0.3);
         }
     `;
@@ -189,17 +187,17 @@
         toolbar.className = 'browser-toolbar';
 
         const btnBack = document.createElement('button');
-        btnBack.innerHTML = '◀';
+        btnBack.innerHTML = '<span class="codicon codicon-arrow-left"></span>';
         btnBack.title = 'Back';
-        btnBack.onclick = () => { if (browserIframe) browserIframe.contentWindow.history.back(); };
+        btnBack.onclick = () => { try { if (browserIframe) browserIframe.contentWindow.history.back(); } catch(e) {} };
 
         const btnForward = document.createElement('button');
-        btnForward.innerHTML = '▶';
+        btnForward.innerHTML = '<span class="codicon codicon-arrow-right"></span>';
         btnForward.title = 'Forward';
-        btnForward.onclick = () => { if (browserIframe) browserIframe.contentWindow.history.forward(); };
+        btnForward.onclick = () => { try { if (browserIframe) browserIframe.contentWindow.history.forward(); } catch(e) {} };
 
         const btnRefresh = document.createElement('button');
-        btnRefresh.innerHTML = '↻';
+        btnRefresh.innerHTML = '<span class="codicon codicon-sync"></span>';
         btnRefresh.title = 'Refresh';
         btnRefresh.onclick = refreshBrowser;
 
@@ -215,12 +213,13 @@
         });
 
         const btnGo = document.createElement('button');
-        btnGo.innerHTML = '➜';
+        btnGo.innerHTML = '<span class="codicon codicon-arrow-right"></span>';
         btnGo.title = 'Go';
+        btnGo.style.fontSize = '18px';
         btnGo.onclick = () => navigateTo(urlInput.value);
 
         const btnClose = document.createElement('button');
-        btnClose.innerHTML = '✕';
+        btnClose.innerHTML = '<span class="codicon codicon-close"></span>';
         btnClose.className = 'danger';
         btnClose.title = 'Close';
         btnClose.onclick = toggleBrowser;
@@ -283,13 +282,18 @@
             startWidth = browserContainer.offsetWidth;
             document.body.style.cursor = 'ew-resize';
             document.body.style.userSelect = 'none';
+            resizeHandle.classList.add('active');
+            e.preventDefault();
         });
 
         document.addEventListener('mousemove', function(e) {
             if (!isResizing) return;
             let newWidth = startWidth - (e.clientX - startX);
-            newWidth = Math.max(250, Math.min(800, newWidth));
+            newWidth = Math.max(300, Math.min(800, newWidth));
             browserContainer.style.width = newWidth + 'px';
+            if (window.editor && window.editor.layout) {
+                window.editor.layout();
+            }
         });
 
         document.addEventListener('mouseup', function() {
@@ -297,17 +301,27 @@
                 isResizing = false;
                 document.body.style.cursor = '';
                 document.body.style.userSelect = '';
+                resizeHandle.classList.remove('active');
+                if (window.editor && window.editor.layout) {
+                    window.editor.layout();
+                }
             }
         });
 
         const toggleBtn = document.createElement('button');
         toggleBtn.id = 'browser-toggle-btn';
-        toggleBtn.innerHTML = '🌐';
+        toggleBtn.innerHTML = '<span class="codicon codicon-globe"></span>';
         toggleBtn.title = 'Open browser';
         toggleBtn.onclick = toggleBrowser;
 
         document.body.appendChild(browserContainer);
         document.body.appendChild(toggleBtn);
+
+        setTimeout(() => {
+            if (window.editor && window.editor.layout) {
+                window.editor.layout();
+            }
+        }, 100);
     }
 
     function navigateTo(url) {
@@ -315,7 +329,7 @@
         let finalUrl = url.trim();
 
         if (!/^https?:\/\//i.test(finalUrl) && !/^about:/i.test(finalUrl) && !/^file:/i.test(finalUrl) && !/^data:/i.test(finalUrl)) {
-            if (finalUrl.includes('.')) {
+            if (finalUrl.includes('.') && !finalUrl.includes(' ')) {
                 finalUrl = 'https://' + finalUrl;
             } else {
                 finalUrl = 'https://google.com/search?q=' + encodeURIComponent(finalUrl);
@@ -345,7 +359,7 @@
     function refreshBrowser() {
         if (!browserIframe) return;
         const urlInput = browserContainer.querySelector('.browser-url');
-        if (urlInput) {
+        if (urlInput && urlInput.value) {
             navigateTo(urlInput.value);
         } else {
             browserIframe.src = browserIframe.src;
@@ -361,7 +375,7 @@
         const toggleBtn = document.getElementById('browser-toggle-btn');
         if (toggleBtn) {
             toggleBtn.classList.toggle('active', isVisible);
-            toggleBtn.innerHTML = isVisible ? '✕' : '🌐';
+            toggleBtn.innerHTML = isVisible ? '<span class="codicon codicon-close"></span>' : '<span class="codicon codicon-globe"></span>';
             toggleBtn.title = isVisible ? 'Close browser' : 'Open browser';
         }
 
@@ -373,13 +387,20 @@
                     urlInput.select();
                 }, 100);
             }
-            if (window.editor && window.editor.layout) {
-                setTimeout(() => window.editor.layout(), 200);
-            }
+            setTimeout(() => {
+                if (window.editor && window.editor.layout) {
+                    window.editor.layout();
+                }
+            }, 50);
         } else {
             if (window.editor && window.editor.focus) {
-                window.editor.focus();
+                setTimeout(() => window.editor.focus(), 50);
             }
+            setTimeout(() => {
+                if (window.editor && window.editor.layout) {
+                    window.editor.layout();
+                }
+            }, 50);
         }
     }
 
@@ -387,7 +408,7 @@
         if (!browserContainer) createBrowserContainer();
         if (!isVisible) toggleBrowser();
         if (url) {
-            navigateTo(url);
+            setTimeout(() => navigateTo(url), 100);
         }
     }
 
