@@ -4,7 +4,7 @@
     let browserContainer = null;
     let browserIframe = null;
     let isVisible = false;
-    let currentUrl = 'https://google.com';
+    let currentUrl = 'https://example.com';
 
     const styles = `
         #browser-container {
@@ -119,6 +119,10 @@
             color: #6b9fff;
         }
 
+        #browser-container .browser-status .browser-status-error {
+            color: #ff6b6b;
+        }
+
         #browser-toggle-btn {
             position: fixed;
             right: 12px;
@@ -166,6 +170,61 @@
 
         #browser-container .browser-resize-handle.active {
             background: rgba(107, 159, 255, 0.3);
+        }
+
+        #browser-container .browser-error {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 40px;
+            text-align: center;
+            background: #1a1a2e;
+            color: #ccc;
+        }
+
+        #browser-container .browser-error.active {
+            display: flex;
+        }
+
+        #browser-container .browser-error .error-icon {
+            font-size: 48px;
+            color: #ff6b6b;
+            margin-bottom: 16px;
+        }
+
+        #browser-container .browser-error .error-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+        }
+
+        #browser-container .browser-error .error-message {
+            color: #888;
+            margin-bottom: 16px;
+            max-width: 400px;
+        }
+
+        #browser-container .browser-error .error-button {
+            background: #6b9fff;
+            border: none;
+            color: #fff;
+            padding: 8px 24px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            border-radius: 0;
+            transition: background 0.2s;
+        }
+
+        #browser-container .browser-error .error-button:hover {
+            background: #5a8aee;
+        }
+
+        #browser-container .browser-frame.hidden {
+            display: none;
         }
     `;
 
@@ -218,6 +277,16 @@
         btnGo.style.fontSize = '18px';
         btnGo.onclick = () => navigateTo(urlInput.value);
 
+        const btnOpenNew = document.createElement('button');
+        btnOpenNew.innerHTML = '<span class="codicon codicon-link-external"></span>';
+        btnOpenNew.title = 'Open in new window';
+        btnOpenNew.onclick = () => {
+            const url = urlInput.value || currentUrl;
+            if (url && url !== 'about:blank') {
+                window.open(url, '_blank');
+            }
+        };
+
         const btnClose = document.createElement('button');
         btnClose.innerHTML = '<span class="codicon codicon-close"></span>';
         btnClose.className = 'danger';
@@ -229,9 +298,20 @@
         toolbar.appendChild(btnRefresh);
         toolbar.appendChild(urlInput);
         toolbar.appendChild(btnGo);
+        toolbar.appendChild(btnOpenNew);
         toolbar.appendChild(btnClose);
 
         browserContainer.appendChild(toolbar);
+
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'browser-error';
+        errorDiv.innerHTML = `
+            <div class="error-icon">🔒</div>
+            <div class="error-title">Cannot display this page</div>
+            <div class="error-message">This website prevents embedding in iframes. Click the button below to open it in a new window.</div>
+            <button class="error-button" id="browser-error-btn">Open in new window</button>
+        `;
+        browserContainer.appendChild(errorDiv);
 
         browserIframe = document.createElement('iframe');
         browserIframe.className = 'browser-frame';
@@ -255,6 +335,13 @@
         statusBar.appendChild(statusLoading);
         browserContainer.appendChild(statusBar);
 
+        document.getElementById('browser-error-btn').addEventListener('click', function() {
+            const url = urlInput.value || currentUrl;
+            if (url && url !== 'about:blank') {
+                window.open(url, '_blank');
+            }
+        });
+
         browserIframe.addEventListener('load', function() {
             try {
                 const url = this.contentWindow.location.href;
@@ -262,9 +349,15 @@
                     urlInput.value = url;
                     currentUrl = url;
                 }
-            } catch (e) {}
+            } catch (e) {
+                if (e.message && e.message.includes('cross-origin')) {
+                    showError('This website blocks embedding in iframes.');
+                }
+            }
             statusText.textContent = 'Loaded';
             statusLoading.textContent = '';
+            browserIframe.classList.remove('hidden');
+            errorDiv.classList.remove('active');
         });
 
         browserIframe.addEventListener('error', function() {
@@ -324,6 +417,21 @@
         }, 100);
     }
 
+    function showError(message) {
+        const errorDiv = browserContainer.querySelector('.browser-error');
+        const iframe = browserContainer.querySelector('.browser-frame');
+        if (errorDiv) {
+            const msgEl = errorDiv.querySelector('.error-message');
+            if (msgEl) msgEl.textContent = message || 'This website prevents embedding in iframes.';
+            errorDiv.classList.add('active');
+        }
+        if (iframe) iframe.classList.add('hidden');
+        const statusText = browserContainer.querySelector('.browser-status-text');
+        if (statusText) statusText.textContent = 'Blocked';
+        const statusLoading = browserContainer.querySelector('.browser-status-loading');
+        if (statusLoading) statusLoading.textContent = '🔒';
+    }
+
     function navigateTo(url) {
         if (!url) return;
         let finalUrl = url.trim();
@@ -332,7 +440,7 @@
             if (finalUrl.includes('.') && !finalUrl.includes(' ')) {
                 finalUrl = 'https://' + finalUrl;
             } else {
-                finalUrl = 'https://google.com/search?q=' + encodeURIComponent(finalUrl);
+                finalUrl = 'https://duckduckgo.com/?q=' + encodeURIComponent(finalUrl);
             }
         }
 
@@ -345,6 +453,12 @@
         if (statusText) statusText.textContent = 'Loading...';
         if (statusLoading) statusLoading.textContent = '⏳';
 
+        const errorDiv = browserContainer.querySelector('.browser-error');
+        if (errorDiv) errorDiv.classList.remove('active');
+
+        const iframe = browserContainer.querySelector('.browser-frame');
+        if (iframe) iframe.classList.remove('hidden');
+
         if (browserIframe) {
             try {
                 browserIframe.src = finalUrl;
@@ -352,6 +466,7 @@
                 browserIframe.src = 'about:blank';
                 if (statusText) statusText.textContent = 'Cannot load: ' + e.message;
                 if (statusLoading) statusLoading.textContent = '⚠';
+                showError('Failed to load this page.');
             }
         }
     }
