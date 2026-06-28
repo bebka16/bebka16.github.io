@@ -5,8 +5,8 @@
     }
 	
 	.monaco-editor-theme-select {
-      theme: github-theme;
-      --theme: github-theme;
+      theme: vs;
+      --theme: vs;
     }
 
     body {
