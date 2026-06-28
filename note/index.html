@@ -1,783 +1,721 @@
 <!DOCTYPE html>
-<html lang="ru">
+<html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Менеджер расширений</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Decibel Note · Extensions</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
 
-        body {
-            background-color: #f6f8fa;
-            color: #24292f;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.5;
-            padding: 2rem 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            margin-top: 0;
-            padding-top: 0;
-        }
+    body {
+      background-color: #f6f8fa;
+      color: #24292f;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+      padding-top: 0;
+    }
 
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            width: 100%;
-            flex: 1;
-            display: flex;
-            flex-direction: column;
-        }
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
 
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: baseline;
-            padding-bottom: 0.7rem;
-            padding-top: 0.7rem;
-            border-bottom: 1px solid #d0d7de;
-            margin-bottom: 1.5rem;
-        }
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 0.7rem;
+      padding-top: 0.7rem;
+      border-bottom: 1px solid #d0d7de;
+      margin-bottom: 1.5rem;
+    }
 
-        .header-left h1 {
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #24292f;
-        }
+    .header-left h1 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #24292f;
+    }
 
-        .header-left .sub {
-            font-size: 0.85rem;
-            color: #57606a;
-            margin-top: 0.05rem;
-        }
+    .header-left .sub {
+      font-size: 0.85rem;
+      color: #57606a;
+      margin-top: 0.05rem;
+    }
 
-        .header-right {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.85rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
+    .header-right {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
 
-        .header-right a {
-            color: #0969da;
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-        }
+    .header-right a {
+      color: #0969da;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
 
-        .header-right a:hover {
-            border-bottom-color: #0969da;
-        }
+    .header-right a:hover {
+      border-bottom-color: #0969da;
+    }
 
-        .lang-dropdown {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            font-weight: 500;
-            color: #0969da;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-            padding-right: 1.2rem;
-            user-select: none;
-        }
-        .lang-dropdown:hover {
-            border-bottom-color: #0969da;
-        }
-        .lang-dropdown .arrow {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.7rem;
-            pointer-events: none;
-        }
-        .lang-dropdown .lang-label {
-            display: inline-block;
-        }
-        .lang-dropdown .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            min-width: 120px;
-            z-index: 10;
-            margin-top: 4px;
-        }
-        .lang-dropdown .dropdown-menu.show {
-            display: block;
-        }
-        .lang-dropdown .dropdown-menu a {
-            display: block;
-            padding: 0.4rem 0.8rem;
-            color: #24292f;
-            text-decoration: none;
-            border-bottom: none;
-            font-weight: 400;
-            transition: background 0.1s;
-        }
-        .lang-dropdown .dropdown-menu a:hover {
-            background: #f0f6fc;
-            border-bottom: none;
-        }
-        .lang-dropdown .dropdown-menu a:last-child {
-            border-bottom: none;
-        }
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #24292f;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            color: #24292f;
-            letter-spacing: -0.01em;
-        }
+    .extensions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
 
-        /* Карточки расширений */
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
+    .extension-card {
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 1rem 1rem 0.8rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
 
-        .project-card {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1rem 1rem 0.8rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-            min-height: 130px;
-        }
+    .extension-card:hover {
+      border-color: #8b949e;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
 
-        .project-card:hover {
-            border-color: #8b949e;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
+    .extension-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #24292f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
 
-        .project-card .bg-image {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 75px;
-            height: 75px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: top right;
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: 0;
-        }
+    .extension-name .version {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: #57606a;
+      background: #f0f6fc;
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      border: 1px solid #d0d7de;
+    }
 
-        .project-card .card-content {
-            position: relative;
-            z-index: 1;
-            display: flex;
-            flex-direction: column;
-            flex: 1;
-        }
+    .extension-description {
+      font-size: 0.82rem;
+      color: #57606a;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
 
-        .project-name {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
+    .extension-author {
+      font-size: 0.75rem;
+      color: #656d76;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
 
-        .project-name a {
-            color: #0969da;
-            text-decoration: none;
-        }
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.5rem;
+      margin: 0.5rem 0 0.8rem;
+    }
 
-        .project-name a:hover {
-            text-decoration: underline;
-        }
+    .tag {
+      background: #f0f6fc;
+      color: #0969da;
+      font-size: 0.72rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 12px;
+      border: 1px solid #d0d7de;
+    }
 
-        .project-description {
-            font-size: 0.82rem;
-            color: #57606a;
-            margin-bottom: 1rem;
-            flex: 1;
-        }
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+      border-top: 1px solid #eaeef2;
+      padding-top: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
 
-        .project-link {
-            margin-top: auto;
-            padding-top: 0.3rem;
-            border-top: 1px solid #eaeef2;
-            display: flex;
-            justify-content: flex-end;
-            gap: 0.8rem;
-        }
+    .btn {
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #24292f;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+      line-height: 1.4;
+    }
 
-        .project-link button {
-            background: none;
-            border: none;
-            color: #0969da;
-            font-size: 0.8rem;
-            font-weight: 500;
-            cursor: pointer;
-            padding: 0.2rem 0.4rem;
-            border-radius: 2px;
-            transition: background 0.15s;
-        }
+    .btn:hover {
+      background: #eaeef2;
+      border-color: #8b949e;
+    }
 
-        .project-link button:hover {
-            background: #f0f6fc;
-            text-decoration: underline;
-        }
+    .btn-primary {
+      background: #0969da;
+      border-color: #0969da;
+      color: #ffffff;
+    }
 
-        .project-link .delete-btn {
-            color: #cf222e;
-        }
+    .btn-primary:hover {
+      background: #0860c0;
+      border-color: #0860c0;
+    }
 
-        .project-link .delete-btn:hover {
-            background: #ffebe9;
-        }
+    .btn-danger {
+      color: #cf222e;
+      border-color: #d0d7de;
+    }
 
-        /* Блок загрузки */
-        .upload-block {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1rem 1.2rem;
-            margin-bottom: 2rem;
-            display: flex;
-            flex-wrap: wrap;
-            align-items: center;
-            gap: 1rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
+    .btn-danger:hover {
+      background: #ffebe9;
+      border-color: #cf222e;
+    }
 
-        .upload-block label {
-            font-weight: 500;
-            font-size: 0.9rem;
-            color: #24292f;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            cursor: pointer;
-        }
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #f6f8fa;
+      color: #8b949e;
+      border-color: #d0d7de;
+    }
 
-        .upload-block input[type="file"] {
-            display: none;
-        }
+    .search-section {
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
 
-        .upload-block .file-name {
-            font-size: 0.85rem;
-            color: #57606a;
-            flex: 1;
-        }
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8rem;
+    }
 
-        .btn-upload {
-            background: #2da44e;
-            color: white;
-            border: none;
-            padding: 0.4rem 1rem;
-            font-size: 0.85rem;
-            font-weight: 500;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: background 0.15s;
-        }
+    .search-input {
+      flex: 2;
+      min-width: 220px;
+      padding: 0.5rem 0.8rem;
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      color: #24292f;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
 
-        .btn-upload:hover {
-            background: #2c974b;
-        }
+    .search-input:focus {
+      outline: none;
+      border-color: #0969da;
+      box-shadow: 0 0 0 2px rgba(9, 105, 218, 0.15);
+    }
 
-        .btn-upload:active {
-            background: #22863a;
-        }
+    .file-upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #24292f;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
 
-        .extra-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
+    .file-upload-label:hover {
+      background: #eaeef2;
+    }
 
-        .info-card {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1rem 1rem 0.8rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: box-shadow 0.2s;
-        }
+    #uploadJsInput {
+      display: none;
+    }
 
-        .info-card:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
+    .status-message {
+      font-size: 0.8rem;
+      color: #57606a;
+      margin-left: 0.5rem;
+    }
 
-        .info-card h3 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #24292f;
-            margin-bottom: 0.4rem;
-        }
+    .footer-note {
+      margin-top: auto;
+      border-top: 1px solid #d0d7de;
+      padding-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      color: #57606a;
+      font-size: 0.8rem;
+    }
 
-        .info-card ul {
-            list-style: none;
-            padding: 0;
-        }
+    .footer-note a {
+      color: #0969da;
+      text-decoration: none;
+    }
 
-        .info-card ul li {
-            font-size: 0.82rem;
-            color: #57606a;
-            padding: 0.1rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
+    .footer-note a:hover {
+      text-decoration: underline;
+    }
 
-        .info-card ul li::before {
-            content: "·";
-            color: #0969da;
-            font-weight: 700;
-        }
+    hr {
+      border: 0;
+      border-top: 1px solid #d0d7de;
+      margin: 0.8rem 0;
+    }
 
-        .tag-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem 0.5rem;
-            margin-top: 0.15rem;
-        }
+    a:link {
+      color: #0969da !important;
+    }
 
-        .tag {
-            background: #f0f6fc;
-            color: #0969da;
-            font-size: 0.72rem;
-            padding: 0.1rem 0.5rem;
-            border-radius: 12px;
-            border: 1px solid #d0d7de;
-        }
+    a:visited {
+      color: #0969da !important;
+    }
 
-        .history-block {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1rem 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: box-shadow 0.2s;
-            width: 100%;
-        }
+    @media (max-width: 650px) {
+      body {
+        padding: 1rem 0.8rem;
+      }
 
-        .history-block:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
+      .header {
+        flex-direction: column;
+        align-items: flex-start;
+        gap: 0.5rem;
+      }
 
-        .history-block h2 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #24292f;
-            letter-spacing: -0.01em;
-        }
+      .extensions-grid {
+        grid-template-columns: 1fr;
+      }
 
-        .history-timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .history-item {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0.4rem 0;
-            border-bottom: 1px solid #eaeef2;
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
-        }
-
-        .history-year {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #24292f;
-            min-width: 70px;
-            flex-shrink: 0;
-        }
-
-        .history-content {
-            font-size: 0.85rem;
-            color: #57606a;
-        }
-
-        .history-content strong {
-            color: #24292f;
-            font-weight: 600;
-        }
-
-        .footer {
-            margin-top: auto;
-            border-top: 1px solid #d0d7de;
-            padding-top: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            color: #57606a;
-            font-size: 0.8rem;
-        }
-
-        .footer a {
-            color: #0969da;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 650px) {
-            body { padding: 1rem 0.8rem; }
-            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-            .header-right { gap: 1rem; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .extra-grid { grid-template-columns: 1fr; }
-            .history-item { flex-direction: column; gap: 0.2rem; }
-            .history-year { min-width: auto; }
-            .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
-            .upload-block { flex-direction: column; align-items: stretch; }
-        }
-        a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
-    </style>
+      .search-row {
+        flex-direction: column;
+        align-items: stretch;
+      }
+    }
+  </style>
 </head>
 <body>
 <div class="container">
-    <div class="header">
-        <div class="header-left">
-            <h1>🧩 Менеджер расширений</h1>
-            <div class="sub">Управление локальными .JS расширениями</div>
-        </div>
-        <div class="header-right">
-            <a href="#">Документация</a>
-            <a href="#">Поддержка</a>
-            <div class="lang-dropdown" id="langDropdown">
-                <span class="lang-label">RU</span>
-                <span class="arrow">▾</span>
-                <div class="dropdown-menu" id="langMenu">
-                    <a href="#">RU</a>
-                    <a href="#">EN</a>
-                </div>
-            </div>
-        </div>
+  <div class="header">
+    <div class="header-left">
+      <h1>Decibel Note · Extensions</h1>
+      <div class="sub">Discover, install and manage editor extensions</div>
     </div>
+    <div class="header-right">
+      <a id="refreshInstalledLink" title="Reload installed list">↻ Refresh</a>
+      <a id="clearAllLink" title="Remove all installed extensions">Clear all</a>
+    </div>
+  </div>
 
-    <!-- Блок загрузки -->
-    <div class="upload-block">
-        <label for="fileInput">📁 Выберите .JS файл</label>
-        <input type="file" id="fileInput" accept=".js">
-        <span class="file-name" id="fileName">Файл не выбран</span>
-        <button class="btn-upload" id="uploadBtn">Загрузить расширение</button>
+  <div class="search-section">
+    <div class="search-row">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name, description or tag...">
+      <label for="uploadJsInput" class="file-upload-label" id="uploadLabel">
+        📄 Load .js extension
+      </label>
+      <input type="file" id="uploadJsInput" accept=".js">
+      <span class="status-message" id="uploadStatus"></span>
     </div>
+    <div style="font-size:0.75rem; color:#57606a; margin-top:0.5rem;">
+      Installed extensions are stored locally in your browser.
+    </div>
+  </div>
 
-    <!-- Список расширений -->
-    <div class="section-title">📦 Установленные расширения</div>
-    <div class="projects-grid" id="extensionsGrid">
-        <!-- Карточки будут добавляться сюда -->
-    </div>
+  <div class="section-title">
+    <span>🧩 Available extensions</span>
+  </div>
 
-    <!-- Дополнительная информация -->
-    <div class="extra-grid">
-        <div class="info-card">
-            <h3>📋 Статистика</h3>
-            <ul>
-                <li id="totalCount">Всего: 0</li>
-                <li id="activeCount">Активных: 0</li>
-            </ul>
-        </div>
-        <div class="info-card">
-            <h3>⚡ Быстрые действия</h3>
-            <div class="tag-group">
-                <span class="tag">Обновить список</span>
-                <span class="tag">Очистить все</span>
-            </div>
-        </div>
-    </div>
+  <div class="extensions-grid" id="extensionsGrid"></div>
 
-    <!-- История (пример) -->
-    <div class="history-block">
-        <h2>📜 История изменений</h2>
-        <div class="history-timeline" id="historyTimeline">
-            <div class="history-item">
-                <div class="history-year">Сегодня</div>
-                <div class="history-content"><strong>Расширение загружено:</strong> example.js</div>
-            </div>
-            <div class="history-item">
-                <div class="history-year">Вчера</div>
-                <div class="history-content"><strong>Удалено:</strong> old-extension.js</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="footer">
-        <span>© 2026 Менеджер расширений</span>
-        <div class="footer-links">
-            <a href="#">GitHub</a>
-            <a href="#">Лицензия</a>
-            <a href="#">О проекте</a>
-        </div>
-    </div>
+  <div class="footer-note">
+    <span>Decibel Note extensions · local manager</span>
+    <span><a href="#" id="goToDocs">Docs</a> · <a href="#" id="reportIssue">Feedback</a></span>
+  </div>
 </div>
 
 <script>
-    (function() {
-        // --- Управление выпадающим меню языка ---
-        const langDropdown = document.getElementById('langDropdown');
-        const langMenu = document.getElementById('langMenu');
-        langDropdown.addEventListener('click', function(e) {
-            e.stopPropagation();
-            langMenu.classList.toggle('show');
-        });
-        document.addEventListener('click', function() {
-            langMenu.classList.remove('show');
-        });
+  (function() {
+    // ----- EXTENSIONS DATASET (same as original, plus id for reference) -----
+    const extensions = [
+      {
+        id: 'ext1',
+        name: 'Code Snippets Pro',
+        description: 'A collection of useful code snippets for various programming languages.',
+        author: 'Decibel Labs',
+        version: '1.0.0',
+        path: 'https://bebka16.github.io/note/extensions/snippets.js',
+        tags: ['snippets', 'productivity']
+      },
+      {
+        id: 'ext2',
+        name: 'Git Integration',
+        description: 'Basic Git integration for version control within the editor.',
+        author: 'Decibel Labs',
+        version: '0.9.0',
+        path: 'https://bebka16.github.io/note/extensions/git.js',
+        tags: ['git', 'version-control']
+      },
+      {
+        id: 'ext3',
+        name: 'Auto Formatter',
+        description: 'Automatically format your code on save with customizable rules.',
+        author: 'Decibel Labs',
+        version: '1.2.1',
+        path: 'https://bebka16.github.io/note/extensions/formatter.js',
+        tags: ['formatting', 'productivity']
+      },
+      {
+        id: 'ext4',
+        name: 'Color Preview',
+        description: 'Preview colors in CSS, SCSS, and HTML files directly in the editor.',
+        author: 'Decibel Labs',
+        version: '0.5.0',
+        path: 'https://bebka16.github.io/note/extensions/color-preview.js',
+        tags: ['css', 'preview']
+      }
+    ];
 
-        // --- Данные расширений (хранятся в localStorage) ---
-        const STORAGE_KEY = 'extensions_list';
-        let extensions = [];
+    // ----- STORAGE HELPERS -----
+    const STORAGE_KEY = 'decibel_extensions';
 
-        // Элементы
-        const grid = document.getElementById('extensionsGrid');
-        const fileInput = document.getElementById('fileInput');
-        const fileNameSpan = document.getElementById('fileName');
-        const uploadBtn = document.getElementById('uploadBtn');
-        const totalSpan = document.getElementById('totalCount');
-        const activeSpan = document.getElementById('activeCount');
+    function getInstalledPaths() {
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch (e) {
+        return [];
+      }
+    }
 
-        // Загрузка из localStorage
-        function loadExtensions() {
-            try {
-                const data = localStorage.getItem(STORAGE_KEY);
-                if (data) {
-                    extensions = JSON.parse(data);
-                } else {
-                    // Начальные демо-расширения
-                    extensions = [
-                        { id: '1', name: 'Utils Helper', description: 'Набор утилит для работы с DOM', filename: 'utils.js', active: true },
-                        { id: '2', name: 'Theme Switcher', description: 'Переключение тёмной/светлой темы', filename: 'theme.js', active: false },
-                    ];
-                    saveExtensions();
-                }
-            } catch (e) {
-                extensions = [];
-            }
-            renderExtensions();
-            updateStats();
+    function saveInstalledPaths(paths) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
+    }
+
+    function isInstalled(path) {
+      return getInstalledPaths().includes(path);
+    }
+
+    // ----- COMMUNICATION WITH PARENT (Decibel Note host) -----
+    function notifyParentAddExtension(path) {
+      try {
+        window.parent.postMessage({
+          type: 'addExtension',
+          path: path
+        }, '*');
+      } catch (e) {
+        console.warn('Unable to post message to parent', e);
+      }
+    }
+
+    function notifyParentRemoveExtension(path) {
+      try {
+        window.parent.postMessage({
+          type: 'removeExtension',
+          path: path
+        }, '*');
+      } catch (e) {
+        console.warn('Unable to post remove message', e);
+      }
+    }
+
+    // ----- INSTALL / UNINSTALL LOGIC -----
+    function installExtension(path) {
+      const installed = getInstalledPaths();
+      if (!installed.includes(path)) {
+        installed.push(path);
+        saveInstalledPaths(installed);
+        notifyParentAddExtension(path);
+      }
+      renderExtensions(getSearchTerm());
+    }
+
+    function uninstallExtension(path) {
+      let installed = getInstalledPaths();
+      if (installed.includes(path)) {
+        installed = installed.filter(p => p !== path);
+        saveInstalledPaths(installed);
+        notifyParentRemoveExtension(path);
+      }
+      renderExtensions(getSearchTerm());
+    }
+
+    function clearAllExtensions() {
+      const installed = getInstalledPaths();
+      if (installed.length === 0) return;
+      if (confirm('Remove all installed extensions? This cannot be undone.')) {
+        // Notify removal for each path
+        installed.forEach(path => notifyParentRemoveExtension(path));
+        saveInstalledPaths([]);
+        renderExtensions(getSearchTerm());
+      }
+    }
+
+    // ----- DYNAMIC EXTENSION FROM UPLOADED JS FILE -----
+    function handleJsFileUpload(file) {
+      const statusEl = document.getElementById('uploadStatus');
+      if (!file) {
+        statusEl.textContent = 'No file selected.';
+        return;
+      }
+
+      if (!file.name.endsWith('.js')) {
+        statusEl.textContent = '❌ Only .js files are allowed.';
+        return;
+      }
+
+      statusEl.textContent = '⏳ Reading file...';
+      const reader = new FileReader();
+      reader.onload = (e) => {
+        const content = e.target.result;
+        // Basic check: file should not be empty
+        if (!content || content.trim().length === 0) {
+          statusEl.textContent = '❌ File is empty.';
+          return;
         }
 
-        function saveExtensions() {
-            localStorage.setItem(STORAGE_KEY, JSON.stringify(extensions));
-        }
+        // Create a blob URL to simulate a remote path
+        const blob = new Blob([content], { type: 'application/javascript' });
+        const blobUrl = URL.createObjectURL(blob);
 
-        // Генерация короткого ID
-        function generateId() {
-            return Date.now().toString(36) + Math.random().toString(36).slice(2, 7);
-        }
+        // Generate a friendly name based on file name
+        const baseName = file.name.replace(/\.js$/i, '');
+        const displayName = baseName
+          .replace(/[-_]/g, ' ')
+          .replace(/\b\w/g, c => c.toUpperCase());
 
-        // Добавление расширения из объекта
-        function addExtension(name, description, filename) {
-            const newExt = {
-                id: generateId(),
-                name: name || filename.replace(/\.js$/i, '') || 'Без названия',
-                description: description || `Загружено из ${filename}`,
-                filename: filename,
-                active: true
-            };
-            extensions.unshift(newExt);
-            saveExtensions();
-            renderExtensions();
-            updateStats();
-            addHistory(`Расширение загружено: ${newExt.filename}`);
-            return newExt;
-        }
-
-        // Удаление расширения по id
-        function deleteExtension(id) {
-            const ext = extensions.find(e => e.id === id);
-            if (!ext) return;
-            if (confirm(`Удалить расширение "${ext.name}"?`)) {
-                extensions = extensions.filter(e => e.id !== id);
-                saveExtensions();
-                renderExtensions();
-                updateStats();
-                addHistory(`Удалено: ${ext.filename}`);
-            }
-        }
-
-        // Переключение активности
-        function toggleActive(id) {
-            const ext = extensions.find(e => e.id === id);
-            if (ext) {
-                ext.active = !ext.active;
-                saveExtensions();
-                renderExtensions();
-                updateStats();
-            }
-        }
-
-        // Рендер карточек
-        function renderExtensions() {
-            if (extensions.length === 0) {
-                grid.innerHTML = `<div style="grid-column: 1/-1; text-align: center; color: #57606a; padding: 2rem 0;">Нет установленных расширений</div>`;
-                return;
-            }
-            let html = '';
-            extensions.forEach(ext => {
-                const bgStyle = ext.active ? 'background-image: radial-gradient(circle, #d0f0d0 0%, transparent 70%);' : 'background-image: radial-gradient(circle, #f0d0d0 0%, transparent 70%);';
-                html += `
-                    <div class="project-card">
-                        <div class="bg-image" style="${bgStyle}"></div>
-                        <div class="card-content">
-                            <div class="project-name">
-                                <a href="#">${ext.name}</a>
-                                <span style="font-size:0.7rem; color: #57606a; font-weight:400;">${ext.active ? '🟢' : '🔴'}</span>
-                            </div>
-                            <div class="project-description">${ext.description} <span style="color:#8b949e; font-size:0.7rem;">(${ext.filename})</span></div>
-                            <div class="project-link">
-                                <button onclick="window.toggleExt('${ext.id}')" style="color:${ext.active ? '#1a7f37' : '#57606a'}">${ext.active ? 'Деактивировать' : 'Активировать'}</button>
-                                <button class="delete-btn" onclick="window.deleteExt('${ext.id}')">🗑 Удалить</button>
-                            </div>
-                        </div>
-                    </div>
-                `;
-            });
-            grid.innerHTML = html;
-        }
-
-        // Обновление статистики
-        function updateStats() {
-            const total = extensions.length;
-            const active = extensions.filter(e => e.active).length;
-            totalSpan.textContent = `Всего: ${total}`;
-            activeSpan.textContent = `Активных: ${active}`;
-        }
-
-        // Добавление записи в историю (в DOM)
-        function addHistory(text) {
-            const timeline = document.getElementById('historyTimeline');
-            const item = document.createElement('div');
-            item.className = 'history-item';
-            const now = new Date();
-            const timeStr = now.toLocaleTimeString('ru-RU', { hour: '2-digit', minute: '2-digit' });
-            item.innerHTML = `
-                <div class="history-year">${timeStr}</div>
-                <div class="history-content"><strong>${text}</strong></div>
-            `;
-            timeline.prepend(item);
-            // Ограничим количество записей
-            while (timeline.children.length > 20) {
-                timeline.removeChild(timeline.lastChild);
-            }
-        }
-
-        // --- Обработка загрузки файла ---
-        fileInput.addEventListener('change', function(e) {
-            const file = e.target.files[0];
-            if (file) {
-                fileNameSpan.textContent = file.name;
-            } else {
-                fileNameSpan.textContent = 'Файл не выбран';
-            }
-        });
-
-        uploadBtn.addEventListener('click', function() {
-            const file = fileInput.files[0];
-            if (!file) {
-                alert('Пожалуйста, выберите .JS файл.');
-                return;
-            }
-            if (!file.name.toLowerCase().endsWith('.js')) {
-                alert('Можно загружать только файлы с расширением .js');
-                return;
-            }
-
-            const reader = new FileReader();
-            reader.onload = function(e) {
-                try {
-                    // Проверяем, что это валидный JS (простая проверка)
-                    const content = e.target.result;
-                    // Небольшая проверка: попробуем выполнить (не в глобальном контексте)
-                    new Function(content); // если ошибка — выбросит исключение
-                    // Добавляем расширение
-                    const name = prompt('Введите название расширения (оставьте пустым для автоматического):', file.name.replace(/\.js$/i, ''));
-                    const desc = prompt('Введите описание (необязательно):', `Загружено из ${file.name}`);
-                    addExtension(
-                        name || file.name.replace(/\.js$/i, ''),
-                        desc || `Загружено из ${file.name}`,
-                        file.name
-                    );
-                    // Сбрасываем поле
-                    fileInput.value = '';
-                    fileNameSpan.textContent = 'Файл не выбран';
-                    alert(`Расширение "${file.name}" успешно загружено!`);
-                } catch (err) {
-                    alert('Ошибка: загруженный файл не является корректным JavaScript-кодом.');
-                    console.error(err);
-                }
-            };
-            reader.onerror = function() {
-                alert('Не удалось прочитать файл.');
-            };
-            reader.readAsText(file);
-        });
-
-        // --- Экспорт функций в глобальный объект для onclick ---
-        window.deleteExt = function(id) {
-            deleteExtension(id);
-        };
-        window.toggleExt = function(id) {
-            toggleActive(id);
+        // Create an extension entry for the uploaded file
+        const newExt = {
+          id: 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          name: displayName || 'Custom Extension',
+          description: `Loaded from ${file.name}`,
+          author: 'You (local upload)',
+          version: '0.0.0',
+          path: blobUrl,
+          tags: ['custom', 'uploaded'],
+          isCustom: true // mark as custom to allow special handling if needed
         };
 
-        // Инициализация
-        loadExtensions();
+        // Add to extensions list (in-memory) and auto-install
+        extensions.push(newExt);
+        installExtension(blobUrl);
+        statusEl.textContent = `✅ Installed "${displayName}" from ${file.name}`;
+        // Clear file input so same file can be re-uploaded if needed
+        document.getElementById('uploadJsInput').value = '';
+        renderExtensions(getSearchTerm());
+      };
 
-        // Добавляем обработчик для обновления статистики при загрузке
-        // Также можно добавить "очистить все" (безопасно)
-        document.querySelector('.tag-group .tag:last-child')?.addEventListener('click', function() {
-            if (extensions.length === 0) return;
-            if (confirm('Удалить все расширения?')) {
-                extensions = [];
-                saveExtensions();
-                renderExtensions();
-                updateStats();
-                addHistory('Очищены все расширения');
+      reader.onerror = () => {
+        statusEl.textContent = '❌ Error reading file.';
+      };
+
+      reader.readAsText(file);
+    }
+
+    // ----- RENDERING -----
+    function getSearchTerm() {
+      return document.getElementById('searchInput')?.value || '';
+    }
+
+    function renderExtensions(filter = '') {
+      const grid = document.getElementById('extensionsGrid');
+      if (!grid) return;
+
+      const term = filter.toLowerCase().trim();
+      const filtered = extensions.filter(ext => {
+        if (term === '') return true;
+        const inName = ext.name.toLowerCase().includes(term);
+        const inDesc = ext.description.toLowerCase().includes(term);
+        const inTags = ext.tags.some(tag => tag.toLowerCase().includes(term));
+        const inAuthor = ext.author.toLowerCase().includes(term);
+        return inName || inDesc || inTags || inAuthor;
+      });
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; padding:2rem; text-align:center; color:#57606a; background:#ffffff; border:1px solid #d0d7de; border-radius:2px;">
+          No extensions found${term ? ` for "${filter}"` : ''}.
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(ext => {
+        const installed = isInstalled(ext.path);
+        const installDisabled = installed;
+        const uninstallDisabled = !installed;
+
+        return `
+          <div class="extension-card">
+            <div class="extension-name">
+              <span>${escapeHtml(ext.name)}</span>
+              <span class="version">v${escapeHtml(ext.version)}</span>
+            </div>
+            <div class="extension-description">${escapeHtml(ext.description)}</div>
+            <div class="extension-author">
+              <span>👤 ${escapeHtml(ext.author)}</span>
+            </div>
+            <div class="tag-group">
+              ${ext.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary install-btn" data-path="${escapeHtml(ext.path)}" ${installDisabled ? 'disabled' : ''}>
+                ${installed ? '✓ Installed' : 'Install'}
+              </button>
+              <button class="btn btn-danger uninstall-btn" data-path="${escapeHtml(ext.path)}" ${uninstallDisabled ? 'disabled' : ''}>
+                🗑 Remove
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      // Attach event listeners to buttons (avoid inline onclick for better CSP)
+      document.querySelectorAll('.install-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const path = this.getAttribute('data-path');
+          if (path && !isInstalled(path)) {
+            installExtension(path);
+          }
+        });
+      });
+
+      document.querySelectorAll('.uninstall-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          const path = this.getAttribute('data-path');
+          if (path && isInstalled(path)) {
+            if (confirm(`Remove extension "${path}"?`)) {
+              uninstallExtension(path);
             }
+          }
         });
+      });
+    }
 
-        // Обновить список (перезагрузка из localStorage)
-        document.querySelector('.tag-group .tag:first-child')?.addEventListener('click', function() {
-            loadExtensions();
-            addHistory('Список обновлён');
+    // Simple escape for HTML to prevent XSS
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    // ----- EVENT LISTENERS -----
+    function bindEvents() {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          renderExtensions(e.target.value);
         });
+      }
 
-        // Добавим начальную запись в историю
-        addHistory('Менеджер расширений запущен');
-    })();
+      const uploadInput = document.getElementById('uploadJsInput');
+      if (uploadInput) {
+        uploadInput.addEventListener('change', function(e) {
+          const file = e.target.files[0];
+          if (file) {
+            handleJsFileUpload(file);
+          } else {
+            document.getElementById('uploadStatus').textContent = '';
+          }
+        });
+      }
+
+      const refreshLink = document.getElementById('refreshInstalledLink');
+      if (refreshLink) {
+        refreshLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          renderExtensions(getSearchTerm());
+          document.getElementById('uploadStatus').textContent = '🔄 List refreshed.';
+          setTimeout(() => {
+            const el = document.getElementById('uploadStatus');
+            if (el) el.textContent = '';
+          }, 2000);
+        });
+      }
+
+      const clearAllLink = document.getElementById('clearAllLink');
+      if (clearAllLink) {
+        clearAllLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          clearAllExtensions();
+        });
+      }
+
+      // Footer dummy links
+      document.getElementById('goToDocs')?.addEventListener('click', e => {
+        e.preventDefault();
+        alert('Documentation: manage extensions via this panel.');
+      });
+      document.getElementById('reportIssue')?.addEventListener('click', e => {
+        e.preventDefault();
+        alert('Feedback: thanks for using Decibel Note extensions.');
+      });
+    }
+
+    // Initial render
+    renderExtensions('');
+    bindEvents();
+
+    // Re-attach events if dynamic updates happen (renderExtensions re-binds buttons)
+    // Also expose a manual refresh when storage changes externally
+    window.addEventListener('storage', (e) => {
+      if (e.key === STORAGE_KEY) {
+        renderExtensions(getSearchTerm());
+      }
+    });
+
+  })();
 </script>
 </body>
 </html>
