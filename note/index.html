@@ -410,6 +410,15 @@
       const blobExtensions = JSON.parse(localStorage.getItem('decibel_blob_extensions') || '{}');
       const installedPaths = JSON.parse(localStorage.getItem('decibel_extensions') || '[]');
       
+      // Очищаем неиспользуемые blob коды
+      const cleanedBlobs = {};
+      Object.keys(blobExtensions).forEach(blobUrl => {
+        if (installedPaths.includes(blobUrl)) {
+          cleanedBlobs[blobUrl] = blobExtensions[blobUrl];
+        }
+      });
+      localStorage.setItem('decibel_blob_extensions', JSON.stringify(cleanedBlobs));
+      
       installedPaths.forEach(path => {
         // Пропускаем встроенные расширения
         if (builtInExtensions.some(ext => ext.path === path)) return;
@@ -418,15 +427,13 @@
         if (allExtensions.some(ext => ext.path === path)) return;
         
         if (path.startsWith('blob:')) {
-          const code = blobExtensions[path];
+          const code = cleanedBlobs[path];
           if (code) {
-            // Извлекаем имя из кода расширения
             let extName = 'Custom Extension';
             let extDesc = 'Loaded from local file';
             let extVersion = '0.0.0';
             let extAuthor = 'User';
             
-            // Пытаемся извлечь метаданные из кода
             const nameMatch = code.match(/@name\s+(.+)/);
             const descMatch = code.match(/@description\s+(.+)/);
             const versionMatch = code.match(/@version\s+(.+)/);
@@ -472,7 +479,7 @@
       return getInstalledPaths().includes(path);
     }
 
-    // ----- COMMUNICATION WITH PARENT (Decibel Note host) -----
+    // ----- COMMUNICATION WITH PARENT -----
     function notifyParentAddExtension(path) {
       try {
         window.parent.postMessage({
@@ -507,23 +514,24 @@
     }
 
     function uninstallExtension(path) {
+      // Удаляем из основного кеша
       let installed = getInstalledPaths();
-      if (installed.includes(path)) {
-        installed = installed.filter(p => p !== path);
-        saveInstalledPaths(installed);
+      installed = installed.filter(p => p !== path);
+      saveInstalledPaths(installed);
+      
+      // Удаляем из blob кеша
+      if (path.startsWith('blob:')) {
+        const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
+        delete blobExtensions[path];
+        localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
         
-        // Если это blob расширение, удаляем и его код из кеша
-        if (path.startsWith('blob:')) {
-          const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
-          delete blobExtensions[path];
-          localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
-          
-          // Удаляем из списка allExtensions
-          allExtensions = allExtensions.filter(ext => ext.path !== path);
-        }
-        
-        notifyParentRemoveExtension(path);
+        // Удаляем из списка allExtensions
+        allExtensions = allExtensions.filter(ext => ext.path !== path);
       }
+      
+      // Уведомляем родителя об удалении
+      notifyParentRemoveExtension(path);
+      
       renderExtensions(getSearchTerm());
     }
 
@@ -531,15 +539,15 @@
       const installed = getInstalledPaths();
       if (installed.length === 0) return;
       if (confirm('Remove all installed extensions? This cannot be undone.')) {
+        // Уведомляем родителя об удалении каждого расширения
         installed.forEach(path => {
           notifyParentRemoveExtension(path);
-          if (path.startsWith('blob:')) {
-            const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
-            delete blobExtensions[path];
-            localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
-          }
         });
+        
+        // Очищаем все кеши
         saveInstalledPaths([]);
+        localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify({}));
+        
         // Удаляем все пользовательские расширения из списка
         allExtensions = [...builtInExtensions];
         renderExtensions(getSearchTerm());
@@ -691,7 +699,7 @@
         btn.addEventListener('click', function(e) {
           const path = this.getAttribute('data-path');
           if (path && isInstalled(path)) {
-            if (confirm(`Remove extension "${path}"?`)) {
+            if (confirm(`Remove extension "${path}"? This will completely uninstall it.`)) {
               uninstallExtension(path);
             }
           }
@@ -733,7 +741,6 @@
       if (refreshLink) {
         refreshLink.addEventListener('click', function(e) {
           e.preventDefault();
-          // Перезагружаем пользовательские расширения
           allExtensions = [...builtInExtensions];
           loadCustomExtensions();
           renderExtensions(getSearchTerm());
