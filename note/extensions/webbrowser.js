@@ -1,0 +1,414 @@
+(function() {
+    'use strict';
+
+    let browserContainer = null;
+    let browserIframe = null;
+    let isVisible = false;
+    let currentUrl = 'https://google.com';
+
+    const styles = `
+        #browser-container {
+            position: fixed;
+            right: 0;
+            top: 40px;
+            width: 450px;
+            height: calc(100vh - 80px);
+            background: #1e1e2e;
+            border-left: 1px solid #444;
+            display: none;
+            flex-direction: column;
+            z-index: 9999;
+            box-shadow: -2px 0 10px rgba(0,0,0,0.5);
+            overflow: hidden;
+            transition: width 0.3s ease;
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            font-size: 14px;
+        }
+
+        #browser-container.active {
+            display: flex;
+        }
+
+        #browser-container .browser-toolbar {
+            display: flex;
+            align-items: center;
+            padding: 8px 12px;
+            background: #2d2d44;
+            border-bottom: 1px solid #444;
+            gap: 8px;
+            flex-shrink: 0;
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            font-size: 14px;
+        }
+
+        #browser-container .browser-toolbar button {
+            background: transparent;
+            border: none;
+            color: #ccc;
+            cursor: pointer;
+            font-size: 14px;
+            padding: 4px 8px;
+            transition: background 0.2s;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            border-radius: 0;
+        }
+
+        #browser-container .browser-toolbar button:hover {
+            background: #3d3d5c;
+        }
+
+        #browser-container .browser-toolbar button.danger:hover {
+            background: #5c2d2d;
+            color: #ff6b6b;
+        }
+
+        #browser-container .browser-toolbar .browser-url {
+            flex: 1;
+            background: #1a1a2e;
+            border: 1px solid #444;
+            padding: 6px 14px;
+            color: #e0e0e0;
+            font-size: 14px;
+            outline: none;
+            min-width: 0;
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            border-radius: 0;
+        }
+
+        #browser-container .browser-toolbar .browser-url:focus {
+            border-color: #6b9fff;
+        }
+
+        #browser-container .browser-toolbar .browser-url::placeholder {
+            color: #666;
+        }
+
+        #browser-container .browser-toolbar .browser-actions {
+            display: flex;
+            gap: 4px;
+        }
+
+        #browser-container .browser-toolbar .browser-actions button {
+            font-size: 14px;
+            padding: 4px 6px;
+        }
+
+        #browser-container .browser-frame {
+            flex: 1;
+            border: none;
+            background: #fff;
+            width: 100%;
+            height: 100%;
+        }
+
+        #browser-container .browser-status {
+            padding: 4px 12px;
+            background: #2d2d44;
+            border-top: 1px solid #444;
+            color: #888;
+            font-size: 14px;
+            flex-shrink: 0;
+            display: flex;
+            justify-content: space-between;
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+        }
+
+        #browser-container .browser-status .browser-status-text {
+            color: #888;
+        }
+
+        #browser-container .browser-status .browser-status-loading {
+            color: #6b9fff;
+        }
+
+        #browser-toggle-btn {
+            position: fixed;
+            right: 10px;
+            bottom: 50px;
+            z-index: 9998;
+            background: #2d2d44;
+            border: 1px solid #444;
+            color: #ccc;
+            width: 40px;
+            height: 40px;
+            cursor: pointer;
+            font-size: 18px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            transition: all 0.3s;
+            box-shadow: 0 2px 10px rgba(0,0,0,0.3);
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            border-radius: 0;
+        }
+
+        #browser-toggle-btn:hover {
+            background: #3d3d5c;
+            transform: scale(1.05);
+        }
+
+        #browser-toggle-btn.active {
+            background: #6b9fff;
+            color: #fff;
+        }
+
+        #browser-container .browser-resize-handle {
+            position: absolute;
+            left: -4px;
+            top: 0;
+            width: 8px;
+            height: 100%;
+            cursor: ew-resize;
+            background: transparent;
+            z-index: 10;
+        }
+
+        #browser-container .browser-resize-handle:hover {
+            background: rgba(107, 159, 255, 0.3);
+        }
+    `;
+
+    const styleElement = document.createElement('style');
+    styleElement.textContent = styles;
+    document.head.appendChild(styleElement);
+
+    function createBrowserContainer() {
+        if (browserContainer) return;
+
+        browserContainer = document.createElement('div');
+        browserContainer.id = 'browser-container';
+
+        const resizeHandle = document.createElement('div');
+        resizeHandle.className = 'browser-resize-handle';
+        browserContainer.appendChild(resizeHandle);
+
+        const toolbar = document.createElement('div');
+        toolbar.className = 'browser-toolbar';
+
+        const btnBack = document.createElement('button');
+        btnBack.innerHTML = '◀';
+        btnBack.title = 'Back';
+        btnBack.onclick = () => { if (browserIframe) browserIframe.contentWindow.history.back(); };
+
+        const btnForward = document.createElement('button');
+        btnForward.innerHTML = '▶';
+        btnForward.title = 'Forward';
+        btnForward.onclick = () => { if (browserIframe) browserIframe.contentWindow.history.forward(); };
+
+        const btnRefresh = document.createElement('button');
+        btnRefresh.innerHTML = '↻';
+        btnRefresh.title = 'Refresh';
+        btnRefresh.onclick = refreshBrowser;
+
+        const urlInput = document.createElement('input');
+        urlInput.className = 'browser-url';
+        urlInput.type = 'text';
+        urlInput.placeholder = 'Enter URL...';
+        urlInput.value = currentUrl;
+        urlInput.addEventListener('keydown', function(e) {
+            if (e.key === 'Enter') {
+                navigateTo(this.value);
+            }
+        });
+
+        const btnGo = document.createElement('button');
+        btnGo.innerHTML = '➜';
+        btnGo.title = 'Go';
+        btnGo.onclick = () => navigateTo(urlInput.value);
+
+        const btnClose = document.createElement('button');
+        btnClose.innerHTML = '✕';
+        btnClose.className = 'danger';
+        btnClose.title = 'Close';
+        btnClose.onclick = toggleBrowser;
+
+        toolbar.appendChild(btnBack);
+        toolbar.appendChild(btnForward);
+        toolbar.appendChild(btnRefresh);
+        toolbar.appendChild(urlInput);
+        toolbar.appendChild(btnGo);
+        toolbar.appendChild(btnClose);
+
+        browserContainer.appendChild(toolbar);
+
+        browserIframe = document.createElement('iframe');
+        browserIframe.className = 'browser-frame';
+        browserIframe.src = currentUrl;
+        browserIframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups allow-modals';
+        browserIframe.loading = 'eager';
+        browserContainer.appendChild(browserIframe);
+
+        const statusBar = document.createElement('div');
+        statusBar.className = 'browser-status';
+
+        const statusText = document.createElement('span');
+        statusText.className = 'browser-status-text';
+        statusText.textContent = 'Ready';
+
+        const statusLoading = document.createElement('span');
+        statusLoading.className = 'browser-status-loading';
+        statusLoading.textContent = '';
+
+        statusBar.appendChild(statusText);
+        statusBar.appendChild(statusLoading);
+        browserContainer.appendChild(statusBar);
+
+        browserIframe.addEventListener('load', function() {
+            try {
+                const url = this.contentWindow.location.href;
+                if (url && url !== 'about:blank') {
+                    urlInput.value = url;
+                    currentUrl = url;
+                }
+            } catch (e) {}
+            statusText.textContent = 'Loaded';
+            statusLoading.textContent = '';
+        });
+
+        browserIframe.addEventListener('error', function() {
+            statusText.textContent = 'Load error';
+            statusLoading.textContent = '⚠';
+        });
+
+        let isResizing = false;
+        let startX = 0;
+        let startWidth = 0;
+
+        resizeHandle.addEventListener('mousedown', function(e) {
+            isResizing = true;
+            startX = e.clientX;
+            startWidth = browserContainer.offsetWidth;
+            document.body.style.cursor = 'ew-resize';
+            document.body.style.userSelect = 'none';
+        });
+
+        document.addEventListener('mousemove', function(e) {
+            if (!isResizing) return;
+            let newWidth = startWidth - (e.clientX - startX);
+            newWidth = Math.max(250, Math.min(800, newWidth));
+            browserContainer.style.width = newWidth + 'px';
+        });
+
+        document.addEventListener('mouseup', function() {
+            if (isResizing) {
+                isResizing = false;
+                document.body.style.cursor = '';
+                document.body.style.userSelect = '';
+            }
+        });
+
+        const toggleBtn = document.createElement('button');
+        toggleBtn.id = 'browser-toggle-btn';
+        toggleBtn.innerHTML = '🌐';
+        toggleBtn.title = 'Open browser';
+        toggleBtn.onclick = toggleBrowser;
+
+        document.body.appendChild(browserContainer);
+        document.body.appendChild(toggleBtn);
+    }
+
+    function navigateTo(url) {
+        if (!url) return;
+        let finalUrl = url.trim();
+
+        if (!/^https?:\/\//i.test(finalUrl) && !/^about:/i.test(finalUrl) && !/^file:/i.test(finalUrl) && !/^data:/i.test(finalUrl)) {
+            if (finalUrl.includes('.')) {
+                finalUrl = 'https://' + finalUrl;
+            } else {
+                finalUrl = 'https://google.com/search?q=' + encodeURIComponent(finalUrl);
+            }
+        }
+
+        currentUrl = finalUrl;
+        const urlInput = browserContainer.querySelector('.browser-url');
+        if (urlInput) urlInput.value = finalUrl;
+
+        const statusText = browserContainer.querySelector('.browser-status-text');
+        const statusLoading = browserContainer.querySelector('.browser-status-loading');
+        if (statusText) statusText.textContent = 'Loading...';
+        if (statusLoading) statusLoading.textContent = '⏳';
+
+        if (browserIframe) {
+            try {
+                browserIframe.src = finalUrl;
+            } catch (e) {
+                browserIframe.src = 'about:blank';
+                if (statusText) statusText.textContent = 'Cannot load: ' + e.message;
+                if (statusLoading) statusLoading.textContent = '⚠';
+            }
+        }
+    }
+
+    function refreshBrowser() {
+        if (!browserIframe) return;
+        const urlInput = browserContainer.querySelector('.browser-url');
+        if (urlInput) {
+            navigateTo(urlInput.value);
+        } else {
+            browserIframe.src = browserIframe.src;
+        }
+    }
+
+    function toggleBrowser() {
+        if (!browserContainer) createBrowserContainer();
+
+        isVisible = !isVisible;
+        browserContainer.classList.toggle('active', isVisible);
+
+        const toggleBtn = document.getElementById('browser-toggle-btn');
+        if (toggleBtn) {
+            toggleBtn.classList.toggle('active', isVisible);
+            toggleBtn.innerHTML = isVisible ? '✕' : '🌐';
+            toggleBtn.title = isVisible ? 'Close browser' : 'Open browser';
+        }
+
+        if (isVisible) {
+            const urlInput = browserContainer.querySelector('.browser-url');
+            if (urlInput) {
+                setTimeout(() => {
+                    urlInput.focus();
+                    urlInput.select();
+                }, 100);
+            }
+            if (window.editor && window.editor.layout) {
+                setTimeout(() => window.editor.layout(), 200);
+            }
+        } else {
+            if (window.editor && window.editor.focus) {
+                window.editor.focus();
+            }
+        }
+    }
+
+    function openBrowser(url) {
+        if (!browserContainer) createBrowserContainer();
+        if (!isVisible) toggleBrowser();
+        if (url) {
+            navigateTo(url);
+        }
+    }
+
+    function closeBrowser() {
+        if (isVisible) toggleBrowser();
+    }
+
+    window.browser = {
+        toggle: toggleBrowser,
+        open: openBrowser,
+        close: closeBrowser,
+        navigate: navigateTo,
+        refresh: refreshBrowser,
+        isVisible: () => isVisible
+    };
+
+    if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', createBrowserContainer);
+    } else {
+        createBrowserContainer();
+    }
+
+    console.log('Browser panel loaded. Use window.browser.toggle() to open/close.');
+})();

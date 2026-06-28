@@ -161,8 +161,7 @@
       color: #0969da;
       font-size: 0.72rem;
       padding: 0.1rem 0.5rem;
-      border-radius: 12px;
-      border: 1px solid #d0d7de;
+      border-radius: 2px;
     }
 
     .card-actions {
@@ -176,54 +175,34 @@
     }
 
     .btn {
-      background: #f6f8fa;
-      border: 1px solid #d0d7de;
-      border-radius: 2px;
-      padding: 0.3rem 0.8rem;
-      font-size: 0.8rem;
-      font-weight: 500;
-      color: #24292f;
-      cursor: pointer;
-      transition: background 0.2s, border-color 0.2s;
-      display: inline-flex;
-      align-items: center;
-      gap: 0.3rem;
-      text-decoration: none;
-      line-height: 1.4;
+      border: 0; padding: 0; background: transparent; cursor: pointer; font-family: 'segoe ui';
     }
 
     .btn:hover {
-      background: #eaeef2;
-      border-color: #8b949e;
+     
     }
 
     .btn-primary {
-      background: #0969da;
-      border-color: #0969da;
-      color: #ffffff;
+    
+      color: #0969da;
     }
 
     .btn-primary:hover {
-      background: #0860c0;
-      border-color: #0860c0;
+      text-decoration: underline;
     }
 
     .btn-danger {
       color: #cf222e;
-      border-color: #d0d7de;
     }
 
     .btn-danger:hover {
-      background: #ffebe9;
-      border-color: #cf222e;
+      text-decoration: underline;
     }
 
     .btn:disabled {
       opacity: 0.6;
       cursor: not-allowed;
-      background: #f6f8fa;
-      color: #8b949e;
-      border-color: #d0d7de;
+      color: #8b949e; text-decoration: none;
     }
 
     .search-section {
@@ -252,6 +231,7 @@
       color: #24292f;
       font-size: 0.9rem;
       transition: border-color 0.2s;
+	  font-family: 'segoe ui';
     }
 
     .search-input:focus {
@@ -325,40 +305,52 @@
 <div class="container">
   <div class="header">
     <div class="header-left">
-      <h1>Decibel Note · Extensions</h1>
-      <div class="sub">Discover, install and manage editor extensions</div>
+      <h1>Extensions Store</h1>
+
     </div>
     <div class="header-right">
       <a id="refreshInstalledLink" title="Reload installed list">↻ Refresh</a>
-      <a id="clearAllLink" title="Remove all installed extensions">Clear all</a>
+	  <label style="color: #0969da; cursor: pointer;" for="uploadJsInput" id="uploadLabel">
+        Load .js local extension
+      </label>
+      <input type="file" id="uploadJsInput" accept=".js">
+      <!--<a id="clearAllLink" title="Remove all installed extensions">Clear all</a>-->
     </div>
   </div>
 
   <div class="search-section">
     <div class="search-row">
       <input type="text" class="search-input" id="searchInput" placeholder="Search by name, description or tag...">
-      <label for="uploadJsInput" class="file-upload-label" id="uploadLabel">
-        📄 Load .js extension
-      </label>
-      <input type="file" id="uploadJsInput" accept=".js">
+      
       <span class="status-message" id="uploadStatus"></span>
     </div>
     <div style="font-size:0.75rem; color:#57606a; margin-top:0.5rem;">
-      Installed extensions are stored locally and persist between sessions.
+      If you would like to add your own extension, please email <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a>. You need to provide the version information, the developer's name, and the extension itself in a SINGLE .js file.
     </div>
   </div>
 
   <div class="section-title">
-    <span>🧩 Available extensions</span>
+    <span>Available extensions</span>
   </div>
 
   <div class="extensions-grid" id="extensionsGrid"></div>
 
   <div class="footer-note">
-    <span>Decibel Note extensions · local manager</span>
-    <span><a href="#" id="goToDocs">Docs</a> · <a href="#" id="reportIssue">Feedback</a></span>
+    <span>Snail code extensions store, &copy 2026, all rights are reserved.</span>
+    <span><a href="https://bebka16.github.io/note/docs.html" id="gooDocs">Documentation</a></span>
   </div>
 </div>
+
+
+
+
+
+
+
+
+
+
+
 
 <script>
   (function() {
@@ -366,41 +358,34 @@
     const builtInExtensions = [
       {
         id: 'ext1',
-        name: 'Code Snippets Pro',
-        description: 'A collection of useful code snippets for various programming languages.',
-        author: 'Decibel Labs',
+        name: 'Web browser',
+        description: 'An extension that allows displaying a web browser with navigation to the right of the code editing area.',
+        author: 'bebka16',
         version: '1.0.0',
-        path: 'https://bebka16.github.io/note/extensions/snippets.js',
-        tags: ['snippets', 'productivity']
-      },
-      {
-        id: 'ext2',
-        name: 'Git Integration',
-        description: 'Basic Git integration for version control within the editor.',
-        author: 'Decibel Labs',
-        version: '0.9.0',
-        path: 'https://bebka16.github.io/note/extensions/git.js',
-        tags: ['git', 'version-control']
-      },
-      {
-        id: 'ext3',
-        name: 'Auto Formatter',
-        description: 'Automatically format your code on save with customizable rules.',
-        author: 'Decibel Labs',
-        version: '1.2.1',
-        path: 'https://bebka16.github.io/note/extensions/formatter.js',
-        tags: ['formatting', 'productivity']
-      },
-      {
-        id: 'ext4',
-        name: 'Color Preview',
-        description: 'Preview colors in CSS, SCSS, and HTML files directly in the editor.',
-        author: 'Decibel Labs',
-        version: '0.5.0',
-        path: 'https://bebka16.github.io/note/extensions/color-preview.js',
-        tags: ['css', 'preview']
+        path: 'https://bebka16.github.io/note/extensions/webbrowser.js',
+        tags: ['coding', 'web browsing']
       }
     ];
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
     // Объединяем встроенные и пользовательские расширения
     let allExtensions = [...builtInExtensions];
@@ -555,16 +540,16 @@
       }
 
       if (!file.name.endsWith('.js')) {
-        statusEl.textContent = '❌ Only .js files are allowed.';
+        statusEl.textContent = 'Only .js files are allowed.';
         return;
       }
 
-      statusEl.textContent = '⏳ Reading file...';
+      statusEl.textContent = 'Reading file...';
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target.result;
         if (!content || content.trim().length === 0) {
-          statusEl.textContent = '❌ File is empty.';
+          statusEl.textContent = 'File is empty.';
           return;
         }
 
@@ -609,13 +594,13 @@
         allExtensions.push(newExt);
         installExtension(blobUrl);
         
-        statusEl.textContent = `✅ Installed "${extName}"`;
+        statusEl.textContent = `Installed "${extName}"`;
         document.getElementById('uploadJsInput').value = '';
         renderExtensions(getSearchTerm());
       };
 
       reader.onerror = () => {
-        statusEl.textContent = '❌ Error reading file.';
+        statusEl.textContent = 'Error reading file.';
       };
 
       reader.readAsText(file);
@@ -660,17 +645,17 @@
             </div>
             <div class="extension-description">${escapeHtml(ext.description)}</div>
             <div class="extension-author">
-              <span>👤 ${escapeHtml(ext.author)}</span>
+              <span>→ ${escapeHtml(ext.author)}</span>
             </div>
             <div class="tag-group">
               ${ext.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
             </div>
             <div class="card-actions">
               <button class="btn btn-primary install-btn" data-path="${escapeHtml(ext.path)}" ${installDisabled ? 'disabled' : ''}>
-                ${installed ? '✓ Installed' : 'Install'}
+                ${installed ? 'Installed' : 'Install'}
               </button>
               <button class="btn btn-danger uninstall-btn" data-path="${escapeHtml(ext.path)}" ${uninstallDisabled ? 'disabled' : ''}>
-                🗑 Remove
+                Remove
               </button>
             </div>
           </div>
@@ -737,7 +722,7 @@
           allExtensions = [...builtInExtensions];
           loadCustomExtensions();
           renderExtensions(getSearchTerm());
-          document.getElementById('uploadStatus').textContent = '🔄 List refreshed.';
+          document.getElementById('uploadStatus').textContent = 'Refreshed.';
           setTimeout(() => {
             const el = document.getElementById('uploadStatus');
             if (el) el.textContent = '';
