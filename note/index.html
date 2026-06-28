@@ -1,217 +1,599 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="ru">
 <head>
     <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decibel Note - Extensions</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=yes">
+    <title>Расширения · Менеджер</title>
     <style>
         * {
             margin: 0;
             padding: 0;
             box-sizing: border-box;
         }
+
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1e1e1e;
-            color: #cccccc;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        h1 {
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-size: 24px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-        }
-        .extensions-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
-            gap: 20px;
-        }
-        .extension-card {
-            background: #2d2d2d;
-            border: 1px solid #404040;
-            border-radius: 8px;
-            padding: 20px;
-            transition: transform 0.2s, box-shadow 0.2s;
-        }
-        .extension-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-            border-color: #007acc;
-        }
-        .extension-name {
-            font-size: 18px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 8px;
-        }
-        .extension-description {
-            font-size: 14px;
-            color: #999;
-            margin-bottom: 15px;
-            line-height: 1.4;
-        }
-        .extension-author {
-            font-size: 12px;
-            color: #666;
-            margin-bottom: 15px;
-        }
-        .install-btn {
-            background: #007acc;
-            color: white;
-            border: none;
-            padding: 8px 16px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 14px;
-            transition: background 0.2s;
-        }
-        .install-btn:hover {
-            background: #005a9e;
-        }
-        .install-btn.installed {
-            background: #333;
-            color: #666;
-            cursor: default;
-        }
-        .search-bar {
-            margin-bottom: 20px;
+            background-color: #f6f8fa;
+            color: #24292f;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
             display: flex;
-            gap: 10px;
+            flex-direction: column;
+            margin-top: 0;
+            padding-top: 0;
         }
-        .search-input {
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
             flex: 1;
-            padding: 8px 12px;
-            background: #333;
-            border: 1px solid #555;
-            color: #ccc;
-            border-radius: 4px;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: 0.7rem;
+            padding-top: 0.7rem;
+            border-bottom: 1px solid #d0d7de;
+            margin-bottom: 1.5rem;
+        }
+
+        .header-left h1 {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #24292f;
+        }
+
+        .header-left .sub {
+            font-size: 0.85rem;
+            color: #57606a;
+            margin-top: 0.05rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .header-right a {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            cursor: pointer;
+        }
+
+        .header-right a:hover {
+            border-bottom-color: #0969da;
+        }
+
+        .section-title {
             font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 0.8rem;
+            color: #24292f;
+            letter-spacing: -0.01em;
         }
-        .search-input:focus {
-            outline: none;
-            border-color: #007acc;
+
+        .projects-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+            gap: 1.2rem;
+            margin-bottom: 2rem;
         }
-        .tag {
-            display: inline-block;
-            background: #404040;
-            color: #ccc;
-            padding: 2px 8px;
-            border-radius: 12px;
-            font-size: 11px;
-            margin-right: 5px;
+
+        .project-card {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1rem 1rem 0.8rem;
+            padding-bottom: 0px;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            display: flex;
+            flex-direction: column;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            position: relative;
+            overflow: hidden;
+            min-height: 130px;
         }
+
+        .project-card:hover {
+            border-color: #8b949e;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .project-card .card-content {
+            position: relative;
+            z-index: 1;
+            display: flex;
+            flex-direction: column;
+            flex: 1;
+        }
+
+        .project-name {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 0.3rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+        }
+
+        .project-name span {
+            color: #24292f;
+        }
+
+        .project-description {
+            font-size: 0.82rem;
+            color: #57606a;
+            margin-bottom: 1rem;
+            flex: 1;
+        }
+
+        .project-link {
+            margin-top: auto;
+            padding-top: 0.3rem;
+            border-top: 1px solid #eaeef2;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .project-link .action-btns {
+            display: flex;
+            gap: 0.5rem;
+        }
+
+        .project-link a,
+        .project-link button {
+            color: #0969da;
+            text-decoration: none;
+            font-size: 0.8rem;
+            font-weight: 500;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+            transition: gap 0.2s;
+            background: none;
+            border: none;
+            cursor: pointer;
+            padding: 0;
+            font-family: inherit;
+        }
+
+        .project-link a:hover,
+        .project-link button:hover {
+            gap: 0.6rem;
+            text-decoration: underline;
+        }
+
+        .project-link button.danger {
+            color: #cf222e;
+        }
+
+        .project-link button.danger:hover {
+            color: #a40e26;
+        }
+
+        .info-card {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1rem 1rem 0.8rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s;
+            margin-bottom: 2rem;
+        }
+
+        .info-card:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .info-card h3 {
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #24292f;
+            margin-bottom: 0.4rem;
+        }
+
+        .info-card .install-area {
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            gap: 0.8rem;
+        }
+
+        .btn {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            padding: 0.3rem 0.8rem;
+            border-radius: 2px;
+            font-size: 0.8rem;
+            font-weight: 500;
+            color: #24292f;
+            cursor: pointer;
+            transition: background 0.2s, border-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.3rem;
+        }
+
+        .btn:hover {
+            background: #eaeef2;
+            border-color: #8b949e;
+        }
+
+        .btn-primary {
+            background: #0969da;
+            border-color: #0969da;
+            color: #ffffff;
+        }
+
+        .btn-primary:hover {
+            background: #0860c0;
+            border-color: #0860c0;
+        }
+
+        .file-info {
+            font-size: 0.8rem;
+            color: #57606a;
+        }
+
+        .footer {
+            margin-top: auto;
+            border-top: 1px solid #d0d7de;
+            padding-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #57606a;
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: #0969da;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        .empty-state {
+            color: #57606a;
+            font-size: 0.85rem;
+            padding: 1rem 0;
+        }
+
+        @media (max-width: 650px) {
+            body { padding: 1rem 0.8rem; }
+            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .header-right { gap: 1rem; }
+            .projects-grid { grid-template-columns: 1fr; }
+            .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+        }
+        a:link {color: #0969da!important;} a:visited {color: #0969da!important;}
     </style>
 </head>
 <body>
-    <h1>Decibel Note Extensions</h1>
-    
-    <div class="search-bar">
-        <input type="text" class="search-input" id="searchInput" placeholder="Search extensions...">
+    <div class="container">
+        <!-- Заголовок -->
+        <div class="header">
+            <div class="header-left">
+                <h1>Менеджер расширений</h1>
+                <div class="sub">Установка, удаление и загрузка пользовательских скриптов</div>
+            </div>
+            <div class="header-right">
+                <a id="refreshLink" title="Обновить список расширений">🔄 Обновить</a>
+                <a href="#" id="exportLink" title="Скачать все расширения одним файлом">📦 Экспорт</a>
+            </div>
+        </div>
+
+        <!-- Панель установки из файла -->
+        <div class="info-card">
+            <h3>📁 Загрузить .JS расширение из файла</h3>
+            <div class="install-area">
+                <input type="file" id="fileInput" accept=".js" style="display: none;">
+                <button id="selectFileBtn" class="btn">Выбрать файл</button>
+                <span id="fileNameDisplay" class="file-info">Файл не выбран</span>
+                <button id="installFromFileBtn" class="btn btn-primary" disabled>Установить</button>
+            </div>
+            <div style="font-size: 0.75rem; color: #57606a; margin-top: 0.5rem;">
+                Поддерживаются только файлы с расширением <strong>.js</strong>. Скрипт будет добавлен в список расширений.
+            </div>
+        </div>
+
+        <!-- Список установленных расширений -->
+        <h2 class="section-title">📋 Установленные расширения</h2>
+        <div id="extensionsGrid" class="projects-grid">
+            <!-- Карточки генерируются динамически -->
+        </div>
+        <div id="emptyMessage" class="empty-state" style="display: none;">
+            Нет установленных расширений. Загрузите первый скрипт через панель выше.
+        </div>
+
+        <!-- Подвал -->
+        <div class="footer">
+            <span>© 2026 Менеджер расширений</span>
+            <div class="footer-links">
+                <a href="#">Документация</a>
+                <a href="#">Поддержка</a>
+                <a href="#">GitHub</a>
+            </div>
+        </div>
     </div>
 
-    <div class="extensions-grid" id="extensionsGrid"></div>
-
     <script>
-        const extensions = [
-            {
-                id: 'ext1',
-                name: 'Code Snippets Pro',
-                description: 'A collection of useful code snippets for various programming languages.',
-                author: 'Decibel Labs',
-                version: '1.0.0',
-                path: 'https://bebka16.github.io/note/extensions/snippets.js',
-                tags: ['snippets', 'productivity']
-            },
-            {
-                id: 'ext2',
-                name: 'Git Integration',
-                description: 'Basic Git integration for version control within the editor.',
-                author: 'Decibel Labs',
-                version: '0.9.0',
-                path: 'https://bebka16.github.io/note/extensions/git.js',
-                tags: ['git', 'version-control']
-            },
-            {
-                id: 'ext3',
-                name: 'Auto Formatter',
-                description: 'Automatically format your code on save with customizable rules.',
-                author: 'Decibel Labs',
-                version: '1.2.1',
-                path: 'https://bebka16.github.io/note/extensions/formatter.js',
-                tags: ['formatting', 'productivity']
-            },
-            {
-                id: 'ext4',
-                name: 'Color Preview',
-                description: 'Preview colors in CSS, SCSS, and HTML files directly in the editor.',
-                author: 'Decibel Labs',
-                version: '0.5.0',
-                path: 'https://bebka16.github.io/note/extensions/color-preview.js',
-                tags: ['css', 'preview']
+        (function() {
+            // ----- Хранилище расширений (в реальном приложении — localStorage или API) -----
+            const STORAGE_KEY = 'user_extensions';
+
+            // Начальные демо-данные
+            const defaultExtensions = [
+                {
+                    id: 'ext-1',
+                    name: 'Подсветка синтаксиса',
+                    description: 'Добавляет подсветку кода на страницах GitHub и StackOverflow.',
+                    author: 'devteam',
+                    version: '1.2.0',
+                    installed: true,
+                    source: 'file'
+                },
+                {
+                    id: 'ext-2',
+                    name: 'Блокировщик рекламы',
+                    description: 'Убирает баннеры и трекеры на посещаемых сайтах.',
+                    author: 'adguard',
+                    version: '2.0.1',
+                    installed: true,
+                    source: 'store'
+                },
+                {
+                    id: 'ext-3',
+                    name: 'Тёмная тема',
+                    description: 'Принудительно включает тёмный режим на сайтах без поддержки.',
+                    author: 'darkdev',
+                    version: '0.9.5',
+                    installed: true,
+                    source: 'file'
+                }
+            ];
+
+            // Инициализация данных
+            function loadExtensions() {
+                const stored = localStorage.getItem(STORAGE_KEY);
+                if (stored) {
+                    try {
+                        return JSON.parse(stored);
+                    } catch (e) {
+                        return [...defaultExtensions];
+                    }
+                } else {
+                    // Сохраняем дефолтные при первом запуске
+                    localStorage.setItem(STORAGE_KEY, JSON.stringify(defaultExtensions));
+                    return [...defaultExtensions];
+                }
             }
-        ];
 
-        function getInstalledExtensions() {
-            try {
-                return JSON.parse(localStorage.getItem('decibel_extensions') || '[]');
-            } catch(e) {
-                return [];
+            function saveExtensions(extensions) {
+                localStorage.setItem(STORAGE_KEY, JSON.stringify(extensions));
             }
-        }
 
-        function isInstalled(path) {
-            const installed = getInstalledExtensions();
-            return installed.includes(path);
-        }
+            let extensions = loadExtensions();
 
-        function installExtension(path) {
-            window.parent.postMessage({
-                type: 'addExtension',
-                path: path
-            }, '*');
-            
-            const installed = getInstalledExtensions();
-            if (!installed.includes(path)) {
-                installed.push(path);
-                localStorage.setItem('decibel_extensions', JSON.stringify(installed));
-            }
-            
-            renderExtensions();
-        }
-
-        function renderExtensions(filter = '') {
+            // ----- DOM элементы -----
             const grid = document.getElementById('extensionsGrid');
-            const filtered = extensions.filter(ext => 
-                ext.name.toLowerCase().includes(filter.toLowerCase()) ||
-                ext.description.toLowerCase().includes(filter.toLowerCase()) ||
-                ext.tags.some(tag => tag.toLowerCase().includes(filter.toLowerCase()))
-            );
+            const emptyMessage = document.getElementById('emptyMessage');
+            const fileInput = document.getElementById('fileInput');
+            const selectFileBtn = document.getElementById('selectFileBtn');
+            const fileNameDisplay = document.getElementById('fileNameDisplay');
+            const installFromFileBtn = document.getElementById('installFromFileBtn');
+            const refreshLink = document.getElementById('refreshLink');
+            const exportLink = document.getElementById('exportLink');
 
-            grid.innerHTML = filtered.map(ext => `
-                <div class="extension-card">
-                    <div class="extension-name">${ext.name}</div>
-                    <div class="extension-description">${ext.description}</div>
-                    <div class="extension-author">by ${ext.author} | v${ext.version}</div>
-                    <div style="margin-bottom: 12px;">
-                        ${ext.tags.map(tag => `<span class="tag">${tag}</span>`).join('')}
-                    </div>
-                    <button class="install-btn ${isInstalled(ext.path) ? 'installed' : ''}" 
-                            onclick="${isInstalled(ext.path) ? '' : `installExtension('${ext.path}')`}"
-                            ${isInstalled(ext.path) ? 'disabled' : ''}>
-                        ${isInstalled(ext.path) ? '✓ Installed' : 'Install'}
-                    </button>
-                </div>
-            `).join('');
-        }
+            let selectedFile = null;
 
-        document.getElementById('searchInput').addEventListener('input', function(e) {
-            renderExtensions(e.target.value);
-        });
+            // ----- Рендеринг карточек -----
+            function renderExtensions() {
+                if (!grid) return;
 
-        renderExtensions();
+                const installed = extensions.filter(ext => ext.installed);
+                
+                if (installed.length === 0) {
+                    grid.innerHTML = '';
+                    emptyMessage.style.display = 'block';
+                } else {
+                    emptyMessage.style.display = 'none';
+                    grid.innerHTML = installed.map(ext => {
+                        return `
+                            <div class="project-card" data-id="${ext.id}">
+                                <div class="card-content">
+                                    <div class="project-name">
+                                        <span>${escapeHtml(ext.name)}</span>
+                                        <span style="font-size:0.7rem; color:#57606a; font-weight:400;">v${escapeHtml(ext.version)}</span>
+                                    </div>
+                                    <div class="project-description">
+                                        ${escapeHtml(ext.description)}
+                                    </div>
+                                    <div class="project-link">
+                                        <span style="font-size:0.7rem; color:#57606a;">${escapeHtml(ext.author)}</span>
+                                        <div class="action-btns">
+                                            <button class="delete-btn danger" data-id="${ext.id}">
+                                                🗑 Удалить
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                }
+
+                // Привязываем события удаления
+                document.querySelectorAll('.delete-btn').forEach(btn => {
+                    btn.addEventListener('click', function(e) {
+                        const id = this.getAttribute('data-id');
+                        if (id) deleteExtension(id);
+                    });
+                });
+            }
+
+            // ----- Удаление расширения -----
+            function deleteExtension(id) {
+                const ext = extensions.find(e => e.id === id);
+                if (!ext) return;
+
+                const confirmDelete = confirm(`Удалить расширение "${ext.name}"? Это действие нельзя отменить.`);
+                if (!confirmDelete) return;
+
+                // Помечаем как не установленное (либо полностью удаляем из массива)
+                extensions = extensions.filter(e => e.id !== id);
+                saveExtensions(extensions);
+                renderExtensions();
+            }
+
+            // ----- Установка расширения из файла -----
+            function installFromFile(file) {
+                if (!file) return;
+
+                // Читаем содержимое JS-файла
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    const content = e.target.result;
+                    
+                    // Извлекаем имя без расширения
+                    const baseName = file.name.replace(/\.js$/i, '');
+                    
+                    // Генерируем новое расширение
+                    const newExt = {
+                        id: 'ext-' + Date.now() + '-' + Math.random().toString(36).substr(2, 5),
+                        name: baseName || 'Безымянный скрипт',
+                        description: `Загружен из файла ${file.name}. Размер: ${(file.size / 1024).toFixed(1)} КБ`,
+                        author: 'пользователь',
+                        version: '0.0.1',
+                        installed: true,
+                        source: 'file',
+                        // В реальном приложении здесь можно хранить содержимое или ссылку
+                        _content: content.substring(0, 100) + '…' // для демонстрации
+                    };
+
+                    extensions.push(newExt);
+                    saveExtensions(extensions);
+                    renderExtensions();
+
+                    // Сброс выбора файла
+                    resetFileInput();
+                    alert(`Расширение "${newExt.name}" успешно установлено.`);
+                };
+
+                reader.onerror = function() {
+                    alert('Ошибка чтения файла.');
+                };
+
+                reader.readAsText(file);
+            }
+
+            function resetFileInput() {
+                fileInput.value = '';
+                selectedFile = null;
+                fileNameDisplay.textContent = 'Файл не выбран';
+                installFromFileBtn.disabled = true;
+            }
+
+            // ----- Экспорт (демо) -----
+            function exportExtensions() {
+                const installed = extensions.filter(e => e.installed);
+                if (installed.length === 0) {
+                    alert('Нет установленных расширений для экспорта.');
+                    return;
+                }
+
+                // Формируем JSON-представление
+                const exportData = JSON.stringify(installed, null, 2);
+                const blob = new Blob([exportData], { type: 'application/json' });
+                const url = URL.createObjectURL(blob);
+                const a = document.createElement('a');
+                a.href = url;
+                a.download = `extensions_backup_${new Date().toISOString().slice(0,10)}.json`;
+                document.body.appendChild(a);
+                a.click();
+                document.body.removeChild(a);
+                URL.revokeObjectURL(url);
+            }
+
+            // ----- Хелперы -----
+            function escapeHtml(text) {
+                if (!text) return '';
+                const map = {
+                    '&': '&amp;',
+                    '<': '&lt;',
+                    '>': '&gt;',
+                    '"': '&quot;',
+                    "'": '&#039;'
+                };
+                return String(text).replace(/[&<>"']/g, m => map[m]);
+            }
+
+            // ----- Обработчики событий -----
+            selectFileBtn.addEventListener('click', () => {
+                fileInput.click();
+            });
+
+            fileInput.addEventListener('change', (e) => {
+                const files = e.target.files;
+                if (files && files.length > 0) {
+                    const file = files[0];
+                    if (!file.name.toLowerCase().endsWith('.js')) {
+                        alert('Пожалуйста, выберите файл с расширением .js');
+                        resetFileInput();
+                        return;
+                    }
+                    selectedFile = file;
+                    fileNameDisplay.textContent = file.name + ` (${(file.size/1024).toFixed(1)} КБ)`;
+                    installFromFileBtn.disabled = false;
+                } else {
+                    resetFileInput();
+                }
+            });
+
+            installFromFileBtn.addEventListener('click', () => {
+                if (selectedFile) {
+                    installFromFile(selectedFile);
+                }
+            });
+
+            refreshLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                extensions = loadExtensions();
+                renderExtensions();
+                resetFileInput();
+            });
+
+            exportLink.addEventListener('click', (e) => {
+                e.preventDefault();
+                exportExtensions();
+            });
+
+            // ----- Первичный рендер -----
+            renderExtensions();
+        })();
     </script>
 </body>
 </html>
