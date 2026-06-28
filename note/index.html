@@ -310,39 +310,14 @@
       text-decoration: underline;
     }
 
-    hr {
-      border: 0;
-      border-top: 1px solid #d0d7de;
-      margin: 0.8rem 0;
-    }
-
-    a:link {
-      color: #0969da !important;
-    }
-
-    a:visited {
-      color: #0969da !important;
-    }
+    a:link { color: #0969da !important; }
+    a:visited { color: #0969da !important; }
 
     @media (max-width: 650px) {
-      body {
-        padding: 1rem 0.8rem;
-      }
-
-      .header {
-        flex-direction: column;
-        align-items: flex-start;
-        gap: 0.5rem;
-      }
-
-      .extensions-grid {
-        grid-template-columns: 1fr;
-      }
-
-      .search-row {
-        flex-direction: column;
-        align-items: stretch;
-      }
+      body { padding: 1rem 0.8rem; }
+      .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .extensions-grid { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; align-items: stretch; }
     }
   </style>
 </head>
@@ -369,7 +344,7 @@
       <span class="status-message" id="uploadStatus"></span>
     </div>
     <div style="font-size:0.75rem; color:#57606a; margin-top:0.5rem;">
-      Installed extensions are stored locally in your browser.
+      Installed extensions are stored locally and persist between sessions.
     </div>
   </div>
 
@@ -387,8 +362,8 @@
 
 <script>
   (function() {
-    // ----- EXTENSIONS DATASET (same as original, plus id for reference) -----
-    const extensions = [
+    // ----- EXTENSIONS DATASET -----
+    const builtInExtensions = [
       {
         id: 'ext1',
         name: 'Code Snippets Pro',
@@ -427,8 +402,59 @@
       }
     ];
 
+    // Объединяем встроенные и пользовательские расширения
+    let allExtensions = [...builtInExtensions];
+
+    // Загружаем пользовательские расширения из кеша
+    function loadCustomExtensions() {
+      const blobExtensions = JSON.parse(localStorage.getItem('decibel_blob_extensions') || '{}');
+      const installedPaths = JSON.parse(localStorage.getItem('decibel_extensions') || '[]');
+      
+      installedPaths.forEach(path => {
+        // Пропускаем встроенные расширения
+        if (builtInExtensions.some(ext => ext.path === path)) return;
+        
+        // Проверяем, есть ли уже такое расширение в списке
+        if (allExtensions.some(ext => ext.path === path)) return;
+        
+        if (path.startsWith('blob:')) {
+          const code = blobExtensions[path];
+          if (code) {
+            // Извлекаем имя из кода расширения
+            let extName = 'Custom Extension';
+            let extDesc = 'Loaded from local file';
+            let extVersion = '0.0.0';
+            let extAuthor = 'User';
+            
+            // Пытаемся извлечь метаданные из кода
+            const nameMatch = code.match(/@name\s+(.+)/);
+            const descMatch = code.match(/@description\s+(.+)/);
+            const versionMatch = code.match(/@version\s+(.+)/);
+            const authorMatch = code.match(/@author\s+(.+)/);
+            
+            if (nameMatch) extName = nameMatch[1].trim();
+            if (descMatch) extDesc = descMatch[1].trim();
+            if (versionMatch) extVersion = versionMatch[1].trim();
+            if (authorMatch) extAuthor = authorMatch[1].trim();
+            
+            allExtensions.push({
+              id: 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+              name: extName,
+              description: extDesc,
+              author: extAuthor,
+              version: extVersion,
+              path: path,
+              tags: ['custom', 'uploaded'],
+              isCustom: true
+            });
+          }
+        }
+      });
+    }
+
     // ----- STORAGE HELPERS -----
     const STORAGE_KEY = 'decibel_extensions';
+    const BLOB_STORAGE_KEY = 'decibel_blob_extensions';
 
     function getInstalledPaths() {
       try {
@@ -485,6 +511,17 @@
       if (installed.includes(path)) {
         installed = installed.filter(p => p !== path);
         saveInstalledPaths(installed);
+        
+        // Если это blob расширение, удаляем и его код из кеша
+        if (path.startsWith('blob:')) {
+          const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
+          delete blobExtensions[path];
+          localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
+          
+          // Удаляем из списка allExtensions
+          allExtensions = allExtensions.filter(ext => ext.path !== path);
+        }
+        
         notifyParentRemoveExtension(path);
       }
       renderExtensions(getSearchTerm());
@@ -494,9 +531,17 @@
       const installed = getInstalledPaths();
       if (installed.length === 0) return;
       if (confirm('Remove all installed extensions? This cannot be undone.')) {
-        // Notify removal for each path
-        installed.forEach(path => notifyParentRemoveExtension(path));
+        installed.forEach(path => {
+          notifyParentRemoveExtension(path);
+          if (path.startsWith('blob:')) {
+            const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
+            delete blobExtensions[path];
+            localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
+          }
+        });
         saveInstalledPaths([]);
+        // Удаляем все пользовательские расширения из списка
+        allExtensions = [...builtInExtensions];
         renderExtensions(getSearchTerm());
       }
     }
@@ -518,39 +563,53 @@
       const reader = new FileReader();
       reader.onload = (e) => {
         const content = e.target.result;
-        // Basic check: file should not be empty
         if (!content || content.trim().length === 0) {
           statusEl.textContent = '❌ File is empty.';
           return;
         }
 
-        // Create a blob URL to simulate a remote path
+        // Создаем blob URL
         const blob = new Blob([content], { type: 'application/javascript' });
         const blobUrl = URL.createObjectURL(blob);
 
-        // Generate a friendly name based on file name
-        const baseName = file.name.replace(/\.js$/i, '');
-        const displayName = baseName
-          .replace(/[-_]/g, ' ')
-          .replace(/\b\w/g, c => c.toUpperCase());
+        // Сохраняем код расширения в кеш
+        const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
+        blobExtensions[blobUrl] = content;
+        localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
 
-        // Create an extension entry for the uploaded file
+        // Извлекаем метаданные из кода
+        let extName = file.name.replace(/\.js$/i, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
+        let extDesc = `Loaded from ${file.name}`;
+        let extVersion = '0.0.0';
+        let extAuthor = 'You (local upload)';
+        
+        const nameMatch = content.match(/@name\s+(.+)/);
+        const descMatch = content.match(/@description\s+(.+)/);
+        const versionMatch = content.match(/@version\s+(.+)/);
+        const authorMatch = content.match(/@author\s+(.+)/);
+        
+        if (nameMatch) extName = nameMatch[1].trim();
+        if (descMatch) extDesc = descMatch[1].trim();
+        if (versionMatch) extVersion = versionMatch[1].trim();
+        if (authorMatch) extAuthor = authorMatch[1].trim();
+
+        // Создаем расширение
         const newExt = {
           id: 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-          name: displayName || 'Custom Extension',
-          description: `Loaded from ${file.name}`,
-          author: 'You (local upload)',
-          version: '0.0.0',
+          name: extName,
+          description: extDesc,
+          author: extAuthor,
+          version: extVersion,
           path: blobUrl,
           tags: ['custom', 'uploaded'],
-          isCustom: true // mark as custom to allow special handling if needed
+          isCustom: true
         };
 
-        // Add to extensions list (in-memory) and auto-install
-        extensions.push(newExt);
+        // Добавляем в список и устанавливаем
+        allExtensions.push(newExt);
         installExtension(blobUrl);
-        statusEl.textContent = `✅ Installed "${displayName}" from ${file.name}`;
-        // Clear file input so same file can be re-uploaded if needed
+        
+        statusEl.textContent = `✅ Installed "${extName}"`;
         document.getElementById('uploadJsInput').value = '';
         renderExtensions(getSearchTerm());
       };
@@ -572,7 +631,7 @@
       if (!grid) return;
 
       const term = filter.toLowerCase().trim();
-      const filtered = extensions.filter(ext => {
+      const filtered = allExtensions.filter(ext => {
         if (term === '') return true;
         const inName = ext.name.toLowerCase().includes(term);
         const inDesc = ext.description.toLowerCase().includes(term);
@@ -618,7 +677,7 @@
         `;
       }).join('');
 
-      // Attach event listeners to buttons (avoid inline onclick for better CSP)
+      // Attach event listeners
       document.querySelectorAll('.install-btn').forEach(btn => {
         btn.addEventListener('click', function(e) {
           const path = this.getAttribute('data-path');
@@ -640,7 +699,6 @@
       });
     }
 
-    // Simple escape for HTML to prevent XSS
     function escapeHtml(text) {
       return String(text)
         .replace(/&/g, '&amp;')
@@ -675,6 +733,9 @@
       if (refreshLink) {
         refreshLink.addEventListener('click', function(e) {
           e.preventDefault();
+          // Перезагружаем пользовательские расширения
+          allExtensions = [...builtInExtensions];
+          loadCustomExtensions();
           renderExtensions(getSearchTerm());
           document.getElementById('uploadStatus').textContent = '🔄 List refreshed.';
           setTimeout(() => {
@@ -692,7 +753,6 @@
         });
       }
 
-      // Footer dummy links
       document.getElementById('goToDocs')?.addEventListener('click', e => {
         e.preventDefault();
         alert('Documentation: manage extensions via this panel.');
@@ -703,14 +763,16 @@
       });
     }
 
-    // Initial render
+    // Инициализация
+    loadCustomExtensions();
     renderExtensions('');
     bindEvents();
 
-    // Re-attach events if dynamic updates happen (renderExtensions re-binds buttons)
-    // Also expose a manual refresh when storage changes externally
+    // Слушаем изменения в localStorage из других вкладок
     window.addEventListener('storage', (e) => {
-      if (e.key === STORAGE_KEY) {
+      if (e.key === STORAGE_KEY || e.key === BLOB_STORAGE_KEY) {
+        allExtensions = [...builtInExtensions];
+        loadCustomExtensions();
         renderExtensions(getSearchTerm());
       }
     });
