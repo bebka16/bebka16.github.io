@@ -1,9 +1,10 @@
 (function() {
     'use strict';
 
-    let browserWindow = null;
+    let browserContainer = null;
+    let browserIframe = null;
     let isVisible = false;
-    let currentUrl = '';
+    let currentUrl = 'https://example.com';
 
     const styles = `
         #browser-container {
@@ -88,111 +89,12 @@
             color: #666;
         }
 
-        #browser-container .browser-content {
+        #browser-container .browser-frame {
             flex: 1;
-            background: #1a1a2e;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            position: relative;
-            overflow: hidden;
-        }
-
-        #browser-container .browser-content iframe {
-            width: 100%;
-            height: 100%;
             border: none;
             background: #fff;
-        }
-
-        #browser-container .browser-content .search-container {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
             width: 100%;
-            max-width: 600px;
-            padding: 20px;
-            gap: 16px;
-        }
-
-        #browser-container .browser-content .search-container .search-title {
-            color: #e0e0e0;
-            font-size: 24px;
-            font-weight: 300;
-            margin-bottom: 8px;
-        }
-
-        #browser-container .browser-content .search-container .search-box {
-            display: flex;
-            width: 100%;
-            gap: 8px;
-        }
-
-        #browser-container .browser-content .search-container .search-box input {
-            flex: 1;
-            background: #1a1a2e;
-            border: 1px solid #444;
-            padding: 10px 16px;
-            color: #e0e0e0;
-            font-size: 16px;
-            outline: none;
-            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-            border-radius: 0;
-            height: 40px;
-        }
-
-        #browser-container .browser-content .search-container .search-box input:focus {
-            border-color: #6b9fff;
-        }
-
-        #browser-container .browser-content .search-container .search-box input::placeholder {
-            color: #666;
-        }
-
-        #browser-container .browser-content .search-container .search-box button {
-            background: #6b9fff;
-            border: none;
-            color: #fff;
-            padding: 0 20px;
-            cursor: pointer;
-            font-size: 14px;
-            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
-            border-radius: 0;
-            transition: background 0.2s;
-            height: 40px;
-            display: flex;
-            align-items: center;
-            gap: 6px;
-        }
-
-        #browser-container .browser-content .search-container .search-box button:hover {
-            background: #5a8aee;
-        }
-
-        #browser-container .browser-content .search-container .search-suggestions {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 8px;
-            justify-content: center;
-            margin-top: 8px;
-        }
-
-        #browser-container .browser-content .search-container .search-suggestions a {
-            color: #6b9fff;
-            text-decoration: none;
-            font-size: 13px;
-            padding: 4px 12px;
-            background: #2d2d44;
-            border: 1px solid #444;
-            transition: all 0.2s;
-            cursor: pointer;
-            border-radius: 0;
-        }
-
-        #browser-container .browser-content .search-container .search-suggestions a:hover {
-            background: #3d3d5c;
-            border-color: #6b9fff;
+            height: 100%;
         }
 
         #browser-container .browser-status {
@@ -215,6 +117,10 @@
 
         #browser-container .browser-status .browser-status-loading {
             color: #6b9fff;
+        }
+
+        #browser-container .browser-status .browser-status-error {
+            color: #ff6b6b;
         }
 
         #browser-toggle-btn {
@@ -265,6 +171,61 @@
         #browser-container .browser-resize-handle.active {
             background: rgba(107, 159, 255, 0.3);
         }
+
+        #browser-container .browser-error {
+            display: none;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex: 1;
+            padding: 40px;
+            text-align: center;
+            background: #1a1a2e;
+            color: #ccc;
+        }
+
+        #browser-container .browser-error.active {
+            display: flex;
+        }
+
+        #browser-container .browser-error .error-icon {
+            font-size: 48px;
+            color: #ff6b6b;
+            margin-bottom: 16px;
+        }
+
+        #browser-container .browser-error .error-title {
+            font-size: 18px;
+            font-weight: bold;
+            margin-bottom: 8px;
+            color: #e0e0e0;
+        }
+
+        #browser-container .browser-error .error-message {
+            color: #888;
+            margin-bottom: 16px;
+            max-width: 400px;
+        }
+
+        #browser-container .browser-error .error-button {
+            background: #6b9fff;
+            border: none;
+            color: #fff;
+            padding: 8px 24px;
+            cursor: pointer;
+            font-size: 14px;
+            font-family: 'Segoe UI', 'Segoe UI Emoji', 'Segoe UI Symbol', sans-serif;
+            border-radius: 0;
+            transition: background 0.2s;
+        }
+
+        #browser-container .browser-error .error-button:hover {
+            background: #5a8aee;
+        }
+
+        #browser-container .browser-frame.hidden {
+            display: none;
+        }
     `;
 
     const styleElement = document.createElement('style');
@@ -272,17 +233,27 @@
     document.head.appendChild(styleElement);
 
     function createBrowserContainer() {
-        if (browserWindow) return;
+        if (browserContainer) return;
 
-        browserWindow = document.createElement('div');
-        browserWindow.id = 'browser-container';
+        browserContainer = document.createElement('div');
+        browserContainer.id = 'browser-container';
 
         const resizeHandle = document.createElement('div');
         resizeHandle.className = 'browser-resize-handle';
-        browserWindow.appendChild(resizeHandle);
+        browserContainer.appendChild(resizeHandle);
 
         const toolbar = document.createElement('div');
         toolbar.className = 'browser-toolbar';
+
+        const btnBack = document.createElement('button');
+        btnBack.innerHTML = '<span class="codicon codicon-arrow-left"></span>';
+        btnBack.title = 'Back';
+        btnBack.onclick = () => { try { if (browserIframe) browserIframe.contentWindow.history.back(); } catch(e) {} };
+
+        const btnForward = document.createElement('button');
+        btnForward.innerHTML = '<span class="codicon codicon-arrow-right"></span>';
+        btnForward.title = 'Forward';
+        btnForward.onclick = () => { try { if (browserIframe) browserIframe.contentWindow.history.forward(); } catch(e) {} };
 
         const btnRefresh = document.createElement('button');
         btnRefresh.innerHTML = '<span class="codicon codicon-sync"></span>';
@@ -292,8 +263,8 @@
         const urlInput = document.createElement('input');
         urlInput.className = 'browser-url';
         urlInput.type = 'text';
-        urlInput.placeholder = 'Search or enter URL...';
-        urlInput.id = 'browser-url-input';
+        urlInput.placeholder = 'Enter URL...';
+        urlInput.value = currentUrl;
         urlInput.addEventListener('keydown', function(e) {
             if (e.key === 'Enter') {
                 navigateTo(this.value);
@@ -304,19 +275,15 @@
         btnGo.innerHTML = '<span class="codicon codicon-arrow-right"></span>';
         btnGo.title = 'Go';
         btnGo.style.fontSize = '18px';
-        btnGo.onclick = () => {
-            const input = document.getElementById('browser-url-input');
-            if (input) navigateTo(input.value);
-        };
+        btnGo.onclick = () => navigateTo(urlInput.value);
 
         const btnOpenNew = document.createElement('button');
         btnOpenNew.innerHTML = '<span class="codicon codicon-link-external"></span>';
         btnOpenNew.title = 'Open in new window';
         btnOpenNew.onclick = () => {
-            const input = document.getElementById('browser-url-input');
-            const url = input ? input.value : currentUrl;
+            const url = urlInput.value || currentUrl;
             if (url && url !== 'about:blank') {
-                window.open(getFullUrl(url), '_blank');
+                window.open(url, '_blank');
             }
         };
 
@@ -326,47 +293,32 @@
         btnClose.title = 'Close';
         btnClose.onclick = toggleBrowser;
 
+        toolbar.appendChild(btnBack);
+        toolbar.appendChild(btnForward);
         toolbar.appendChild(btnRefresh);
         toolbar.appendChild(urlInput);
         toolbar.appendChild(btnGo);
         toolbar.appendChild(btnOpenNew);
         toolbar.appendChild(btnClose);
 
-        browserWindow.appendChild(toolbar);
+        browserContainer.appendChild(toolbar);
 
-        const content = document.createElement('div');
-        content.className = 'browser-content';
-        content.id = 'browser-content';
-
-        const searchContainer = document.createElement('div');
-        searchContainer.className = 'search-container';
-        searchContainer.id = 'search-container';
-        searchContainer.innerHTML = `
-            <div class="search-title">🌐 Web Browser</div>
-            <div class="search-box">
-                <input type="text" id="search-input" placeholder="Search or enter URL..." />
-                <button id="search-button">
-                    <span class="codicon codicon-search"></span> Search
-                </button>
-            </div>
-            <div class="search-suggestions">
-                <a data-url="https://google.com">Google</a>
-                <a data-url="https://duckduckgo.com">DuckDuckGo</a>
-                <a data-url="https://github.com">GitHub</a>
-                <a data-url="https://stackoverflow.com">Stack Overflow</a>
-                <a data-url="https://youtube.com">YouTube</a>
-                <a data-url="https://wikipedia.org">Wikipedia</a>
-            </div>
+        const errorDiv = document.createElement('div');
+        errorDiv.className = 'browser-error';
+        errorDiv.innerHTML = `
+            <div class="error-icon">🔒</div>
+            <div class="error-title">Cannot display this page</div>
+            <div class="error-message">This website prevents embedding in iframes. Click the button below to open it in a new window.</div>
+            <button class="error-button" id="browser-error-btn">Open in new window</button>
         `;
+        browserContainer.appendChild(errorDiv);
 
-        const iframe = document.createElement('iframe');
-        iframe.id = 'browser-iframe';
-        iframe.src = 'about:blank';
-        iframe.style.display = 'none';
-
-        content.appendChild(searchContainer);
-        content.appendChild(iframe);
-        browserWindow.appendChild(content);
+        browserIframe = document.createElement('iframe');
+        browserIframe.className = 'browser-frame';
+        browserIframe.src = currentUrl;
+        browserIframe.sandbox = 'allow-same-origin allow-scripts allow-forms allow-popups allow-modals';
+        browserIframe.loading = 'eager';
+        browserContainer.appendChild(browserIframe);
 
         const statusBar = document.createElement('div');
         statusBar.className = 'browser-status';
@@ -381,28 +333,36 @@
 
         statusBar.appendChild(statusText);
         statusBar.appendChild(statusLoading);
-        browserWindow.appendChild(statusBar);
+        browserContainer.appendChild(statusBar);
 
-        document.getElementById('search-button').addEventListener('click', function() {
-            const input = document.getElementById('search-input');
-            if (input) navigateTo(input.value);
-        });
-
-        document.getElementById('search-input').addEventListener('keydown', function(e) {
-            if (e.key === 'Enter') {
-                navigateTo(this.value);
+        document.getElementById('browser-error-btn').addEventListener('click', function() {
+            const url = urlInput.value || currentUrl;
+            if (url && url !== 'about:blank') {
+                window.open(url, '_blank');
             }
         });
 
-        document.querySelectorAll('.search-suggestions a').forEach(el => {
-            el.addEventListener('click', function() {
-                const url = this.dataset.url;
-                if (url) {
-                    const input = document.getElementById('search-input');
-                    if (input) input.value = url;
-                    navigateTo(url);
+        browserIframe.addEventListener('load', function() {
+            try {
+                const url = this.contentWindow.location.href;
+                if (url && url !== 'about:blank') {
+                    urlInput.value = url;
+                    currentUrl = url;
                 }
-            });
+            } catch (e) {
+                if (e.message && e.message.includes('cross-origin')) {
+                    showError('This website blocks embedding in iframes.');
+                }
+            }
+            statusText.textContent = 'Loaded';
+            statusLoading.textContent = '';
+            browserIframe.classList.remove('hidden');
+            errorDiv.classList.remove('active');
+        });
+
+        browserIframe.addEventListener('error', function() {
+            statusText.textContent = 'Load error';
+            statusLoading.textContent = '⚠';
         });
 
         let isResizing = false;
@@ -412,7 +372,7 @@
         resizeHandle.addEventListener('mousedown', function(e) {
             isResizing = true;
             startX = e.clientX;
-            startWidth = browserWindow.offsetWidth;
+            startWidth = browserContainer.offsetWidth;
             document.body.style.cursor = 'ew-resize';
             document.body.style.userSelect = 'none';
             resizeHandle.classList.add('active');
@@ -423,7 +383,7 @@
             if (!isResizing) return;
             let newWidth = startWidth - (e.clientX - startX);
             newWidth = Math.max(300, Math.min(800, newWidth));
-            browserWindow.style.width = newWidth + 'px';
+            browserContainer.style.width = newWidth + 'px';
             if (window.editor && window.editor.layout) {
                 window.editor.layout();
             }
@@ -447,7 +407,7 @@
         toggleBtn.title = 'Open browser';
         toggleBtn.onclick = toggleBrowser;
 
-        document.body.appendChild(browserWindow);
+        document.body.appendChild(browserContainer);
         document.body.appendChild(toggleBtn);
 
         setTimeout(() => {
@@ -457,80 +417,75 @@
         }, 100);
     }
 
-    function getFullUrl(input) {
-        let url = input.trim();
-        if (!url) return '';
-
-        if (/^https?:\/\//i.test(url) || /^about:/i.test(url) || /^file:/i.test(url) || /^data:/i.test(url)) {
-            return url;
+    function showError(message) {
+        const errorDiv = browserContainer.querySelector('.browser-error');
+        const iframe = browserContainer.querySelector('.browser-frame');
+        if (errorDiv) {
+            const msgEl = errorDiv.querySelector('.error-message');
+            if (msgEl) msgEl.textContent = message || 'This website prevents embedding in iframes.';
+            errorDiv.classList.add('active');
         }
-
-        if (url.includes('.') && !url.includes(' ')) {
-            return 'https://' + url;
-        }
-
-        return 'https://duckduckgo.com/?q=' + encodeURIComponent(url);
+        if (iframe) iframe.classList.add('hidden');
+        const statusText = browserContainer.querySelector('.browser-status-text');
+        if (statusText) statusText.textContent = 'Blocked';
+        const statusLoading = browserContainer.querySelector('.browser-status-loading');
+        if (statusLoading) statusLoading.textContent = '🔒';
     }
 
-    function navigateTo(input) {
-        if (!input) return;
-        const fullUrl = getFullUrl(input);
+    function navigateTo(url) {
+        if (!url) return;
+        let finalUrl = url.trim();
 
-        if (!fullUrl) return;
-        currentUrl = fullUrl;
-
-        const urlInput = document.getElementById('browser-url-input');
-        if (urlInput) urlInput.value = fullUrl;
-
-        const searchInput = document.getElementById('search-input');
-        if (searchInput) searchInput.value = fullUrl;
-
-        const searchContainer = document.getElementById('search-container');
-        const iframe = document.getElementById('browser-iframe');
-
-        if (searchContainer) searchContainer.style.display = 'none';
-        if (iframe) {
-            iframe.style.display = 'block';
-            try {
-                iframe.src = fullUrl;
-            } catch (e) {
-                iframe.src = 'about:blank';
-                showError('Failed to load: ' + e.message);
+        if (!/^https?:\/\//i.test(finalUrl) && !/^about:/i.test(finalUrl) && !/^file:/i.test(finalUrl) && !/^data:/i.test(finalUrl)) {
+            if (finalUrl.includes('.') && !finalUrl.includes(' ')) {
+                finalUrl = 'https://' + finalUrl;
+            } else {
+                finalUrl = 'https://duckduckgo.com/?q=' + encodeURIComponent(finalUrl);
             }
         }
 
-        const statusText = document.querySelector('.browser-status-text');
-        const statusLoading = document.querySelector('.browser-status-loading');
+        currentUrl = finalUrl;
+        const urlInput = browserContainer.querySelector('.browser-url');
+        if (urlInput) urlInput.value = finalUrl;
+
+        const statusText = browserContainer.querySelector('.browser-status-text');
+        const statusLoading = browserContainer.querySelector('.browser-status-loading');
         if (statusText) statusText.textContent = 'Loading...';
         if (statusLoading) statusLoading.textContent = '⏳';
-    }
 
-    function showError(message) {
-        const statusText = document.querySelector('.browser-status-text');
-        const statusLoading = document.querySelector('.browser-status-loading');
-        if (statusText) statusText.textContent = 'Error: ' + message;
-        if (statusLoading) statusLoading.textContent = '⚠';
+        const errorDiv = browserContainer.querySelector('.browser-error');
+        if (errorDiv) errorDiv.classList.remove('active');
+
+        const iframe = browserContainer.querySelector('.browser-frame');
+        if (iframe) iframe.classList.remove('hidden');
+
+        if (browserIframe) {
+            try {
+                browserIframe.src = finalUrl;
+            } catch (e) {
+                browserIframe.src = 'about:blank';
+                if (statusText) statusText.textContent = 'Cannot load: ' + e.message;
+                if (statusLoading) statusLoading.textContent = '⚠';
+                showError('Failed to load this page.');
+            }
+        }
     }
 
     function refreshBrowser() {
-        const iframe = document.getElementById('browser-iframe');
-        const urlInput = document.getElementById('browser-url-input');
-        if (iframe && iframe.src && iframe.src !== 'about:blank') {
-            iframe.src = iframe.src;
-            const statusText = document.querySelector('.browser-status-text');
-            const statusLoading = document.querySelector('.browser-status-loading');
-            if (statusText) statusText.textContent = 'Refreshing...';
-            if (statusLoading) statusLoading.textContent = '🔄';
-        } else if (urlInput && urlInput.value) {
+        if (!browserIframe) return;
+        const urlInput = browserContainer.querySelector('.browser-url');
+        if (urlInput && urlInput.value) {
             navigateTo(urlInput.value);
+        } else {
+            browserIframe.src = browserIframe.src;
         }
     }
 
     function toggleBrowser() {
-        if (!browserWindow) createBrowserContainer();
+        if (!browserContainer) createBrowserContainer();
 
         isVisible = !isVisible;
-        browserWindow.classList.toggle('active', isVisible);
+        browserContainer.classList.toggle('active', isVisible);
 
         const toggleBtn = document.getElementById('browser-toggle-btn');
         if (toggleBtn) {
@@ -540,11 +495,11 @@
         }
 
         if (isVisible) {
-            const searchInput = document.getElementById('search-input');
-            if (searchInput) {
+            const urlInput = browserContainer.querySelector('.browser-url');
+            if (urlInput) {
                 setTimeout(() => {
-                    searchInput.focus();
-                    searchInput.select();
+                    urlInput.focus();
+                    urlInput.select();
                 }, 100);
             }
             setTimeout(() => {
@@ -565,14 +520,10 @@
     }
 
     function openBrowser(url) {
-        if (!browserWindow) createBrowserContainer();
+        if (!browserContainer) createBrowserContainer();
         if (!isVisible) toggleBrowser();
         if (url) {
-            setTimeout(() => {
-                const input = document.getElementById('search-input');
-                if (input) input.value = url;
-                navigateTo(url);
-            }, 150);
+            setTimeout(() => navigateTo(url), 100);
         }
     }
 
