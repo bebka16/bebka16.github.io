@@ -113,6 +113,10 @@
       box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
     }
 
+    .extension-card.custom-extension {
+      border-left: 3px solid #0969da;
+    }
+
     .extension-name {
       font-size: 14px;
       font-weight: 600;
@@ -344,7 +348,7 @@
       <span class="status-message" id="uploadStatus"></span>
     </div>
     <div style="font-size:0.75rem; color:#57606a; margin-top:0.5rem;">
-      Installed extensions are stored locally and persist between sessions.
+      Extensions persist between sessions. Remove them to completely uninstall.
     </div>
   </div>
 
@@ -362,7 +366,12 @@
 
 <script>
   (function() {
-    // ----- EXTENSIONS DATASET -----
+    // ----- STORAGE KEYS -----
+    const STORAGE_KEY = 'decibel_extensions';           // Массив путей установленных расширений
+    const BLOB_STORAGE_KEY = 'decibel_blob_extensions'; // Объект {blobUrl: code} для кастомных расширений
+    const CUSTOM_META_KEY = 'decibel_custom_ext_meta';  // Метаданные кастомных расширений
+
+    // ----- BUILT-IN EXTENSIONS -----
     const builtInExtensions = [
       {
         id: 'ext1',
@@ -402,67 +411,10 @@
       }
     ];
 
-    // Объединяем встроенные и пользовательские расширения
+    // Полный список расширений (встроенные + пользовательские)
     let allExtensions = [...builtInExtensions];
 
-    // Загружаем пользовательские расширения из кеша
-    function loadCustomExtensions() {
-      const blobExtensions = JSON.parse(localStorage.getItem('decibel_blob_extensions') || '{}');
-      const installedPaths = JSON.parse(localStorage.getItem('decibel_extensions') || '[]');
-      
-      // Очищаем неиспользуемые blob коды
-      const cleanedBlobs = {};
-      Object.keys(blobExtensions).forEach(blobUrl => {
-        if (installedPaths.includes(blobUrl)) {
-          cleanedBlobs[blobUrl] = blobExtensions[blobUrl];
-        }
-      });
-      localStorage.setItem('decibel_blob_extensions', JSON.stringify(cleanedBlobs));
-      
-      installedPaths.forEach(path => {
-        // Пропускаем встроенные расширения
-        if (builtInExtensions.some(ext => ext.path === path)) return;
-        
-        // Проверяем, есть ли уже такое расширение в списке
-        if (allExtensions.some(ext => ext.path === path)) return;
-        
-        if (path.startsWith('blob:')) {
-          const code = cleanedBlobs[path];
-          if (code) {
-            let extName = 'Custom Extension';
-            let extDesc = 'Loaded from local file';
-            let extVersion = '0.0.0';
-            let extAuthor = 'User';
-            
-            const nameMatch = code.match(/@name\s+(.+)/);
-            const descMatch = code.match(/@description\s+(.+)/);
-            const versionMatch = code.match(/@version\s+(.+)/);
-            const authorMatch = code.match(/@author\s+(.+)/);
-            
-            if (nameMatch) extName = nameMatch[1].trim();
-            if (descMatch) extDesc = descMatch[1].trim();
-            if (versionMatch) extVersion = versionMatch[1].trim();
-            if (authorMatch) extAuthor = authorMatch[1].trim();
-            
-            allExtensions.push({
-              id: 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
-              name: extName,
-              description: extDesc,
-              author: extAuthor,
-              version: extVersion,
-              path: path,
-              tags: ['custom', 'uploaded'],
-              isCustom: true
-            });
-          }
-        }
-      });
-    }
-
     // ----- STORAGE HELPERS -----
-    const STORAGE_KEY = 'decibel_extensions';
-    const BLOB_STORAGE_KEY = 'decibel_blob_extensions';
-
     function getInstalledPaths() {
       try {
         return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
@@ -479,12 +431,108 @@
       return getInstalledPaths().includes(path);
     }
 
+    function getBlobExtensions() {
+      try {
+        return JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveBlobExtensions(data) {
+      localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function getCustomMeta() {
+      try {
+        return JSON.parse(localStorage.getItem(CUSTOM_META_KEY) || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveCustomMeta(data) {
+      localStorage.setItem(CUSTOM_META_KEY, JSON.stringify(data));
+    }
+
+    // ----- LOAD CUSTOM EXTENSIONS FROM CACHE -----
+    function loadCustomExtensions() {
+      const installedPaths = getInstalledPaths();
+      const blobExtensions = getBlobExtensions();
+      const customMeta = getCustomMeta();
+      
+      // Очищаем старые пользовательские расширения из списка
+      allExtensions = [...builtInExtensions];
+      
+      // Собираем актуальные пути blob расширений
+      const validBlobPaths = new Set();
+      
+      installedPaths.forEach(path => {
+        // Пропускаем встроенные расширения
+        if (builtInExtensions.some(ext => ext.path === path)) return;
+        
+        // Проверяем, есть ли код для blob расширения
+        if (path.startsWith('blob:')) {
+          if (blobExtensions[path]) {
+            validBlobPaths.add(path);
+            
+            // Используем сохраненные метаданные или значения по умолчанию
+            const meta = customMeta[path] || {};
+            
+            allExtensions.push({
+              id: meta.id || ('custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6)),
+              name: meta.name || 'Custom Extension',
+              description: meta.description || 'Loaded from local file',
+              author: meta.author || 'User',
+              version: meta.version || '0.0.0',
+              path: path,
+              tags: ['custom', 'uploaded'],
+              isCustom: true
+            });
+          } else {
+            // Код отсутствует - удаляем из установленных
+            removeOrphanedExtension(path);
+          }
+        } else if (path.startsWith('http://') || path.startsWith('https://')) {
+          // Для удаленных расширений (не встроенных)
+          allExtensions.push({
+            id: 'remote_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+            name: path.split('/').pop().replace('.js', ''),
+            description: 'Remote extension',
+            author: 'External',
+            version: '0.0.0',
+            path: path,
+            tags: ['remote'],
+            isCustom: true
+          });
+        }
+      });
+    }
+
+    // Удаление "осиротевшего" расширения (есть в списке, но нет кода)
+    function removeOrphanedExtension(path) {
+      let installed = getInstalledPaths();
+      installed = installed.filter(p => p !== path);
+      saveInstalledPaths(installed);
+      
+      // Очищаем метаданные
+      const customMeta = getCustomMeta();
+      delete customMeta[path];
+      saveCustomMeta(customMeta);
+      
+      // Очищаем blob если есть
+      const blobExtensions = getBlobExtensions();
+      delete blobExtensions[path];
+      saveBlobExtensions(blobExtensions);
+    }
+
     // ----- COMMUNICATION WITH PARENT -----
-    function notifyParentAddExtension(path) {
+    function notifyParentAddExtension(path, code) {
       try {
         window.parent.postMessage({
           type: 'addExtension',
-          path: path
+          path: path,
+          code: code || null
         }, '*');
       } catch (e) {
         console.warn('Unable to post message to parent', e);
@@ -502,31 +550,47 @@
       }
     }
 
-    // ----- INSTALL / UNINSTALL LOGIC -----
-    function installExtension(path) {
+    // ----- INSTALL / UNINSTALL -----
+    function installExtension(path, code) {
       const installed = getInstalledPaths();
       if (!installed.includes(path)) {
         installed.push(path);
         saveInstalledPaths(installed);
-        notifyParentAddExtension(path);
+        notifyParentAddExtension(path, code);
       }
       renderExtensions(getSearchTerm());
     }
 
     function uninstallExtension(path) {
-      // Удаляем из основного кеша
       let installed = getInstalledPaths();
+      if (!installed.includes(path)) return;
+      
+      // Удаляем из списка установленных
       installed = installed.filter(p => p !== path);
       saveInstalledPaths(installed);
       
-      // Удаляем из blob кеша
+      // Если это blob расширение - удаляем код и метаданные
       if (path.startsWith('blob:')) {
-        const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
+        const blobExtensions = getBlobExtensions();
         delete blobExtensions[path];
-        localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
+        saveBlobExtensions(blobExtensions);
         
-        // Удаляем из списка allExtensions
+        const customMeta = getCustomMeta();
+        delete customMeta[path];
+        saveCustomMeta(customMeta);
+        
+        // Удаляем из отображаемого списка
         allExtensions = allExtensions.filter(ext => ext.path !== path);
+        
+        // Отзываем blob URL
+        try {
+          URL.revokeObjectURL(path);
+        } catch(e) {}
+      } else {
+        // Для не-blob расширений тоже удаляем из списка
+        allExtensions = allExtensions.filter(ext => 
+          builtInExtensions.some(b => b.path === ext.path) || ext.path !== path
+        );
       }
       
       // Уведомляем родителя об удалении
@@ -538,23 +602,26 @@
     function clearAllExtensions() {
       const installed = getInstalledPaths();
       if (installed.length === 0) return;
-      if (confirm('Remove all installed extensions? This cannot be undone.')) {
-        // Уведомляем родителя об удалении каждого расширения
-        installed.forEach(path => {
-          notifyParentRemoveExtension(path);
-        });
-        
-        // Очищаем все кеши
-        saveInstalledPaths([]);
-        localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify({}));
-        
-        // Удаляем все пользовательские расширения из списка
-        allExtensions = [...builtInExtensions];
-        renderExtensions(getSearchTerm());
-      }
+      
+      if (!confirm('Remove all installed extensions? This cannot be undone.')) return;
+      
+      // Уведомляем об удалении каждого расширения
+      installed.forEach(path => {
+        notifyParentRemoveExtension(path);
+      });
+      
+      // Очищаем всё
+      saveInstalledPaths([]);
+      saveBlobExtensions({});
+      saveCustomMeta({});
+      
+      // Оставляем только встроенные расширения
+      allExtensions = [...builtInExtensions];
+      
+      renderExtensions(getSearchTerm());
     }
 
-    // ----- DYNAMIC EXTENSION FROM UPLOADED JS FILE -----
+    // ----- UPLOAD JS FILE -----
     function handleJsFileUpload(file) {
       const statusEl = document.getElementById('uploadStatus');
       if (!file) {
@@ -569,6 +636,7 @@
 
       statusEl.textContent = '⏳ Reading file...';
       const reader = new FileReader();
+      
       reader.onload = (e) => {
         const content = e.target.result;
         if (!content || content.trim().length === 0) {
@@ -576,16 +644,7 @@
           return;
         }
 
-        // Создаем blob URL
-        const blob = new Blob([content], { type: 'application/javascript' });
-        const blobUrl = URL.createObjectURL(blob);
-
-        // Сохраняем код расширения в кеш
-        const blobExtensions = JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
-        blobExtensions[blobUrl] = content;
-        localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(blobExtensions));
-
-        // Извлекаем метаданные из кода
+        // Извлекаем метаданные из комментариев в коде
         let extName = file.name.replace(/\.js$/i, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
         let extDesc = `Loaded from ${file.name}`;
         let extVersion = '0.0.0';
@@ -601,9 +660,31 @@
         if (versionMatch) extVersion = versionMatch[1].trim();
         if (authorMatch) extAuthor = authorMatch[1].trim();
 
-        // Создаем расширение
+        // Создаем blob URL
+        const blob = new Blob([content], { type: 'application/javascript' });
+        const blobUrl = URL.createObjectURL(blob);
+
+        // Сохраняем код расширения
+        const blobExtensions = getBlobExtensions();
+        blobExtensions[blobUrl] = content;
+        saveBlobExtensions(blobExtensions);
+
+        // Сохраняем метаданные
+        const extId = 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
+        const customMeta = getCustomMeta();
+        customMeta[blobUrl] = {
+          id: extId,
+          name: extName,
+          description: extDesc,
+          version: extVersion,
+          author: extAuthor,
+          fileName: file.name
+        };
+        saveCustomMeta(customMeta);
+
+        // Добавляем в список расширений
         const newExt = {
-          id: 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6),
+          id: extId,
           name: extName,
           description: extDesc,
           author: extAuthor,
@@ -613,13 +694,11 @@
           isCustom: true
         };
 
-        // Добавляем в список и устанавливаем
         allExtensions.push(newExt);
-        installExtension(blobUrl);
+        installExtension(blobUrl, content);
         
         statusEl.textContent = `✅ Installed "${extName}"`;
         document.getElementById('uploadJsInput').value = '';
-        renderExtensions(getSearchTerm());
       };
 
       reader.onerror = () => {
@@ -641,11 +720,9 @@
       const term = filter.toLowerCase().trim();
       const filtered = allExtensions.filter(ext => {
         if (term === '') return true;
-        const inName = ext.name.toLowerCase().includes(term);
-        const inDesc = ext.description.toLowerCase().includes(term);
-        const inTags = ext.tags.some(tag => tag.toLowerCase().includes(term));
-        const inAuthor = ext.author.toLowerCase().includes(term);
-        return inName || inDesc || inTags || inAuthor;
+        return ['name', 'description', 'author'].some(field =>
+          ext[field].toLowerCase().includes(term)
+        ) || ext.tags.some(tag => tag.toLowerCase().includes(term));
       });
 
       if (filtered.length === 0) {
@@ -657,11 +734,10 @@
 
       grid.innerHTML = filtered.map(ext => {
         const installed = isInstalled(ext.path);
-        const installDisabled = installed;
-        const uninstallDisabled = !installed;
+        const isCustom = ext.isCustom || false;
 
         return `
-          <div class="extension-card">
+          <div class="extension-card${isCustom ? ' custom-extension' : ''}">
             <div class="extension-name">
               <span>${escapeHtml(ext.name)}</span>
               <span class="version">v${escapeHtml(ext.version)}</span>
@@ -674,10 +750,10 @@
               ${ext.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
             </div>
             <div class="card-actions">
-              <button class="btn btn-primary install-btn" data-path="${escapeHtml(ext.path)}" ${installDisabled ? 'disabled' : ''}>
+              <button class="btn btn-primary install-btn" data-path="${escapeHtml(ext.path)}" data-custom="${isCustom}" ${installed ? 'disabled' : ''}>
                 ${installed ? '✓ Installed' : 'Install'}
               </button>
-              <button class="btn btn-danger uninstall-btn" data-path="${escapeHtml(ext.path)}" ${uninstallDisabled ? 'disabled' : ''}>
+              <button class="btn btn-danger uninstall-btn" data-path="${escapeHtml(ext.path)}" data-custom="${isCustom}" ${!installed ? 'disabled' : ''}>
                 🗑 Remove
               </button>
             </div>
@@ -685,21 +761,29 @@
         `;
       }).join('');
 
-      // Attach event listeners
+      // Привязываем обработчики
       document.querySelectorAll('.install-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function() {
           const path = this.getAttribute('data-path');
           if (path && !isInstalled(path)) {
-            installExtension(path);
+            // Для blob расширений передаем код
+            const isCustom = this.getAttribute('data-custom') === 'true';
+            if (isCustom) {
+              const blobExtensions = getBlobExtensions();
+              const code = blobExtensions[path] || null;
+              installExtension(path, code);
+            } else {
+              installExtension(path);
+            }
           }
         });
       });
 
       document.querySelectorAll('.uninstall-btn').forEach(btn => {
-        btn.addEventListener('click', function(e) {
+        btn.addEventListener('click', function() {
           const path = this.getAttribute('data-path');
           if (path && isInstalled(path)) {
-            if (confirm(`Remove extension "${path}"? This will completely uninstall it.`)) {
+            if (confirm(`Remove this extension?`)) {
               uninstallExtension(path);
             }
           }
@@ -718,67 +802,54 @@
 
     // ----- EVENT LISTENERS -----
     function bindEvents() {
-      const searchInput = document.getElementById('searchInput');
-      if (searchInput) {
-        searchInput.addEventListener('input', function(e) {
-          renderExtensions(e.target.value);
-        });
-      }
+      document.getElementById('searchInput')?.addEventListener('input', function(e) {
+        renderExtensions(e.target.value);
+      });
 
-      const uploadInput = document.getElementById('uploadJsInput');
-      if (uploadInput) {
-        uploadInput.addEventListener('change', function(e) {
-          const file = e.target.files[0];
-          if (file) {
-            handleJsFileUpload(file);
-          } else {
-            document.getElementById('uploadStatus').textContent = '';
-          }
-        });
-      }
+      document.getElementById('uploadJsInput')?.addEventListener('change', function(e) {
+        const file = e.target.files[0];
+        if (file) {
+          handleJsFileUpload(file);
+        } else {
+          document.getElementById('uploadStatus').textContent = '';
+        }
+      });
 
-      const refreshLink = document.getElementById('refreshInstalledLink');
-      if (refreshLink) {
-        refreshLink.addEventListener('click', function(e) {
-          e.preventDefault();
-          allExtensions = [...builtInExtensions];
-          loadCustomExtensions();
-          renderExtensions(getSearchTerm());
-          document.getElementById('uploadStatus').textContent = '🔄 List refreshed.';
-          setTimeout(() => {
-            const el = document.getElementById('uploadStatus');
-            if (el) el.textContent = '';
-          }, 2000);
-        });
-      }
+      document.getElementById('refreshInstalledLink')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        loadCustomExtensions();
+        renderExtensions(getSearchTerm());
+        document.getElementById('uploadStatus').textContent = '🔄 List refreshed.';
+        setTimeout(() => {
+          const el = document.getElementById('uploadStatus');
+          if (el) el.textContent = '';
+        }, 2000);
+      });
 
-      const clearAllLink = document.getElementById('clearAllLink');
-      if (clearAllLink) {
-        clearAllLink.addEventListener('click', function(e) {
-          e.preventDefault();
-          clearAllExtensions();
-        });
-      }
+      document.getElementById('clearAllLink')?.addEventListener('click', function(e) {
+        e.preventDefault();
+        clearAllExtensions();
+      });
 
       document.getElementById('goToDocs')?.addEventListener('click', e => {
         e.preventDefault();
         alert('Documentation: manage extensions via this panel.');
       });
+      
       document.getElementById('reportIssue')?.addEventListener('click', e => {
         e.preventDefault();
         alert('Feedback: thanks for using Decibel Note extensions.');
       });
     }
 
-    // Инициализация
+    // ----- INIT -----
     loadCustomExtensions();
     renderExtensions('');
     bindEvents();
 
-    // Слушаем изменения в localStorage из других вкладок
+    // Синхронизация между вкладками
     window.addEventListener('storage', (e) => {
-      if (e.key === STORAGE_KEY || e.key === BLOB_STORAGE_KEY) {
-        allExtensions = [...builtInExtensions];
+      if ([STORAGE_KEY, BLOB_STORAGE_KEY, CUSTOM_META_KEY].includes(e.key)) {
         loadCustomExtensions();
         renderExtensions(getSearchTerm());
       }
