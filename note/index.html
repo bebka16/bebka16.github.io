@@ -5,7 +5,12 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
   <title>Decibel Note · Extensions</title>
   <style>
-    * { margin: 0; padding: 0; box-sizing: border-box; }
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
     body {
       background-color: #f6f8fa;
       color: #24292f;
@@ -18,45 +23,296 @@
       margin-top: 0;
       padding-top: 0;
     }
-    .container { max-width: 1200px; margin: 0 auto; width: 100%; flex: 1; display: flex; flex-direction: column; }
-    .header { display: flex; flex-wrap: wrap; justify-content: space-between; align-items: baseline; padding-bottom: 0.7rem; padding-top: 0.7rem; border-bottom: 1px solid #d0d7de; margin-bottom: 1.5rem; }
-    .header-left h1 { font-size: 16px; font-weight: 600; letter-spacing: -0.02em; color: #24292f; }
-    .header-left .sub { font-size: 0.85rem; color: #57606a; margin-top: 0.05rem; }
-    .header-right { display: flex; gap: 1.5rem; font-size: 0.85rem; flex-wrap: wrap; align-items: center; }
-    .header-right a { color: #0969da; text-decoration: none; font-weight: 500; border-bottom: 1px solid transparent; transition: border-color 0.2s; cursor: pointer; }
-    .header-right a:hover { border-bottom-color: #0969da; }
-    .section-title { font-size: 14px; font-weight: 600; margin-bottom: 0.8rem; color: #24292f; letter-spacing: -0.01em; display: flex; align-items: center; justify-content: space-between; }
-    .extensions-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 1.2rem; margin-bottom: 2rem; }
-    .extension-card { background: #ffffff; border: 1px solid #d0d7de; border-radius: 2px; padding: 1rem 1rem 0.8rem; transition: border-color 0.2s, box-shadow 0.2s; display: flex; flex-direction: column; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); position: relative; }
-    .extension-card:hover { border-color: #8b949e; box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12); }
-    .extension-card.custom-extension { border-left: 3px solid #0969da; }
-    .extension-name { font-size: 14px; font-weight: 600; margin-bottom: 0.3rem; color: #24292f; display: flex; align-items: center; justify-content: space-between; }
-    .extension-name .version { font-size: 0.7rem; font-weight: 400; color: #57606a; background: #f0f6fc; padding: 0.1rem 0.4rem; border-radius: 10px; border: 1px solid #d0d7de; }
-    .extension-description { font-size: 0.82rem; color: #57606a; margin-bottom: 1rem; flex: 1; }
-    .extension-author { font-size: 0.75rem; color: #656d76; margin-bottom: 0.6rem; display: flex; align-items: center; gap: 0.3rem; }
-    .tag-group { display: flex; flex-wrap: wrap; gap: 0.3rem 0.5rem; margin: 0.5rem 0 0.8rem; }
-    .tag { background: #f0f6fc; color: #0969da; font-size: 0.72rem; padding: 0.1rem 0.5rem; border-radius: 12px; border: 1px solid #d0d7de; }
-    .card-actions { display: flex; gap: 0.5rem; margin-top: auto; border-top: 1px solid #eaeef2; padding-top: 0.8rem; align-items: center; flex-wrap: wrap; }
-    .btn { background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 2px; padding: 0.3rem 0.8rem; font-size: 0.8rem; font-weight: 500; color: #24292f; cursor: pointer; transition: background 0.2s, border-color 0.2s; display: inline-flex; align-items: center; gap: 0.3rem; text-decoration: none; line-height: 1.4; }
-    .btn:hover { background: #eaeef2; border-color: #8b949e; }
-    .btn-primary { background: #0969da; border-color: #0969da; color: #ffffff; }
-    .btn-primary:hover { background: #0860c0; border-color: #0860c0; }
-    .btn-danger { color: #cf222e; border-color: #d0d7de; }
-    .btn-danger:hover { background: #ffebe9; border-color: #cf222e; }
-    .btn:disabled { opacity: 0.6; cursor: not-allowed; background: #f6f8fa; color: #8b949e; border-color: #d0d7de; }
-    .search-section { background: #ffffff; border: 1px solid #d0d7de; border-radius: 2px; padding: 1rem; margin-bottom: 1.5rem; box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08); }
-    .search-row { display: flex; flex-wrap: wrap; align-items: center; gap: 0.8rem; }
-    .search-input { flex: 2; min-width: 220px; padding: 0.5rem 0.8rem; background: #ffffff; border: 1px solid #d0d7de; border-radius: 2px; color: #24292f; font-size: 0.9rem; transition: border-color 0.2s; }
-    .search-input:focus { outline: none; border-color: #0969da; box-shadow: 0 0 0 2px rgba(9, 105, 218, 0.15); }
-    .file-upload-label { display: inline-flex; align-items: center; gap: 0.3rem; background: #f6f8fa; border: 1px solid #d0d7de; border-radius: 2px; padding: 0.5rem 1rem; font-size: 0.85rem; font-weight: 500; color: #24292f; cursor: pointer; transition: background 0.2s; }
-    .file-upload-label:hover { background: #eaeef2; }
-    #uploadJsInput { display: none; }
-    .status-message { font-size: 0.8rem; color: #57606a; margin-left: 0.5rem; }
-    .footer-note { margin-top: auto; border-top: 1px solid #d0d7de; padding-top: 1.2rem; display: flex; flex-wrap: wrap; justify-content: space-between; align-items: center; color: #57606a; font-size: 0.8rem; }
-    .footer-note a { color: #0969da; text-decoration: none; }
-    .footer-note a:hover { text-decoration: underline; }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 0.7rem;
+      padding-top: 0.7rem;
+      border-bottom: 1px solid #d0d7de;
+      margin-bottom: 1.5rem;
+    }
+
+    .header-left h1 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #24292f;
+    }
+
+    .header-left .sub {
+      font-size: 0.85rem;
+      color: #57606a;
+      margin-top: 0.05rem;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .header-right a {
+      color: #0969da;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .header-right a:hover {
+      border-bottom-color: #0969da;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #24292f;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .extensions-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .extension-card {
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 1rem 1rem 0.8rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .extension-card:hover {
+      border-color: #8b949e;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .extension-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #24292f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .extension-name .version {
+      font-size: 0.7rem;
+      font-weight: 400;
+      color: #57606a;
+      background: #f0f6fc;
+      padding: 0.1rem 0.4rem;
+      border-radius: 10px;
+      border: 1px solid #d0d7de;
+    }
+
+    .extension-description {
+      font-size: 0.82rem;
+      color: #57606a;
+      margin-bottom: 1rem;
+      flex: 1;
+    }
+
+    .extension-author {
+      font-size: 0.75rem;
+      color: #656d76;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.5rem;
+      margin: 0.5rem 0 0.8rem;
+    }
+
+    .tag {
+      background: #f0f6fc;
+      color: #0969da;
+      font-size: 0.72rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 12px;
+      border: 1px solid #d0d7de;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+      border-top: 1px solid #eaeef2;
+      padding-top: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 0.3rem 0.8rem;
+      font-size: 0.8rem;
+      font-weight: 500;
+      color: #24292f;
+      cursor: pointer;
+      transition: background 0.2s, border-color 0.2s;
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      text-decoration: none;
+      line-height: 1.4;
+    }
+
+    .btn:hover {
+      background: #eaeef2;
+      border-color: #8b949e;
+    }
+
+    .btn-primary {
+      background: #0969da;
+      border-color: #0969da;
+      color: #ffffff;
+    }
+
+    .btn-primary:hover {
+      background: #0860c0;
+      border-color: #0860c0;
+    }
+
+    .btn-danger {
+      color: #cf222e;
+      border-color: #d0d7de;
+    }
+
+    .btn-danger:hover {
+      background: #ffebe9;
+      border-color: #cf222e;
+    }
+
+    .btn:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+      background: #f6f8fa;
+      color: #8b949e;
+      border-color: #d0d7de;
+    }
+
+    .search-section {
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .search-input {
+      flex: 2;
+      min-width: 220px;
+      padding: 0.5rem 0.8rem;
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      color: #24292f;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #0969da;
+      box-shadow: 0 0 0 2px rgba(9, 105, 218, 0.15);
+    }
+
+    .file-upload-label {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.3rem;
+      background: #f6f8fa;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 0.5rem 1rem;
+      font-size: 0.85rem;
+      font-weight: 500;
+      color: #24292f;
+      cursor: pointer;
+      transition: background 0.2s;
+    }
+
+    .file-upload-label:hover {
+      background: #eaeef2;
+    }
+
+    #uploadJsInput {
+      display: none;
+    }
+
+    .status-message {
+      font-size: 0.8rem;
+      color: #57606a;
+      margin-left: 0.5rem;
+    }
+
+    .footer-note {
+      margin-top: auto;
+      border-top: 1px solid #d0d7de;
+      padding-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      color: #57606a;
+      font-size: 0.8rem;
+    }
+
+    .footer-note a {
+      color: #0969da;
+      text-decoration: none;
+    }
+
+    .footer-note a:hover {
+      text-decoration: underline;
+    }
+
     a:link { color: #0969da !important; }
     a:visited { color: #0969da !important; }
+
     @media (max-width: 650px) {
       body { padding: 1rem 0.8rem; }
       .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
@@ -81,16 +337,21 @@
   <div class="search-section">
     <div class="search-row">
       <input type="text" class="search-input" id="searchInput" placeholder="Search by name, description or tag...">
-      <label for="uploadJsInput" class="file-upload-label" id="uploadLabel">📄 Load .js extension</label>
+      <label for="uploadJsInput" class="file-upload-label" id="uploadLabel">
+        📄 Load .js extension
+      </label>
       <input type="file" id="uploadJsInput" accept=".js">
       <span class="status-message" id="uploadStatus"></span>
     </div>
     <div style="font-size:0.75rem; color:#57606a; margin-top:0.5rem;">
-      Extensions persist between sessions. Remove them to completely uninstall.
+      Installed extensions are stored locally and persist between sessions.
     </div>
   </div>
 
-  <div class="section-title"><span>🧩 Available extensions</span></div>
+  <div class="section-title">
+    <span>🧩 Available extensions</span>
+  </div>
+
   <div class="extensions-grid" id="extensionsGrid"></div>
 
   <div class="footer-note">
@@ -101,302 +362,402 @@
 
 <script>
   (function() {
-    // ----- STORAGE KEYS -----
-    const STORAGE_KEY = 'decibel_extensions';
-    const BLOB_STORAGE_KEY = 'decibel_blob_extensions';
-    const CUSTOM_META_KEY = 'decibel_custom_ext_meta';
+    var STORAGE_KEY = 'decibel_extensions';
+    var BLOB_STORAGE_KEY = 'decibel_blob_extensions';
+    var CUSTOM_META_KEY = 'decibel_custom_extensions_meta';
 
-    // ----- BUILT-IN EXTENSIONS -----
-    const builtInExtensions = [
-      { id: 'ext1', name: 'Code Snippets Pro', description: 'A collection of useful code snippets for various programming languages.', author: 'Decibel Labs', version: '1.0.0', path: 'https://bebka16.github.io/note/extensions/snippets.js', tags: ['snippets', 'productivity'] },
-      { id: 'ext2', name: 'Git Integration', description: 'Basic Git integration for version control within the editor.', author: 'Decibel Labs', version: '0.9.0', path: 'https://bebka16.github.io/note/extensions/git.js', tags: ['git', 'version-control'] },
-      { id: 'ext3', name: 'Auto Formatter', description: 'Automatically format your code on save with customizable rules.', author: 'Decibel Labs', version: '1.2.1', path: 'https://bebka16.github.io/note/extensions/formatter.js', tags: ['formatting', 'productivity'] },
-      { id: 'ext4', name: 'Color Preview', description: 'Preview colors in CSS, SCSS, and HTML files directly in the editor.', author: 'Decibel Labs', version: '0.5.0', path: 'https://bebka16.github.io/note/extensions/color-preview.js', tags: ['css', 'preview'] }
+    var builtInExtensions = [
+      {
+        id: 'ext1',
+        name: 'Code Snippets Pro',
+        description: 'A collection of useful code snippets for various programming languages.',
+        author: 'Decibel Labs',
+        version: '1.0.0',
+        path: 'https://bebka16.github.io/note/extensions/snippets.js',
+        tags: ['snippets', 'productivity']
+      },
+      {
+        id: 'ext2',
+        name: 'Git Integration',
+        description: 'Basic Git integration for version control within the editor.',
+        author: 'Decibel Labs',
+        version: '0.9.0',
+        path: 'https://bebka16.github.io/note/extensions/git.js',
+        tags: ['git', 'version-control']
+      },
+      {
+        id: 'ext3',
+        name: 'Auto Formatter',
+        description: 'Automatically format your code on save with customizable rules.',
+        author: 'Decibel Labs',
+        version: '1.2.1',
+        path: 'https://bebka16.github.io/note/extensions/formatter.js',
+        tags: ['formatting', 'productivity']
+      },
+      {
+        id: 'ext4',
+        name: 'Color Preview',
+        description: 'Preview colors in CSS, SCSS, and HTML files directly in the editor.',
+        author: 'Decibel Labs',
+        version: '0.5.0',
+        path: 'https://bebka16.github.io/note/extensions/color-preview.js',
+        tags: ['css', 'preview']
+      }
     ];
 
-    let allExtensions = [...builtInExtensions];
+    var allExtensions = [];
 
-    // ----- STORAGE HELPERS -----
     function getInstalledPaths() {
-      try { return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]'); } catch (e) { return []; }
+      try {
+        return JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      } catch (e) {
+        return [];
+      }
     }
-    function saveInstalledPaths(paths) { localStorage.setItem(STORAGE_KEY, JSON.stringify(paths)); }
-    function isInstalled(path) { return getInstalledPaths().includes(path); }
-    function getBlobExtensions() {
-      try { return JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}'); } catch (e) { return {}; }
-    }
-    function saveBlobExtensions(data) { localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(data)); }
-    function getCustomMeta() {
-      try { return JSON.parse(localStorage.getItem(CUSTOM_META_KEY) || '{}'); } catch (e) { return {}; }
-    }
-    function saveCustomMeta(data) { localStorage.setItem(CUSTOM_META_KEY, JSON.stringify(data)); }
 
-    // ----- LOAD CUSTOM EXTENSIONS -----
+    function saveInstalledPaths(paths) {
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(paths));
+    }
+
+    function getBlobExtensions() {
+      try {
+        return JSON.parse(localStorage.getItem(BLOB_STORAGE_KEY) || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveBlobExtensions(data) {
+      localStorage.setItem(BLOB_STORAGE_KEY, JSON.stringify(data));
+    }
+
+    function getCustomMeta() {
+      try {
+        return JSON.parse(localStorage.getItem(CUSTOM_META_KEY) || '{}');
+      } catch (e) {
+        return {};
+      }
+    }
+
+    function saveCustomMeta(data) {
+      localStorage.setItem(CUSTOM_META_KEY, JSON.stringify(data));
+    }
+
+    function isInstalled(path) {
+      return getInstalledPaths().indexOf(path) !== -1;
+    }
+
+    function notifyParentAddExtension(path) {
+      try {
+        window.parent.postMessage({ type: 'addExtension', path: path }, '*');
+      } catch (e) {}
+    }
+
+    function notifyParentRemoveExtension(path) {
+      try {
+        window.parent.postMessage({ type: 'removeExtension', path: path }, '*');
+      } catch (e) {}
+    }
+
     function loadCustomExtensions() {
-      const installedPaths = getInstalledPaths();
-      const blobExtensions = getBlobExtensions();
-      const customMeta = getCustomMeta();
-      
-      allExtensions = [...builtInExtensions];
-      
-      installedPaths.forEach(path => {
-        if (builtInExtensions.some(ext => ext.path === path)) return;
-        
-        if (path.startsWith('blob:')) {
-          if (blobExtensions[path]) {
-            const meta = customMeta[path] || {};
-            allExtensions.push({
-              id: meta.id || ('custom_' + Math.random().toString(36).substr(2, 6)),
-              name: meta.name || 'Custom Extension',
-              description: meta.description || 'Loaded from local file',
-              author: meta.author || 'User',
-              version: meta.version || '0.0.0',
-              path: path,
-              tags: ['custom', 'uploaded'],
-              isCustom: true
-            });
-          }
-        } else if (path.startsWith('http://') || path.startsWith('https://')) {
-          allExtensions.push({
-            id: 'remote_' + Math.random().toString(36).substr(2, 6),
-            name: path.split('/').pop().replace('.js', ''),
-            description: 'Remote extension',
-            author: 'External',
-            version: '0.0.0',
-            path: path,
-            tags: ['remote'],
-            isCustom: true
-          });
-        }
+      var installedPaths = getInstalledPaths();
+      var blobExtensions = getBlobExtensions();
+      var customMeta = getCustomMeta();
+
+      installedPaths.forEach(function(path) {
+        if (builtInExtensions.some(function(ext) { return ext.path === path; })) return;
+        if (allExtensions.some(function(ext) { return ext.path === path; })) return;
+
+        var meta = customMeta[path] || {};
+        var extName = meta.name || 'Custom Extension';
+        var extDesc = meta.description || 'Loaded from local file';
+        var extVersion = meta.version || '0.0.0';
+        var extAuthor = meta.author || 'User';
+
+        allExtensions.push({
+          id: meta.id || ('custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6)),
+          name: extName,
+          description: extDesc,
+          author: extAuthor,
+          version: extVersion,
+          path: path,
+          tags: ['custom', 'uploaded'],
+          isCustom: true
+        });
       });
     }
 
-    // ----- COMMUNICATION WITH PARENT -----
-    function notifyParent(action, data) {
-      try {
-        window.parent.postMessage({ type: action, ...data }, '*');
-      } catch (e) {
-        console.warn('PostMessage failed:', e);
-      }
+    function rebuildAllExtensions() {
+      allExtensions = builtInExtensions.map(function(ext) { return ext; });
+      loadCustomExtensions();
     }
 
-    // ----- INSTALL / UNINSTALL -----
-    function installExtension(path, code) {
-      const installed = getInstalledPaths();
-      if (!installed.includes(path)) {
+    function installExtension(path, meta) {
+      var installed = getInstalledPaths();
+      if (installed.indexOf(path) === -1) {
         installed.push(path);
         saveInstalledPaths(installed);
+        notifyParentAddExtension(path);
       }
-      // Всегда отправляем код, чтобы родитель мог пересоздать скрипт
-      notifyParent('addExtension', { path, code: code || null, forceReload: true });
+      if (meta) {
+        var customMeta = getCustomMeta();
+        customMeta[path] = meta;
+        saveCustomMeta(customMeta);
+      }
+      rebuildAllExtensions();
       renderExtensions(getSearchTerm());
     }
 
     function uninstallExtension(path) {
-      let installed = getInstalledPaths();
-      if (!installed.includes(path)) return;
-      
-      // Удаляем из списка
-      installed = installed.filter(p => p !== path);
-      saveInstalledPaths(installed);
-      
-      // Очищаем blob данные
-      if (path.startsWith('blob:')) {
-        const blobExtensions = getBlobExtensions();
+      var installed = getInstalledPaths();
+      var idx = installed.indexOf(path);
+      if (idx !== -1) {
+        installed.splice(idx, 1);
+        saveInstalledPaths(installed);
+        notifyParentRemoveExtension(path);
+      }
+
+      var blobExtensions = getBlobExtensions();
+      if (blobExtensions[path]) {
         delete blobExtensions[path];
         saveBlobExtensions(blobExtensions);
-        
-        const customMeta = getCustomMeta();
+      }
+
+      var customMeta = getCustomMeta();
+      if (customMeta[path]) {
         delete customMeta[path];
         saveCustomMeta(customMeta);
-        
-        allExtensions = allExtensions.filter(ext => ext.path !== path);
-        
-        // Отзываем blob URL
-        try { URL.revokeObjectURL(path); } catch(e) {}
-      } else {
-        allExtensions = allExtensions.filter(ext => 
-          builtInExtensions.some(b => b.path === ext.path) || ext.path !== path
-        );
       }
-      
-      // ОТПРАВЛЯЕМ КОМАНДУ НА УДАЛЕНИЕ СКРИПТА
-      notifyParent('removeExtension', { path });
-      
+
+      rebuildAllExtensions();
       renderExtensions(getSearchTerm());
     }
 
     function clearAllExtensions() {
-      const installed = getInstalledPaths();
+      var installed = getInstalledPaths();
       if (installed.length === 0) return;
       if (!confirm('Remove all installed extensions? This cannot be undone.')) return;
-      
-      // Сначала удаляем все скрипты
-      installed.forEach(path => {
-        notifyParent('removeExtension', { path });
+
+      var blobExtensions = getBlobExtensions();
+      var customMeta = getCustomMeta();
+
+      installed.forEach(function(path) {
+        notifyParentRemoveExtension(path);
+        if (blobExtensions[path]) {
+          delete blobExtensions[path];
+        }
+        if (customMeta[path]) {
+          delete customMeta[path];
+        }
       });
-      
-      // Потом чистим хранилище
+
       saveInstalledPaths([]);
-      saveBlobExtensions({});
-      saveCustomMeta({});
-      allExtensions = [...builtInExtensions];
-      
+      saveBlobExtensions(blobExtensions);
+      saveCustomMeta(customMeta);
+      rebuildAllExtensions();
       renderExtensions(getSearchTerm());
     }
 
-    // ----- UPLOAD JS FILE -----
     function handleJsFileUpload(file) {
-      const statusEl = document.getElementById('uploadStatus');
-      if (!file) { statusEl.textContent = 'No file selected.'; return; }
-      if (!file.name.endsWith('.js')) { statusEl.textContent = '❌ Only .js files are allowed.'; return; }
+      var statusEl = document.getElementById('uploadStatus');
+      if (!file) {
+        statusEl.textContent = 'No file selected.';
+        return;
+      }
+
+      if (!file.name.toLowerCase().endsWith('.js')) {
+        statusEl.textContent = '❌ Only .js files are allowed.';
+        return;
+      }
 
       statusEl.textContent = '⏳ Reading file...';
-      const reader = new FileReader();
-      
-      reader.onload = (e) => {
-        const content = e.target.result;
-        if (!content || content.trim().length === 0) { statusEl.textContent = '❌ File is empty.'; return; }
+      var reader = new FileReader();
+      reader.onload = function(e) {
+        var content = e.target.result;
+        if (!content || content.trim().length === 0) {
+          statusEl.textContent = '❌ File is empty.';
+          return;
+        }
 
-        // Метаданные
-        let extName = file.name.replace(/\.js$/i, '').replace(/[-_]/g, ' ').replace(/\b\w/g, c => c.toUpperCase());
-        let extDesc = `Loaded from ${file.name}`;
-        let extVersion = '0.0.0';
-        let extAuthor = 'You (local upload)';
-        
-        const nameMatch = content.match(/@name\s+(.+)/);
-        const descMatch = content.match(/@description\s+(.+)/);
-        const versionMatch = content.match(/@version\s+(.+)/);
-        const authorMatch = content.match(/@author\s+(.+)/);
-        
+        var blob = new Blob([content], { type: 'application/javascript' });
+        var blobUrl = URL.createObjectURL(blob);
+
+        var blobExtensions = getBlobExtensions();
+        blobExtensions[blobUrl] = content;
+        saveBlobExtensions(blobExtensions);
+
+        var extName = file.name.replace(/\.js$/i, '').replace(/[-_]/g, ' ').replace(/\b\w/g, function(c) { return c.toUpperCase(); });
+        var extDesc = 'Loaded from ' + file.name;
+        var extVersion = '0.0.0';
+        var extAuthor = 'You (local upload)';
+
+        var nameMatch = content.match(/@name\s+(.+)/);
+        var descMatch = content.match(/@description\s+(.+)/);
+        var versionMatch = content.match(/@version\s+(.+)/);
+        var authorMatch = content.match(/@author\s+(.+)/);
+
         if (nameMatch) extName = nameMatch[1].trim();
         if (descMatch) extDesc = descMatch[1].trim();
         if (versionMatch) extVersion = versionMatch[1].trim();
         if (authorMatch) extAuthor = authorMatch[1].trim();
 
-        // Создаем blob
-        const blob = new Blob([content], { type: 'application/javascript' });
-        const blobUrl = URL.createObjectURL(blob);
+        var extId = 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
 
-        // Сохраняем код
-        const blobExtensions = getBlobExtensions();
-        blobExtensions[blobUrl] = content;
-        saveBlobExtensions(blobExtensions);
-
-        // Сохраняем метаданные
-        const extId = 'custom_' + Date.now() + '_' + Math.random().toString(36).substr(2, 6);
-        const customMeta = getCustomMeta();
-        customMeta[blobUrl] = { id: extId, name: extName, description: extDesc, version: extVersion, author: extAuthor, fileName: file.name };
-        saveCustomMeta(customMeta);
-
-        // Добавляем в список
-        const newExt = {
-          id: extId, name: extName, description: extDesc, author: extAuthor,
-          version: extVersion, path: blobUrl, tags: ['custom', 'uploaded'], isCustom: true
+        var meta = {
+          id: extId,
+          name: extName,
+          description: extDesc,
+          version: extVersion,
+          author: extAuthor
         };
-        allExtensions.push(newExt);
-        
-        // Устанавливаем с передачей кода
-        installExtension(blobUrl, content);
-        
-        statusEl.textContent = `✅ Installed "${extName}"`;
+
+        installExtension(blobUrl, meta);
+        statusEl.textContent = '✅ Installed "' + extName + '"';
         document.getElementById('uploadJsInput').value = '';
       };
 
-      reader.onerror = () => { statusEl.textContent = '❌ Error reading file.'; };
+      reader.onerror = function() {
+        statusEl.textContent = '❌ Error reading file.';
+      };
+
       reader.readAsText(file);
     }
 
-    // ----- RENDERING -----
-    function getSearchTerm() { return document.getElementById('searchInput')?.value || ''; }
+    function getSearchTerm() {
+      var input = document.getElementById('searchInput');
+      return input ? input.value : '';
+    }
 
-    function renderExtensions(filter = '') {
-      const grid = document.getElementById('extensionsGrid');
+    function renderExtensions(filter) {
+      var grid = document.getElementById('extensionsGrid');
       if (!grid) return;
 
-      const term = filter.toLowerCase().trim();
-      const filtered = allExtensions.filter(ext => {
+      var term = (filter || '').toLowerCase().trim();
+      var filtered = allExtensions.filter(function(ext) {
         if (term === '') return true;
-        return ['name', 'description', 'author'].some(f => ext[f].toLowerCase().includes(term))
-          || ext.tags.some(tag => tag.toLowerCase().includes(term));
+        var inName = ext.name.toLowerCase().indexOf(term) !== -1;
+        var inDesc = ext.description.toLowerCase().indexOf(term) !== -1;
+        var inTags = ext.tags.some(function(tag) { return tag.toLowerCase().indexOf(term) !== -1; });
+        var inAuthor = ext.author.toLowerCase().indexOf(term) !== -1;
+        return inName || inDesc || inTags || inAuthor;
       });
 
       if (filtered.length === 0) {
-        grid.innerHTML = `<div style="grid-column:1/-1; padding:2rem; text-align:center; color:#57606a; background:#ffffff; border:1px solid #d0d7de; border-radius:2px;">No extensions found${term ? ` for "${filter}"` : ''}.</div>`;
+        grid.innerHTML = '<div style="grid-column:1/-1; padding:2rem; text-align:center; color:#57606a; background:#ffffff; border:1px solid #d0d7de; border-radius:2px;">No extensions found' + (term ? ' for "' + escapeHtml(term) + '"' : '') + '.</div>';
         return;
       }
 
-      grid.innerHTML = filtered.map(ext => {
-        const installed = isInstalled(ext.path);
-        const isCustom = ext.isCustom || false;
-        return `
-          <div class="extension-card${isCustom ? ' custom-extension' : ''}">
-            <div class="extension-name"><span>${escapeHtml(ext.name)}</span><span class="version">v${escapeHtml(ext.version)}</span></div>
-            <div class="extension-description">${escapeHtml(ext.description)}</div>
-            <div class="extension-author"><span>👤 ${escapeHtml(ext.author)}</span></div>
-            <div class="tag-group">${ext.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}</div>
-            <div class="card-actions">
-              <button class="btn btn-primary install-btn" data-path="${escapeHtml(ext.path)}" data-custom="${isCustom}" ${installed ? 'disabled' : ''}>${installed ? '✓ Installed' : 'Install'}</button>
-              <button class="btn btn-danger uninstall-btn" data-path="${escapeHtml(ext.path)}" ${!installed ? 'disabled' : ''}>🗑 Remove</button>
-            </div>
-          </div>`;
+      grid.innerHTML = filtered.map(function(ext) {
+        var installed = isInstalled(ext.path);
+        return '<div class="extension-card">' +
+          '<div class="extension-name"><span>' + escapeHtml(ext.name) + '</span><span class="version">v' + escapeHtml(ext.version) + '</span></div>' +
+          '<div class="extension-description">' + escapeHtml(ext.description) + '</div>' +
+          '<div class="extension-author"><span>👤 ' + escapeHtml(ext.author) + '</span></div>' +
+          '<div class="tag-group">' + ext.tags.map(function(tag) { return '<span class="tag">' + escapeHtml(tag) + '</span>'; }).join('') + '</div>' +
+          '<div class="card-actions">' +
+          '<button class="btn btn-primary install-btn" data-path="' + escapeHtml(ext.path) + '" ' + (installed ? 'disabled' : '') + '>' + (installed ? '✓ Installed' : 'Install') + '</button>' +
+          '<button class="btn btn-danger uninstall-btn" data-path="' + escapeHtml(ext.path) + '" ' + (!installed ? 'disabled' : '') + '>🗑 Remove</button>' +
+          '</div></div>';
       }).join('');
 
-      document.querySelectorAll('.install-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const path = this.getAttribute('data-path');
+      var installButtons = document.querySelectorAll('.install-btn');
+      for (var i = 0; i < installButtons.length; i++) {
+        installButtons[i].addEventListener('click', function() {
+          var path = this.getAttribute('data-path');
           if (path && !isInstalled(path)) {
-            const isCustom = this.getAttribute('data-custom') === 'true';
-            const code = isCustom ? (getBlobExtensions()[path] || null) : null;
-            installExtension(path, code);
+            installExtension(path, null);
           }
         });
-      });
+      }
 
-      document.querySelectorAll('.uninstall-btn').forEach(btn => {
-        btn.addEventListener('click', function() {
-          const path = this.getAttribute('data-path');
+      var uninstallButtons = document.querySelectorAll('.uninstall-btn');
+      for (var j = 0; j < uninstallButtons.length; j++) {
+        uninstallButtons[j].addEventListener('click', function() {
+          var path = this.getAttribute('data-path');
           if (path && isInstalled(path)) {
-            if (confirm('Remove this extension completely?')) {
+            if (confirm('Remove extension "' + path + '"?')) {
               uninstallExtension(path);
             }
           }
         });
-      });
+      }
     }
 
     function escapeHtml(text) {
-      return String(text).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#039;');
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
     }
 
-    // ----- EVENTS -----
     function bindEvents() {
-      document.getElementById('searchInput')?.addEventListener('input', e => renderExtensions(e.target.value));
-      document.getElementById('uploadJsInput')?.addEventListener('change', function(e) {
-        const file = e.target.files[0];
-        file ? handleJsFileUpload(file) : (document.getElementById('uploadStatus').textContent = '');
-      });
-      document.getElementById('refreshInstalledLink')?.addEventListener('click', e => {
-        e.preventDefault();
-        loadCustomExtensions();
-        renderExtensions(getSearchTerm());
-      });
-      document.getElementById('clearAllLink')?.addEventListener('click', e => {
-        e.preventDefault();
-        clearAllExtensions();
-      });
-      document.getElementById('goToDocs')?.addEventListener('click', e => { e.preventDefault(); });
-      document.getElementById('reportIssue')?.addEventListener('click', e => { e.preventDefault(); });
+      var searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          renderExtensions(e.target.value);
+        });
+      }
+
+      var uploadInput = document.getElementById('uploadJsInput');
+      if (uploadInput) {
+        uploadInput.addEventListener('change', function(e) {
+          var file = e.target.files[0];
+          if (file) {
+            handleJsFileUpload(file);
+          } else {
+            document.getElementById('uploadStatus').textContent = '';
+          }
+        });
+      }
+
+      var refreshLink = document.getElementById('refreshInstalledLink');
+      if (refreshLink) {
+        refreshLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          rebuildAllExtensions();
+          renderExtensions(getSearchTerm());
+          document.getElementById('uploadStatus').textContent = '🔄 List refreshed.';
+          setTimeout(function() {
+            var el = document.getElementById('uploadStatus');
+            if (el) el.textContent = '';
+          }, 2000);
+        });
+      }
+
+      var clearAllLink = document.getElementById('clearAllLink');
+      if (clearAllLink) {
+        clearAllLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          clearAllExtensions();
+        });
+      }
+
+      var docsLink = document.getElementById('goToDocs');
+      if (docsLink) {
+        docsLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert('Documentation: manage extensions via this panel.');
+        });
+      }
+
+      var reportLink = document.getElementById('reportIssue');
+      if (reportLink) {
+        reportLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          alert('Feedback: thanks for using Decibel Note extensions.');
+        });
+      }
     }
 
-    // ----- INIT -----
-    loadCustomExtensions();
+    rebuildAllExtensions();
     renderExtensions('');
     bindEvents();
 
-    window.addEventListener('storage', (e) => {
-      if ([STORAGE_KEY, BLOB_STORAGE_KEY, CUSTOM_META_KEY].includes(e.key)) {
-        loadCustomExtensions();
+    window.addEventListener('storage', function(e) {
+      if (e.key === STORAGE_KEY || e.key === BLOB_STORAGE_KEY || e.key === CUSTOM_META_KEY) {
+        rebuildAllExtensions();
         renderExtensions(getSearchTerm());
       }
     });
