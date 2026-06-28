@@ -6,7 +6,7 @@ body {
       overflow: hidden;
     }
 	
-	.monaco-editor-theme-select {
+	.monaco-editor-theme-select-css {
       theme: vs-dark;
       --theme: vs-dark;
     }
