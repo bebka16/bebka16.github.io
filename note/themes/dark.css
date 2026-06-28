@@ -6,11 +6,11 @@ body {
       overflow: hidden;
     }
 	
-    .monaco-editor-theme-select {
+	.monaco-editor-theme-select {
       theme: vs-dark;
       --theme: vs-dark;
     }
-
+	
     .top-bar {
       display: flex;
       background-color: #191a1b;
