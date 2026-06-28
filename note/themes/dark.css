@@ -7,10 +7,8 @@ body {
     }
 	
 	.monaco-editor-theme-select-css {
-      theme: vs-dark;
-      --theme: vs-dark;
-    }
-	
+    theme: vs-dark;
+}
     .top-bar {
       display: flex;
       background-color: #191a1b;
