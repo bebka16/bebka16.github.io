@@ -1,253 +1,658 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Decibel Note - Themes</title>
-    <style>
-        * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
-        }
-        body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: #1e1e1e;
-            color: #cccccc;
-            padding: 20px;
-            overflow-y: auto;
-        }
-        h1 {
-            color: #ffffff;
-            margin-bottom: 20px;
-            font-size: 24px;
-            border-bottom: 1px solid #333;
-            padding-bottom: 10px;
-        }
-        .themes-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-            gap: 20px;
-        }
-        .theme-card {
-            background: #2d2d2d;
-            border: 2px solid #404040;
-            border-radius: 8px;
-            overflow: hidden;
-            transition: transform 0.2s, box-shadow 0.2s;
-            cursor: pointer;
-        }
-        .theme-card:hover {
-            transform: translateY(-2px);
-            box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-        }
-        .theme-card.active {
-            border-color: #007acc;
-        }
-        .theme-preview {
-            height: 120px;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            font-size: 18px;
-            font-weight: 600;
-        }
-        .theme-info {
-            padding: 15px;
-        }
-        .theme-name {
-            font-size: 16px;
-            font-weight: 600;
-            color: #ffffff;
-            margin-bottom: 5px;
-        }
-        .theme-description {
-            font-size: 13px;
-            color: #999;
-            margin-bottom: 10px;
-            line-height: 1.4;
-        }
-        .theme-meta {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-        }
-        .theme-author {
-            font-size: 12px;
-            color: #666;
-        }
-        .apply-btn {
-            background: #007acc;
-            color: white;
-            border: none;
-            padding: 6px 14px;
-            border-radius: 4px;
-            cursor: pointer;
-            font-size: 13px;
-            transition: background 0.2s;
-        }
-        .apply-btn:hover {
-            background: #005a9e;
-        }
-        .apply-btn.applied {
-            background: #333;
-            color: #666;
-            cursor: default;
-        }
-        .theme-tags {
-            display: flex;
-            gap: 5px;
-            margin-bottom: 10px;
-        }
-        .theme-tag {
-            font-size: 10px;
-            background: #404040;
-            color: #aaa;
-            padding: 2px 6px;
-            border-radius: 10px;
-        }
-        .preview-dark { background: #1e1e1e; color: #d4d4d4; }
-        .preview-light { background: #ffffff; color: #333333; }
-        .preview-ocean { background: linear-gradient(135deg, #0a192f, #112240); color: #64ffda; }
-        .preview-forest { background: linear-gradient(135deg, #1b4332, #2d6a4f); color: #d8f3dc; }
-        .preview-sunset { background: linear-gradient(135deg, #2d1b69, #6b2fa0); color: #ffd166; }
-        .preview-monokai { background: #272822; color: #f92672; }
-        .preview-nord { background: #2e3440; color: #88c0d0; }
-        .preview-dracula { background: #282a36; color: #bd93f9; }
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Decibel Note · Themes</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      background-color: #f6f8fa;
+      color: #24292f;
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+      line-height: 1.5;
+      padding: 2rem 1.5rem;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      margin-top: 0;
+      padding-top: 0;
+    }
+
+    .container {
+      max-width: 1200px;
+      margin: 0 auto;
+      width: 100%;
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+    }
+
+    .header {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: baseline;
+      padding-bottom: 0.7rem;
+      padding-top: 0.7rem;
+      border-bottom: 1px solid #d0d7de;
+      margin-bottom: 1.5rem;
+    }
+
+    .header-left h1 {
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: -0.02em;
+      color: #24292f;
+    }
+
+    .header-left .sub {
+      font-size: 0.85rem;
+      color: #57606a;
+      margin-top: 0.05rem;
+    }
+
+    .header-right {
+      display: flex;
+      gap: 1.5rem;
+      font-size: 0.85rem;
+      flex-wrap: wrap;
+      align-items: center;
+    }
+
+    .header-right a {
+      color: #0969da;
+      text-decoration: none;
+      font-weight: 500;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s;
+      cursor: pointer;
+    }
+
+    .header-right a:hover {
+      border-bottom-color: #0969da;
+    }
+
+    .section-title {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.8rem;
+      color: #24292f;
+      letter-spacing: -0.01em;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .themes-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1.2rem;
+      margin-bottom: 2rem;
+    }
+
+    .theme-card {
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 1rem 1rem 0.8rem;
+      transition: border-color 0.2s, box-shadow 0.2s;
+      display: flex;
+      flex-direction: column;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+      position: relative;
+    }
+
+    .theme-card:hover {
+      border-color: #8b949e;
+      box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+    }
+
+    .theme-card.active {
+      border-color: #0969da;
+      box-shadow: 0 0 0 2px rgba(9, 105, 218, 0.2);
+    }
+
+    .theme-preview {
+      height: 90px;
+      border-radius: 2px;
+      margin-bottom: 0.8rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.9rem;
+      font-weight: 500;
+      letter-spacing: 0.3px;
+      border: 1px solid #eaeef2;
+      transition: border 0.2s;
+      cursor: pointer;
+
+
+      position: relative;
+    }
+
+    .theme-preview:hover::after {
+      content: "View";
+      position: absolute;
+      bottom: 6px;
+      right: 8px;
+      font-size: 12px;
+      background: rgba(0,0,0,0.4);
+      padding: 2px 8px;
+      border-radius: 0px;
+      color: white;
+      line-height: 1.4;
+    }
+
+    .theme-card:hover .theme-preview {
+      border-color: #d0d7de;
+    }
+
+    .theme-name {
+      font-size: 14px;
+      font-weight: 600;
+      margin-bottom: 0.3rem;
+      color: #24292f;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+
+    .theme-description {
+      font-size: 0.82rem;
+      color: #57606a;
+      margin-bottom: 0.6rem;
+      flex: 1;
+    }
+
+    .theme-author {
+      font-size: 0.75rem;
+      color: #656d76;
+      margin-bottom: 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.3rem;
+    }
+
+    .tag-group {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.3rem 0.5rem;
+      margin: 0.3rem 0 0.8rem;
+    }
+
+    .tag {
+      background: #f0f6fc;
+      color: #0969da;
+      font-size: 0.72rem;
+      padding: 0.1rem 0.5rem;
+      border-radius: 2px;
+    }
+
+    .card-actions {
+      display: flex;
+      gap: 0.5rem;
+      margin-top: auto;
+      border-top: 1px solid #eaeef2;
+      padding-top: 0.8rem;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      border: 0;
+      padding: 0;
+      background: transparent;
+      cursor: pointer;
+      font-family: inherit;
+      font-size: 0.85rem;
+    }
+
+    .btn-primary {
+      color: #0969da;
+    }
+
+    .btn-primary:hover {
+      text-decoration: underline;
+    }
+
+    .btn-primary:disabled {
+      opacity: 0.6;
+      cursor: default;
+      color: #8b949e;
+      text-decoration: none;
+    }
+
+    .btn-outline {
+      color: #57606a;
+    }
+
+    .btn-outline:hover {
+      text-decoration: underline;
+    }
+
+    .btn-outline:disabled {
+      opacity: 0.5;
+      cursor: default;
+      color: #8b949e;
+      text-decoration: none;
+    }
+
+    .search-section {
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      padding: 1rem;
+      margin-bottom: 1.5rem;
+      box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+    }
+
+    .search-row {
+      display: flex;
+      flex-wrap: wrap;
+      align-items: center;
+      gap: 0.8rem;
+    }
+
+    .search-input {
+      flex: 2;
+      min-width: 220px;
+      padding: 0.5rem 0.8rem;
+      background: #ffffff;
+      border: 1px solid #d0d7de;
+      border-radius: 2px;
+      color: #24292f;
+      font-size: 0.9rem;
+      transition: border-color 0.2s;
+      font-family: inherit;
+    }
+
+    .search-input:focus {
+      outline: none;
+      border-color: #0969da;
+      box-shadow: 0 0 0 2px rgba(9, 105, 218, 0.15);
+    }
+
+    .status-message {
+      font-size: 0.8rem;
+      color: #57606a;
+      margin-left: 0.5rem;
+    }
+
+    .footer-note {
+      margin-top: auto;
+      border-top: 1px solid #d0d7de;
+      padding-top: 1.2rem;
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      align-items: center;
+      color: #57606a;
+      font-size: 0.8rem;
+    }
+
+    .footer-note a {
+      color: #0969da;
+      text-decoration: none;
+    }
+
+    .footer-note a:hover {
+      text-decoration: underline;
+    }
+
+    a:link { color: #0969da !important; }
+    a:visited { color: #0969da !important; }
+
+    @media (max-width: 650px) {
+      body { padding: 1rem 0.8rem; }
+      .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+      .themes-grid { grid-template-columns: 1fr; }
+      .search-row { flex-direction: column; align-items: stretch; }
+    }
+
+    .preview-dark { background-image: url('dark.png');  }
+    .preview-light { background-image: url('light.png'); }
+
+
+    .lightbox-overlay {
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: rgba(0,0,0,0.75);
+      display: none;
+      align-items: center;
+      justify-content: center;
+      z-index: 9999;
+      cursor: pointer;
+      backdrop-filter: blur(4px);
+    }
+
+    .lightbox-overlay.active {
+      display: flex;
+    }
+
+    .lightbox-image {
+      max-width: 90vw;
+      max-height: 90vh;
+      border-radius: 6px;
+      box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+      padding: 4px;
+      object-fit: contain;
+    }
+
+    .lightbox-close {
+      position: absolute;
+      top: 20px;
+      right: 32px;
+      font-size: 25px;
+      color: #888;
+      cursor: pointer;
+      font-weight: 300;
+      transition: 0.2s;
+      background: transparent;
+      border: 0;
+      line-height: 1;
+    }
+
+    .lightbox-close:hover {
+      color: #fff;
+    }
+
+    .preview-fallback {
+      background: #f0f6fc;
+      color: #24292f;
+      border: 1px dashed #d0d7de;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.75rem;
+      font-weight: 400;
+    }
+  </style>
 </head>
 <body>
-    <h1>Decibel Note Themes</h1>
+<div class="container">
+  <div class="header">
+    <div class="header-left">
+      <h1>Theme Store</h1>
+    </div>
+    <div class="header-right">
+      <a id="refreshThemesLink" title="Reload theme list">↻ Refresh</a>
+      <a id="resetDefaultLink" title="Reset to default theme">Reset default</a>
+    </div>
+  </div>
 
-    <div class="themes-grid" id="themesGrid"></div>
+  <div class="search-section">
+    <div class="search-row">
+      <input type="text" class="search-input" id="searchInput" placeholder="Search by name, description, tag…">
+      <span class="status-message" id="statusMessage"></span>
+    </div>
+    <div style="font-size:0.75rem; color:#57606a; margin-top:0.5rem;">
+      Click the preview image to see it in full size. Select a theme to apply it.
+    </div>
+  </div>
 
-    <script>
-        const themes = [
-            {
-                id: 'dark-default',
-                name: 'Dark Default',
-                description: 'The classic dark theme for comfortable coding at night.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-dark',
-                previewText: 'Dark Mode',
-                path: 'https://bebka16.github.io/note/themes/dark-theme.css',
-                tags: ['dark', 'default']
-            },
-            {
-                id: 'light-default',
-                name: 'Light Default',
-                description: 'Clean and bright theme for daytime coding sessions.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-light',
-                previewText: 'Light Mode',
-                path: 'https://bebka16.github.io/note/themes/light-theme.css',
-                tags: ['light', 'default']
-            },
-            {
-                id: 'ocean-blue',
-                name: 'Ocean Blue',
-                description: 'Deep blue tones inspired by the ocean depths.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-ocean',
-                previewText: 'Ocean Blue',
-                path: 'https://bebka16.github.io/note/themes/ocean-theme.css',
-                tags: ['dark', 'blue']
-            },
-            {
-                id: 'forest-green',
-                name: 'Forest Green',
-                description: 'Natural green hues for a calm coding environment.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-forest',
-                previewText: 'Forest',
-                path: 'https://bebka16.github.io/note/themes/forest-theme.css',
-                tags: ['dark', 'green']
-            },
-            {
-                id: 'sunset-purple',
-                name: 'Sunset Purple',
-                description: 'Warm purple and gold tones for a creative atmosphere.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-sunset',
-                previewText: 'Sunset',
-                path: 'https://bebka16.github.io/note/themes/sunset-theme.css',
-                tags: ['dark', 'purple']
-            },
-            {
-                id: 'monokai',
-                name: 'Monokai',
-                description: 'Inspired by the popular Monokai color scheme.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-monokai',
-                previewText: 'Monokai',
-                path: 'https://bebka16.github.io/note/themes/monokai-theme.css',
-                tags: ['dark', 'classic']
-            },
-            {
-                id: 'nord',
-                name: 'Nord',
-                description: 'Arctic, north-bluish clean and elegant theme.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-nord',
-                previewText: 'Nord',
-                path: 'https://bebka16.github.io/note/themes/nord-theme.css',
-                tags: ['dark', 'minimal']
-            },
-            {
-                id: 'dracula',
-                name: 'Dracula',
-                description: 'A dark theme for productive coding with purple accents.',
-                author: 'Decibel Labs',
-                previewClass: 'preview-dracula',
-                previewText: 'Dracula',
-                path: 'https://bebka16.github.io/note/themes/dracula-theme.css',
-                tags: ['dark', 'popular']
-            }
-        ];
+  <div class="section-title">
+    <span>Available themes</span>
+    <span style="font-weight:400; font-size:0.8rem; color:#57606a;" id="themeCount"></span>
+  </div>
 
-        function getActiveTheme() {
-            return localStorage.getItem('decibel_active_theme') || '';
-        }
+  <div class="themes-grid" id="themesGrid"></div>
 
-        function applyTheme(path) {
-            localStorage.setItem('decibel_active_theme', path);
-            
-            window.parent.postMessage({
-                type: 'applyTheme',
-                path: path
-            }, '*');
-            
-            renderThemes();
-        }
+  <div class="footer-note">
+    <span>Snail code themes store, © 2026, all rights are reserved.</span>
+    <span><a href="https://bebka16.github.io/note/docs.html" id="docLink">Documentation</a></span>
+  </div>
+</div>
 
-        function renderThemes() {
-            const grid = document.getElementById('themesGrid');
-            const activeTheme = getActiveTheme();
+<div class="lightbox-overlay" id="lightboxOverlay">
+  <button class="lightbox-close" id="lightboxClose">&times;</button>
+  <img class="lightbox-image" id="lightboxImage" src="" alt="Theme preview">
+</div>
 
-            grid.innerHTML = themes.map(theme => `
-                <div class="theme-card ${activeTheme === theme.path ? 'active' : ''}" onclick="applyTheme('${theme.path}')">
-                    <div class="theme-preview ${theme.previewClass}">
-                        ${theme.previewText}
-                    </div>
-                    <div class="theme-info">
-                        <div class="theme-name">${theme.name}</div>
-                        <div class="theme-description">${theme.description}</div>
-                        <div class="theme-tags">
-                            ${theme.tags.map(tag => `<span class="theme-tag">${tag}</span>`).join('')}
-                        </div>
-                        <div class="theme-meta">
-                            <span class="theme-author">by ${theme.author}</span>
-                            <button class="apply-btn ${activeTheme === theme.path ? 'applied' : ''}" 
-                                    onclick="event.stopPropagation(); applyTheme('${theme.path}')">
-                                ${activeTheme === theme.path ? '✓ Applied' : 'Apply'}
-                            </button>
-                        </div>
-                    </div>
-                </div>
-            `).join('');
-        }
+<script>
+  (function() {
+    const themeData = [
+      {
+        id: 'dark-default',
+        name: 'Dark Default',
+        description: 'The classic dark theme for comfortable coding even at night.',
+        author: 'Decibel Labs',
+        previewClass: 'preview-dark',
+        previewText: 'Dark Mode',
+        path: 'https://bebka16.github.io/note/themes/dark.css',
+        tags: ['dark', 'default'],
+        previewImage: 'dark.png'
+      },
+      {
+        id: 'light-default',
+        name: 'Light Default',
+        description: 'Clean and bright theme for daytime coding sessions.',
+        author: 'Decibel Labs',
+        previewClass: 'preview-light',
+        previewText: 'Light Mode',
+        path: 'https://bebka16.github.io/note/themes/light.css',
+        tags: ['light', 'default'],
+        previewImage: 'light.png'
+      }
+    ];
 
-        renderThemes();
-    </script>
+    function getActiveThemePath() {
+      return localStorage.getItem('decibel_active_theme') || '';
+    }
+
+    function setActiveThemePath(path) {
+      localStorage.setItem('decibel_active_theme', path);
+    }
+
+    function notifyParentApplyTheme(path) {
+      try {
+        window.parent.postMessage({
+          type: 'applyTheme',
+          path: path
+        }, '*');
+      } catch (e) {}
+    }
+
+    function applyTheme(path) {
+      if (!path) return;
+      setActiveThemePath(path);
+      notifyParentApplyTheme(path);
+      renderThemes(getSearchTerm());
+      document.getElementById('statusMessage').textContent = `Applied: ${path.split('/').pop() || path}`;
+      setTimeout(() => {
+        const el = document.getElementById('statusMessage');
+        if (el) el.textContent = '';
+      }, 2500);
+    }
+
+    function resetToDefault() {
+      const defaultPath = 'https://bebka16.github.io/note/themes/dark-theme.css';
+      applyTheme(defaultPath);
+    }
+
+    function getSearchTerm() {
+      return document.getElementById('searchInput')?.value || '';
+    }
+
+    function openLightbox(imageSrc) {
+      const overlay = document.getElementById('lightboxOverlay');
+      const img = document.getElementById('lightboxImage');
+      if (!imageSrc) return;
+      img.src = imageSrc;
+      overlay.classList.add('active');
+      document.body.style.overflow = 'hidden';
+    }
+
+    function closeLightbox() {
+      const overlay = document.getElementById('lightboxOverlay');
+      overlay.classList.remove('active');
+      document.body.style.overflow = '';
+    }
+
+    function renderThemes(filter = '') {
+      const grid = document.getElementById('themesGrid');
+      if (!grid) return;
+
+      const term = filter.toLowerCase().trim();
+      const activePath = getActiveThemePath();
+
+      const filtered = themeData.filter(theme => {
+        if (term === '') return true;
+        const inName = theme.name.toLowerCase().includes(term);
+        const inDesc = theme.description.toLowerCase().includes(term);
+        const inTags = theme.tags.some(tag => tag.toLowerCase().includes(term));
+        const inAuthor = theme.author.toLowerCase().includes(term);
+        return inName || inDesc || inTags || inAuthor;
+      });
+
+      document.getElementById('themeCount').textContent = `${filtered.length} theme${filtered.length !== 1 ? 's' : ''}`;
+
+      if (filtered.length === 0) {
+        grid.innerHTML = `<div style="grid-column:1/-1; padding:2rem; text-align:center; color:#57606a; background:#ffffff; border:1px solid #d0d7de; border-radius:2px;">
+          No themes found${term ? ` for "${filter}"` : ''}.
+        </div>`;
+        return;
+      }
+
+      grid.innerHTML = filtered.map(theme => {
+        const isActive = (activePath === theme.path);
+        const previewImg = theme.previewImage || '';
+        const imgSrc = previewImg ? previewImg : '';
+        return `
+          <div class="theme-card ${isActive ? 'active' : ''}" data-path="${escapeHtml(theme.path)}">
+            <div class="theme-preview ${theme.previewClass} ${!imgSrc ? 'preview-fallback' : ''}" 
+                 style="${imgSrc ? `background-image: url('${escapeHtml(imgSrc)}'); ` : ''}"
+                 data-preview="${escapeHtml(imgSrc)}">
+              ${!imgSrc ? escapeHtml(theme.previewText) : ''}
+            </div>
+            <div class="theme-name">
+              <span>${escapeHtml(theme.name)}</span>
+            </div>
+            <div class="theme-description">${escapeHtml(theme.description)}</div>
+            <div class="theme-author">
+              <span>→ ${escapeHtml(theme.author)}</span>
+            </div>
+            <div class="tag-group">
+              ${theme.tags.map(tag => `<span class="tag">${escapeHtml(tag)}</span>`).join('')}
+            </div>
+            <div class="card-actions">
+              <button class="btn btn-primary apply-btn" data-path="${escapeHtml(theme.path)}" ${isActive ? 'disabled' : ''}>
+                ${isActive ? ' Applied' : 'Apply'}
+              </button>
+              <button class="btn btn-outline reset-default-btn" data-path="${escapeHtml(theme.path)}" ${isActive ? 'disabled' : ''}>
+                Set default
+              </button>
+            </div>
+          </div>
+        `;
+      }).join('');
+
+      document.querySelectorAll('.theme-preview').forEach(preview => {
+        preview.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const imgSrc = this.getAttribute('data-preview') || '';
+          if (imgSrc) {
+            openLightbox(imgSrc);
+          }
+        });
+      });
+
+      document.querySelectorAll('.apply-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const path = this.getAttribute('data-path');
+          if (path && !this.disabled) {
+            applyTheme(path);
+          }
+        });
+      });
+
+      document.querySelectorAll('.reset-default-btn').forEach(btn => {
+        btn.addEventListener('click', function(e) {
+          e.stopPropagation();
+          const path = this.getAttribute('data-path');
+          if (path && !this.disabled) {
+            applyTheme(path);
+          }
+        });
+      });
+
+      document.querySelectorAll('.theme-card').forEach(card => {
+        card.addEventListener('click', function(e) {
+          if (e.target.closest('.btn')) return;
+          if (e.target.closest('.theme-preview')) return;
+          const path = this.getAttribute('data-path');
+          if (path && getActiveThemePath() !== path) {
+            applyTheme(path);
+          }
+        });
+      });
+    }
+
+    function escapeHtml(text) {
+      return String(text)
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#039;');
+    }
+
+    function bindEvents() {
+      const searchInput = document.getElementById('searchInput');
+      if (searchInput) {
+        searchInput.addEventListener('input', function(e) {
+          renderThemes(e.target.value);
+        });
+      }
+
+      const refreshLink = document.getElementById('refreshThemesLink');
+      if (refreshLink) {
+        refreshLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          renderThemes(getSearchTerm());
+          document.getElementById('statusMessage').textContent = 'Refreshed.';
+          setTimeout(() => {
+            const el = document.getElementById('statusMessage');
+            if (el) el.textContent = '';
+          }, 1500);
+        });
+      }
+
+      const resetLink = document.getElementById('resetDefaultLink');
+      if (resetLink) {
+        resetLink.addEventListener('click', function(e) {
+          e.preventDefault();
+          resetToDefault();
+        });
+      }
+
+      document.getElementById('lightboxClose').addEventListener('click', closeLightbox);
+      document.getElementById('lightboxOverlay').addEventListener('click', function(e) {
+        if (e.target === this) closeLightbox();
+      });
+      document.addEventListener('keydown', function(e) {
+        if (e.key === 'Escape') closeLightbox();
+      });
+    }
+
+    renderThemes('');
+    bindEvents();
+
+    window.addEventListener('storage', (e) => {
+      if (e.key === 'decibel_active_theme') {
+        renderThemes(getSearchTerm());
+      }
+    });
+  })();
+</script>
 </body>
 </html>
