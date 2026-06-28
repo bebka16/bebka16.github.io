@@ -4,7 +4,7 @@
         box-sizing: border-box;
     }
 	
-	.monaco-editor-theme-select {
+    .monaco-editor-theme-select-css {
       theme: vs;
       --theme: vs;
     }
