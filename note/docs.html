@@ -1,1 +1,797 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Snail Note Docs</title>
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    body {
+      background: #0d1117;
+      color: #e6edf3;
+      font: 14px/1.6 -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      padding: 40px 20px;
+      max-width: 1000px;
+      margin: 0 auto;
+    }
+    a {
+      color: #58a6ff;
+      text-decoration: none;
+    }
+    a:hover {
+      text-decoration: underline;
+    }
+    .header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 18px;
+      margin-bottom: 28px;
+      flex-wrap: wrap;
+      gap: 12px;
+    }
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      font-size: 22px;
+      font-weight: 600;
+      letter-spacing: -0.3px;
+    }
+    .logo img {
+      width: 32px;
+      height: 32px;
+    }
+    .lang-switch {
+      display: flex;
+      gap: 6px;
+      background: #161b22;
+      padding: 4px;
+      border-radius: 6px;
+      border: 1px solid #30363d;
+    }
+    .lang-switch button {
+      background: transparent;
+      border: none;
+      color: #8b949e;
+      font-size: 13px;
+      padding: 4px 12px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.15s, color 0.15s;
+      font-weight: 500;
+    }
+    .lang-switch button.active {
+      background: #30363d;
+      color: #f0f6fc;
+    }
+    .lang-switch button:hover:not(.active) {
+      background: #21262d;
+      color: #e6edf3;
+    }
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.3px;
+      margin: 24px 0 12px 0;
+    }
+    h2 {
+      font-size: 20px;
+      font-weight: 500;
+      margin: 32px 0 14px 0;
+      padding-bottom: 8px;
+      border-bottom: 1px solid #30363d;
+    }
+    h3 {
+      font-size: 16px;
+      font-weight: 500;
+      margin: 24px 0 10px 0;
+    }
+    p {
+      margin: 10px 0;
+      color: #d1d9e0;
+    }
+    ul, ol {
+      padding-left: 26px;
+      margin: 10px 0 18px 0;
+      color: #d1d9e0;
+    }
+    li {
+      margin-bottom: 4px;
+    }
+    .badge {
+      display: inline-block;
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 0 10px;
+      font-size: 12px;
+      color: #8b949e;
+      font-weight: 500;
+    }
+    .code-block {
+      background: #161b22;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 16px 20px;
+      margin: 16px 0;
+      font-family: "SF Mono", "Menlo", "Monaco", "Consolas", monospace;
+      font-size: 13px;
+      overflow-x: auto;
+      color: #e6edf3;
+    }
+    .code-block .comment {
+      color: #8b949e;
+    }
+    .table-wrap {
+      overflow-x: auto;
+      margin: 18px 0;
+    }
+    table {
+      width: 100%;
+      border-collapse: collapse;
+      font-size: 13px;
+      border: 1px solid #30363d;
+    }
+    th {
+      background: #161b22;
+      text-align: left;
+      padding: 10px 14px;
+      border-bottom: 1px solid #30363d;
+      font-weight: 500;
+    }
+    td {
+      padding: 10px 14px;
+      border-bottom: 1px solid #21262d;
+      color: #d1d9e0;
+    }
+    tr:last-child td {
+      border-bottom: none;
+    }
+    .key-hint {
+      background: #21262d;
+      border: 1px solid #30363d;
+      border-radius: 4px;
+      padding: 0 8px;
+      font-size: 12px;
+      font-family: inherit;
+      color: #e6edf3;
+    }
+    .footer {
+      margin-top: 50px;
+      border-top: 1px solid #30363d;
+      padding-top: 24px;
+      font-size: 13px;
+      color: #8b949e;
+      display: flex;
+      justify-content: space-between;
+      flex-wrap: wrap;
+      gap: 10px;
+    }
+    .footer a {
+      color: #8b949e;
+    }
+    .footer a:hover {
+      color: #e6edf3;
+    }
+    .grid-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 28px 40px;
+    }
+    @media (max-width: 640px) {
+      .header { flex-direction: column; align-items: stretch; }
+      .lang-switch { align-self: flex-start; }
+      .grid-2 { grid-template-columns: 1fr; gap: 0; }
+    }
+    .highlight {
+      color: #f0883e;
+    }
+    .shortcut {
+      font-size: 12px;
+      background: #21262d;
+      padding: 0 6px;
+      border-radius: 3px;
+      border: 1px solid #30363d;
+      color: #b1bac4;
+    }
+    hr {
+      border: none;
+      border-top: 1px solid #21262d;
+      margin: 28px 0;
+    }
+  </style>
+</head>
+<body>
 
+<div class="header">
+  <div class="logo">
+    <img src="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='%23e6edf3'%3E%3Cpath d='M12 2a10 10 0 0 0-3.16 19.47c.5.09.68-.22.68-.48v-1.7c-2.78.6-3.37-1.34-3.37-1.34-.46-1.16-1.11-1.47-1.11-1.47-.9-.62.07-.6.07-.6 1 .07 1.53 1.03 1.53 1.03.9 1.52 2.34 1.08 2.91.83.09-.65.35-1.09.64-1.34-2.22-.25-4.56-1.11-4.56-4.94 0-1.09.39-1.99 1.03-2.69-.1-.25-.45-1.27.1-2.64 0 0 .84-.27 2.75 1.02A9.6 9.6 0 0 1 12 6.8c.85 0 1.7.12 2.5.35 1.91-1.3 2.75-1.02 2.75-1.02.55 1.37.2 2.39.1 2.64.64.7 1.03 1.6 1.03 2.69 0 3.84-2.34 4.68-4.57 4.93.36.31.68.92.68 1.85v2.74c0 .27.18.58.69.48A10 10 0 0 0 12 2z'/%3E%3C/svg%3E" alt="Snail">
+    <span>Snail Note</span>
+    <span class="badge" style="margin-left: 6px;">v2.х</span>
+  </div>
+  <div class="lang-switch" id="langSwitcher">
+    <button data-lang="ru" class="active">Русский</button>
+    <button data-lang="by">Беларуская</button>
+    <button data-lang="ua">Українська</button>
+    <button data-lang="en">English</button>
+  </div>
+</div>
+
+<!-- основной контент — локализуемые строки -->
+<div id="docContent">
+  <h1 data-key="docTitle">Snail Note — документация</h1>
+  <p data-key="docSub">Текстовый редактор с подсветкой синтаксиса, проводником и поддержкой расширений.</p>
+
+  <h2 data-key="toc">Содержание</h2>
+  <ul>
+    <li><a href="#intro" data-key="tocIntro">Введение</a></li>
+    <li><a href="#interface" data-key="tocInterface">Интерфейс</a></li>
+    <li><a href="#files" data-key="tocFiles">Работа с файлами и папками</a></li>
+    <li><a href="#editing" data-key="tocEditing">Редактирование</a></li>
+    <li><a href="#search" data-key="tocSearch">Поиск и замена</a></li>
+    <li><a href="#settings" data-key="tocSettings">Настройки и темы</a></li>
+    <li><a href="#extensions" data-key="tocExtensions">Расширения и темы оформления</a></li>
+    <li><a href="#shortcuts" data-key="tocShortcuts">Горячие клавиши</a></li>
+  </ul>
+
+  <!-- ВВЕДЕНИЕ -->
+  <h2 data-key="intro">Введение</h2>
+  <p data-key="introText"><strong>Snail Note</strong> — лёгкий, но мощный редактор кода, вдохновлённый современными IDE. Он построен на базе <strong>Monaco Editor</strong> (движок VS Code) и работает как настольное приложение (Electron) или в браузере. Основные возможности: подсветка синтаксиса для десятков языков, вкладки, проводник файлов, поиск с регулярными выражениями, поддержка пользовательских тем и расширений.</p>
+
+  <!-- ИНТЕРФЕЙС -->
+  <h2 data-key="interface">Интерфейс</h2>
+  <div class="grid-2">
+    <div>
+      <h3 data-key="uiTop">Верхняя панель</h3>
+      <ul>
+        <li data-key="uiTopMenu"><strong>Файл</strong> — создание, открытие, сохранение, закрытие вкладок.</li>
+        <li data-key="uiTopEdit"><strong>Правка</strong> — поиск, замена, комментирование, форматирование.</li>
+        <li data-key="uiTopView"><strong>Вид</strong> — показать/скрыть проводник, масштаб интерфейса.</li>
+        <li data-key="uiTopLang"><strong>Язык</strong> — переключение языка интерфейса (RU/BY/UA/EN).</li>
+        <li data-key="uiTopSettings"><strong>Настройки</strong> — общие, язык, уведомления, история, о программе.</li>
+        <li data-key="uiTopExt"><strong>Расширения</strong> — установка и управление расширениями и темами.</li>
+        <li data-key="uiTopHelp"><strong>Помощь</strong> — ссылка на эту документацию.</li>
+      </ul>
+    </div>
+    <div>
+      <h3 data-key="uiStatus">Строка состояния</h3>
+      <ul>
+        <li data-key="uiStatusPos">Позиция курсора (строка:столбец)</li>
+        <li data-key="uiStatusSel">Размер выделения (строк × символов)</li>
+        <li data-key="uiStatusPath">Путь к текущему файлу</li>
+        <li data-key="uiStatusEnc">Кодировка (UTF-8)</li>
+        <li data-key="uiStatusLang">Язык программирования (выпадающий список)</li>
+        <li data-key="uiStatusEol">Символы конца строки (LF / CRLF)</li>
+      </ul>
+      <p data-key="uiStatusNote"><span class="badge">i</span> Статус-бар можно отключить в настройках.</p>
+    </div>
+  </div>
+
+  <!-- ФАЙЛЫ -->
+  <h2 data-key="files">Работа с файлами и папками</h2>
+  <ul>
+    <li data-key="filesNew"><strong>Новый файл</strong> — создаёт вкладку <code>untitled_*.txt</code>.</li>
+    <li data-key="filesOpen"><strong>Открыть файл</strong> — диалог выбора файла. Поддерживаются изображения (PNG, JPG, GIF, SVG и др.) — они открываются во встроенном просмотрщике.</li>
+    <li data-key="filesFolder"><strong>Открыть папку</strong> — показывает содержимое папки в проводнике слева. Можно навигировать по подпапкам, кликать по файлам для открытия.</li>
+    <li data-key="filesSave"><strong>Сохранить</strong> — сохраняет текущий файл. Если файл безымянный — откроется диалог «Сохранить как».</li>
+    <li data-key="filesSaveAs"><strong>Сохранить как</strong> — сохранить копию под новым именем.</li>
+    <li data-key="filesClose"><strong>Закрыть вкладку</strong> — закрывает текущий файл (без подтверждения, но история сохраняется).</li>
+    <li data-key="filesCloseAll">Кнопка <strong>✕ (закрыть все)</strong> на панели быстрых действий закрывает все вкладки.</li>
+  </ul>
+  <p data-key="filesExplorer"><strong>Проводник</strong> — показывает дерево файлов. Поддерживается навигация «Назад» и кнопка очистки. Размер проводника можно менять перетаскиванием правой границы.</p>
+
+  <!-- РЕДАКТИРОВАНИЕ -->
+  <h2 data-key="editing">Редактирование</h2>
+  <ul>
+    <li data-key="editingHighlight">Автоматическая подсветка синтаксиса для <strong>JavaScript, TypeScript, HTML, CSS, Python, PHP, Java, C++, Go, Ruby, Rust, SQL, XML, YAML, Markdown, Shell</strong> и других.</li>
+    <li data-key="editingLang">Язык можно переключить вручную через выпадающий список в статус-баре или через меню «Язык».</li>
+    <li data-key="editingComment"><strong>Закомментировать</strong> — добавляет/убирает комментарий для текущей строки или выделенного блока (<kbd>Ctrl+/</kbd>).</li>
+    <li data-key="editingFormat"><strong>Форматировать</strong> — автоматически выравнивает код (доступно для JS, TS, HTML, CSS, JSON, Markdown).</li>
+    <li data-key="editingUndo"><strong>Отменить / Повторить</strong> — стандартные <kbd>Ctrl+Z</kbd> / <kbd>Ctrl+Y</kbd>.</li>
+    <li data-key="editingContext">Контекстное меню (ПКМ) — поиск, замена, комментарий, форматирование, копировать/вырезать/вставить, поиск в Google, смена регистра.</li>
+  </ul>
+
+  <!-- ПОИСК И ЗАМЕНА -->
+  <h2 data-key="search">Поиск и замена</h2>
+  <ul>
+    <li data-key="searchFind">Найти — <kbd>Ctrl+F</kbd> (открывается панель поиска).</li>
+    <li data-key="searchReplace">Заменить — <kbd>Ctrl+H</kbd> (появляется поле замены).</li>
+    <li data-key="searchOptions">Опции: <strong>учитывать регистр</strong>, <strong>целое слово</strong>, <strong>регулярные выражения</strong> (синтаксис PCRE).</li>
+    <li data-key="searchNav">Навигация по совпадениям: кнопки «Найти» (следующее), «Назад» (предыдущее).</li>
+    <li data-key="searchReplaceAll">Кнопки «Заменить» (одно) и «Все» (заменить все).</li>
+    <li data-key="searchCount">Счётчик совпадений отображается справа от опций.</li>
+  </ul>
+
+  <!-- НАСТРОЙКИ -->
+  <h2 data-key="settings">Настройки и темы</h2>
+  <ul>
+    <li data-key="settingsGeneral"><strong>Общее</strong>: включение/выключение статус-бара, иконок языков на вкладках.</li>
+    <li data-key="settingsLang"><strong>Язык интерфейса</strong>: русский, белорусский, украинский, английский (выбор сохраняется).</li>
+    <li data-key="settingsNotifications"><strong>Уведомления об обновлениях</strong> — при наличии новой версии показывается диалог.</li>
+    <li data-key="settingsHistory"><strong>История</strong> — список открытых/сохранённых файлов с возможностью повторного открытия или удаления записи.</li>
+    <li data-key="settingsAbout"><strong>О программе</strong> — версия, автор, ссылки.</li>
+    <li data-key="settingsScale"><strong>Масштаб</strong> — отдельно размер шрифта редактора (10–30px) и общий масштаб интерфейса (80%–150%).</li>
+  </ul>
+
+  <!-- РАСШИРЕНИЯ -->
+  <h2 data-key="extensions">Расширения и темы оформления</h2>
+  <ul>
+    <li data-key="extensionsLoad">Snail Note поддерживает загрузку <strong>пользовательских расширений</strong> (JavaScript) и <strong>тем</strong> (CSS).</li>
+    <li data-key="extensionsMenu">Через меню «Расширения» → «Расширения» открывается страница управления (встроенный iframe с каталогом).</li>
+    <li data-key="extensionsThemes">«Расширения» → «Темы» — позволяет выбрать и применить готовую тему Monaco.</li>
+    <li data-key="extensionsCustom">Темы можно устанавливать через <code>custom-theme-link</code> — автоматически парсится CSS-правило с объявлением <code>theme: "vs-dark"</code> или <code>--theme: "hc-black"</code>.</li>
+    <li data-key="extensionsBlob">Расширения, загруженные как Blob-URL, кешируются и восстанавливаются при перезапуске.</li>
+  </ul>
+
+  <!-- ГОРЯЧИЕ КЛАВИШИ -->
+  <h2 data-key="shortcuts">Горячие клавиши</h2>
+  <div class="table-wrap">
+    <table>
+      <thead><tr><th data-key="shortcutAction">Действие</th><th data-key="shortcutKey">Сочетание</th></tr></thead>
+      <tbody>
+        <tr><td data-key="scNew">Новый файл</td><td><kbd>Ctrl+N</kbd></td></tr>
+        <tr><td data-key="scOpen">Открыть файл</td><td><kbd>Ctrl+O</kbd></td></tr>
+        <tr><td data-key="scSave">Сохранить</td><td><kbd>Ctrl+S</kbd></td></tr>
+        <tr><td data-key="scSaveAs">Сохранить как</td><td><kbd>Ctrl+Shift+S</kbd></td></tr>
+        <tr><td data-key="scCloseTab">Закрыть вкладку</td><td><kbd>Ctrl+W</kbd></td></tr>
+        <tr><td data-key="scCloseAll">Закрыть все вкладки</td><td><kbd>Ctrl+Shift+W</kbd></td></tr>
+        <tr><td data-key="scFind">Найти</td><td><kbd>Ctrl+F</kbd></td></tr>
+        <tr><td data-key="scReplace">Заменить</td><td><kbd>Ctrl+H</kbd></td></tr>
+        <tr><td data-key="scComment">Закомментировать</td><td><kbd>Ctrl+/</kbd></td></tr>
+        <tr><td data-key="scFormat">Форматировать</td><td><kbd>Ctrl+Shift+F</kbd></td></tr>
+        <tr><td data-key="scUndo">Отменить</td><td><kbd>Ctrl+Z</kbd></td></tr>
+        <tr><td data-key="scRedo">Повторить</td><td><kbd>Ctrl+Y</kbd></td></tr>
+        <tr><td data-key="scExplorer">Показать/скрыть проводник</td><td><kbd>Ctrl+B</kbd></td></tr>
+        <tr><td data-key="scScale">Масштаб</td><td><kbd>Ctrl+Shift+P</kbd></td></tr>
+        <tr><td data-key="scZoomIn">Увеличить масштаб</td><td><kbd>Ctrl+=</kbd></td></tr>
+        <tr><td data-key="scZoomOut">Уменьшить масштаб</td><td><kbd>Ctrl+-</kbd></td></tr>
+        <tr><td data-key="scZoomReset">Сбросить масштаб</td><td><kbd>Ctrl+0</kbd></td></tr>
+      </tbody>
+    </table>
+  </div>
+  <p style="margin-top: 8px;" data-key="scNote">Сочетания клавиш также работают в меню (подсказки отображаются при наведении на пункты).</p>
+
+  <hr>
+
+  <p data-key="footerNote">Snail Note создан <strong>bebka16</strong> · Исходный код и доп. информация доступны на <a href="https://github.com/bebka16/note" target="_blank">GitHub</a>.</p>
+</div>
+
+<div class="footer">
+  <span>© 2026 Snail Note · <span data-key="footerVersion">Версия 2.0</span></span>
+  <span><a href="#" onclick="document.querySelector('.lang-switch button[data-lang=\'en\']').click(); return false;" data-key="footerSwitchEn">English</a> · <a href="#" onclick="document.querySelector('.lang-switch button[data-lang=\'ru\']').click(); return false;" data-key="footerSwitchRu">Русский</a></span>
+</div>
+
+<script>
+  (function() {
+    // локализации
+    const locales = {
+      ru: {
+        docTitle: 'Snail Note — документация',
+        docSub: 'Текстовый редактор с подсветкой синтаксиса, проводником и поддержкой расширений.',
+        toc: 'Содержание',
+        tocIntro: 'Введение',
+        tocInterface: 'Интерфейс',
+        tocFiles: 'Работа с файлами и папками',
+        tocEditing: 'Редактирование',
+        tocSearch: 'Поиск и замена',
+        tocSettings: 'Настройки и темы',
+        tocExtensions: 'Расширения и темы оформления',
+        tocShortcuts: 'Горячие клавиши',
+        intro: 'Введение',
+        introText: 'Snail Note — лёгкий, но мощный редактор кода, вдохновлённый современными IDE. Он построен на базе Monaco Editor (движок VS Code) и работает как настольное приложение (Electron) или в браузере. Основные возможности: подсветка синтаксиса для десятков языков, вкладки, проводник файлов, поиск с регулярными выражениями, поддержка пользовательских тем и расширений.',
+        interface: 'Интерфейс',
+        uiTop: 'Верхняя панель',
+        uiTopMenu: 'Файл — создание, открытие, сохранение, закрытие вкладок.',
+        uiTopEdit: 'Правка — поиск, замена, комментирование, форматирование.',
+        uiTopView: 'Вид — показать/скрыть проводник, масштаб интерфейса.',
+        uiTopLang: 'Язык — переключение языка интерфейса (RU/BY/UA/EN).',
+        uiTopSettings: 'Настройки — общие, язык, уведомления, история, о программе.',
+        uiTopExt: 'Расширения — установка и управление расширениями и темами.',
+        uiTopHelp: 'Помощь — ссылка на эту документацию.',
+        uiStatus: 'Строка состояния',
+        uiStatusPos: 'Позиция курсора (строка:столбец)',
+        uiStatusSel: 'Размер выделения (строк × символов)',
+        uiStatusPath: 'Путь к текущему файлу',
+        uiStatusEnc: 'Кодировка (UTF-8)',
+        uiStatusLang: 'Язык программирования (выпадающий список)',
+        uiStatusEol: 'Символы конца строки (LF / CRLF)',
+        uiStatusNote: 'Статус-бар можно отключить в настройках.',
+        files: 'Работа с файлами и папками',
+        filesNew: 'Новый файл — создаёт вкладку untitled_*.txt.',
+        filesOpen: 'Открыть файл — диалог выбора файла. Поддерживаются изображения (PNG, JPG, GIF, SVG и др.) — они открываются во встроенном просмотрщике.',
+        filesFolder: 'Открыть папку — показывает содержимое папки в проводнике слева. Можно навигировать по подпапкам, кликать по файлам для открытия.',
+        filesSave: 'Сохранить — сохраняет текущий файл. Если файл безымянный — откроется диалог «Сохранить как».',
+        filesSaveAs: 'Сохранить как — сохранить копию под новым именем.',
+        filesClose: 'Закрыть вкладку — закрывает текущий файл (без подтверждения, но история сохраняется).',
+        filesCloseAll: 'Кнопка ✕ (закрыть все) на панели быстрых действий закрывает все вкладки.',
+        filesExplorer: 'Проводник — показывает дерево файлов. Поддерживается навигация «Назад» и кнопка очистки. Размер проводника можно менять перетаскиванием правой границы.',
+        editing: 'Редактирование',
+        editingHighlight: 'Автоматическая подсветка синтаксиса для JavaScript, TypeScript, HTML, CSS, Python, PHP, Java, C++, Go, Ruby, Rust, SQL, XML, YAML, Markdown, Shell и других.',
+        editingLang: 'Язык можно переключить вручную через выпадающий список в статус-баре или через меню «Язык».',
+        editingComment: 'Закомментировать — добавляет/убирает комментарий для текущей строки или выделенного блока (Ctrl+/).',
+        editingFormat: 'Форматировать — автоматически выравнивает код (доступно для JS, TS, HTML, CSS, JSON, Markdown).',
+        editingUndo: 'Отменить / Повторить — стандартные Ctrl+Z / Ctrl+Y.',
+        editingContext: 'Контекстное меню (ПКМ) — поиск, замена, комментарий, форматирование, копировать/вырезать/вставить, поиск в Google, смена регистра.',
+        search: 'Поиск и замена',
+        searchFind: 'Найти — Ctrl+F (открывается панель поиска).',
+        searchReplace: 'Заменить — Ctrl+H (появляется поле замены).',
+        searchOptions: 'Опции: учитывать регистр, целое слово, регулярные выражения (синтаксис PCRE).',
+        searchNav: 'Навигация по совпадениям: кнопки «Найти» (следующее), «Назад» (предыдущее).',
+        searchReplaceAll: 'Кнопки «Заменить» (одно) и «Все» (заменить все).',
+        searchCount: 'Счётчик совпадений отображается справа от опций.',
+        settings: 'Настройки и темы',
+        settingsGeneral: 'Общее: включение/выключение статус-бара, иконок языков на вкладках.',
+        settingsLang: 'Язык интерфейса: русский, белорусский, украинский, английский (выбор сохраняется).',
+        settingsNotifications: 'Уведомления об обновлениях — при наличии новой версии показывается диалог.',
+        settingsHistory: 'История — список открытых/сохранённых файлов с возможностью повторного открытия или удаления записи.',
+        settingsAbout: 'О программе — версия, автор, ссылки.',
+        settingsScale: 'Масштаб — отдельно размер шрифта редактора (10–30px) и общий масштаб интерфейса (80%–150%).',
+        extensions: 'Расширения и темы оформления',
+        extensionsLoad: 'Snail Note поддерживает загрузку пользовательских расширений (JavaScript) и тем (CSS).',
+        extensionsMenu: 'Через меню «Расширения» → «Расширения» открывается страница управления (встроенный iframe с каталогом).',
+        extensionsThemes: '«Расширения» → «Темы» — позволяет выбрать и применить готовую тему Monaco.',
+        extensionsCustom: 'Темы можно устанавливать через custom-theme-link — автоматически парсится CSS-правило с объявлением theme: "vs-dark" или --theme: "hc-black".',
+        extensionsBlob: 'Расширения, загруженные как Blob-URL, кешируются и восстанавливаются при перезапуске.',
+        shortcuts: 'Горячие клавиши',
+        shortcutAction: 'Действие',
+        shortcutKey: 'Сочетание',
+        scNew: 'Новый файл',
+        scOpen: 'Открыть файл',
+        scSave: 'Сохранить',
+        scSaveAs: 'Сохранить как',
+        scCloseTab: 'Закрыть вкладку',
+        scCloseAll: 'Закрыть все вкладки',
+        scFind: 'Найти',
+        scReplace: 'Заменить',
+        scComment: 'Закомментировать',
+        scFormat: 'Форматировать',
+        scUndo: 'Отменить',
+        scRedo: 'Повторить',
+        scExplorer: 'Показать/скрыть проводник',
+        scScale: 'Масштаб',
+        scZoomIn: 'Увеличить масштаб',
+        scZoomOut: 'Уменьшить масштаб',
+        scZoomReset: 'Сбросить масштаб',
+        scNote: 'Сочетания клавиш также работают в меню (подсказки отображаются при наведении на пункты).',
+        footerNote: 'Snail Note создан bebka16 · Исходный код и доп. информация доступны на GitHub.',
+        footerVersion: 'Версия 2.0',
+        footerSwitchEn: 'English',
+        footerSwitchRu: 'Русский'
+      },
+      by: {
+        docTitle: 'Snail Note — дакументацыя',
+        docSub: 'Тэкставы рэдактар з падсветкай сінтаксісу, правадніком і падтрымкай пашырэнняў.',
+        toc: 'Змест',
+        tocIntro: 'Уводзіны',
+        tocInterface: 'Інтэрфейс',
+        tocFiles: 'Праца з файламі і папкамі',
+        tocEditing: 'Рэдагаванне',
+        tocSearch: 'Пошук і замена',
+        tocSettings: 'Налады і тэмы',
+        tocExtensions: 'Пашырэнні і тэмы афармлення',
+        tocShortcuts: 'Гарачыя клавішы',
+        intro: 'Уводзіны',
+        introText: 'Snail Note — лёгкі, але магутны рэдактар кода, натхнёны сучаснымі IDE. Ён пабудаваны на базе Monaco Editor (рухавік VS Code) і працуе як настольная праграма (Electron) або ў браўзеры. Асноўныя магчымасці: падсветка сінтаксісу для дзясяткаў моў, укладкі, праваднік файлаў, пошук з рэгулярнымі выразамі, падтрымка карыстальніцкіх тэм і пашырэнняў.',
+        interface: 'Інтэрфейс',
+        uiTop: 'Верхняя панэль',
+        uiTopMenu: 'Файл — стварэнне, адкрыццё, захаванне, закрыццё ўкладак.',
+        uiTopEdit: 'Праўка — пошук, замена, каментаванне, фарматаванне.',
+        uiTopView: 'Выгляд — паказаць/схаваць праваднік, маштаб інтэрфейсу.',
+        uiTopLang: 'Мова — пераключэнне мовы інтэрфейсу (RU/BY/UA/EN).',
+        uiTopSettings: 'Налады — агульныя, мова, апавяшчэнні, гісторыя, пра праграму.',
+        uiTopExt: 'Пашырэнні — ўстаноўка і кіраванне пашырэннямі і тэмамі.',
+        uiTopHelp: 'Дапамога — спасылка на гэту дакументацыю.',
+        uiStatus: 'Радок стану',
+        uiStatusPos: 'Пазіцыя курсора (радок:слупок)',
+        uiStatusSel: 'Памер выдзялення (радкоў × сімвалаў)',
+        uiStatusPath: 'Шлях да бягучага файла',
+        uiStatusEnc: 'Кадыроўка (UTF-8)',
+        uiStatusLang: 'Мова праграмавання (выпадальны спіс)',
+        uiStatusEol: 'Сімвалы канца радка (LF / CRLF)',
+        uiStatusNote: 'Радок стану можна адключыць у наладах.',
+        files: 'Праца з файламі і папкамі',
+        filesNew: 'Новы файл — стварае ўкладку untitled_*.txt.',
+        filesOpen: 'Адкрыць файл — дыялог выбару файла. Падтрымліваюцца выявы (PNG, JPG, GIF, SVG і інш.) — яны адкрываюцца ва ўбудаваным праглядальніку.',
+        filesFolder: 'Адкрыць папку — паказвае змесціва папкі ў правадніку злева. Можна навігаваць па падпапках, клікаць па файлах для адкрыцця.',
+        filesSave: 'Захаваць — захоўвае бягучы файл. Калі файл безназоўны — адкрыецца дыялог «Захаваць як».',
+        filesSaveAs: 'Захаваць як — захаваць копію пад новым імем.',
+        filesClose: 'Закрыць ўкладку — закрывае бягучы файл (без пацверджання, але гісторыя захоўваецца).',
+        filesCloseAll: 'Кнопка ✕ (закрыць усё) на панэлі хуткіх дзеянняў закрывае ўсе ўкладкі.',
+        filesExplorer: 'Праваднік — паказвае дрэва файлаў. Падтрымліваецца навігацыя «Назад» і кнопка ачысткі. Памер правадніка можна мяняць перацягваннем правай мяжы.',
+        editing: 'Рэдагаванне',
+        editingHighlight: 'Аўтаматычная падсветка сінтаксісу для JavaScript, TypeScript, HTML, CSS, Python, PHP, Java, C++, Go, Ruby, Rust, SQL, XML, YAML, Markdown, Shell і іншых.',
+        editingLang: 'Мову можна пераключыць уручную праз выпадальны спіс у радку стану або праз меню «Мова».',
+        editingComment: 'Закментаваць — дадае/прыбірае каментар для бягучага радка або выдзеленага блока (Ctrl+/).',
+        editingFormat: 'Фарматаваць — аўтаматычна выраўноўвае код (даступна для JS, TS, HTML, CSS, JSON, Markdown).',
+        editingUndo: 'Адмяніць / Паўтарыць — стандартныя Ctrl+Z / Ctrl+Y.',
+        editingContext: 'Кантэкстнае меню (ПКМ) — пошук, замена, каментар, фарматаванне, скапіраваць/выразаць/ўставіць, пошук у Google, змена рэгістра.',
+        search: 'Пошук і замена',
+        searchFind: 'Знайсці — Ctrl+F (адкрываецца панэль пошуку).',
+        searchReplace: 'Замяніць — Ctrl+H (з’яўляецца поле замены).',
+        searchOptions: 'Опцыі: улічваць рэгістр, цэлае слова, рэгулярныя выразы (сінтаксіс PCRE).',
+        searchNav: 'Навігацыя па супадзеннях: кнопкі «Знайсці» (наступнае), «Назад» (папярэдняе).',
+        searchReplaceAll: 'Кнопкі «Замяніць» (адно) і «Усе» (замяніць усе).',
+        searchCount: 'Лічыльнік супадзенняў адлюстроўваецца справа ад опцый.',
+        settings: 'Налады і тэмы',
+        settingsGeneral: 'Агульнае: уключэнне/выключэнне радка стану, іконак моў на ўкладках.',
+        settingsLang: 'Мова інтэрфейсу: руская, беларуская, украінская, англійская (выбар захоўваецца).',
+        settingsNotifications: 'Апавяшчэнні пра абнаўленні — пры наяўнасці новай версіі паказваецца дыялог.',
+        settingsHistory: 'Гісторыя — спіс адкрытых/захаваных файлаў з магчымасцю паўторнага адкрыцця або выдалення запісу.',
+        settingsAbout: 'Пра праграму — версія, аўтар, спасылкі.',
+        settingsScale: 'Маштаб — асобна памер шрыфта рэдактара (10–30px) і агульны маштаб інтэрфейсу (80%–150%).',
+        extensions: 'Пашырэнні і тэмы афармлення',
+        extensionsLoad: 'Snail Note падтрымлівае загрузку карыстальніцкіх пашырэнняў (JavaScript) і тэм (CSS).',
+        extensionsMenu: 'Праз меню «Пашырэнні» → «Пашырэнні» адкрываецца старонка кіравання (убудаваны iframe з каталогам).',
+        extensionsThemes: '«Пашырэнні» → «Тэмы» — дазваляе выбраць і прымяніць гатовую тэму Monaco.',
+        extensionsCustom: 'Тэмы можна ўсталёўваць праз custom-theme-link — аўтаматычна парсіцца CSS-правіла з аб’явай theme: "vs-dark" або --theme: "hc-black".',
+        extensionsBlob: 'Пашырэнні, загружаныя як Blob-URL, кэшуюцца і аднаўляюцца пры перазапуску.',
+        shortcuts: 'Гарачыя клавішы',
+        shortcutAction: 'Дзеянне',
+        shortcutKey: 'Спалучэнне',
+        scNew: 'Новы файл',
+        scOpen: 'Адкрыць файл',
+        scSave: 'Захаваць',
+        scSaveAs: 'Захаваць як',
+        scCloseTab: 'Закрыць ўкладку',
+        scCloseAll: 'Закрыць усе ўкладкі',
+        scFind: 'Знайсці',
+        scReplace: 'Замяніць',
+        scComment: 'Закментаваць',
+        scFormat: 'Фарматаваць',
+        scUndo: 'Адмяніць',
+        scRedo: 'Паўтарыць',
+        scExplorer: 'Паказаць/схаваць праваднік',
+        scScale: 'Маштаб',
+        scZoomIn: 'Павялічыць маштаб',
+        scZoomOut: 'Паменшыць маштаб',
+        scZoomReset: 'Скінуць маштаб',
+        scNote: 'Спалучэнні клавіш таксама працуюць у меню (падказкі адлюстроўваюцца пры навядзенні на пункты).',
+        footerNote: 'Snail Note створаны bebka16 · Зыходны код і дадатковая інфармацыя даступныя на GitHub.',
+        footerVersion: 'Версія 2.0',
+        footerSwitchEn: 'English',
+        footerSwitchRu: 'Русский'
+      },
+      ua: {
+        docTitle: 'Snail Note — документація',
+        docSub: 'Текстовий редактор з підсвіткою синтаксису, провідником і підтримкою розширень.',
+        toc: 'Зміст',
+        tocIntro: 'Вступ',
+        tocInterface: 'Інтерфейс',
+        tocFiles: 'Робота з файлами та папками',
+        tocEditing: 'Редагування',
+        tocSearch: 'Пошук і заміна',
+        tocSettings: 'Налаштування та теми',
+        tocExtensions: 'Розширення та теми оформлення',
+        tocShortcuts: 'Гарячі клавіші',
+        intro: 'Вступ',
+        introText: 'Snail Note — легкий, але потужний редактор коду, натхненний сучасними IDE. Він побудований на базі Monaco Editor (рушій VS Code) і працює як настільна програма (Electron) або в браузері. Основні можливості: підсвітка синтаксису для десятків мов, вкладки, провідник файлів, пошук з регулярними виразами, підтримка користувацьких тем і розширень.',
+        interface: 'Інтерфейс',
+        uiTop: 'Верхня панель',
+        uiTopMenu: 'Файл — створення, відкриття, збереження, закриття вкладок.',
+        uiTopEdit: 'Правка — пошук, заміна, коментування, форматування.',
+        uiTopView: 'Вид — показати/приховати провідник, масштаб інтерфейсу.',
+        uiTopLang: 'Мова — перемикання мови інтерфейсу (RU/BY/UA/EN).',
+        uiTopSettings: 'Налаштування — загальні, мова, сповіщення, історія, про програму.',
+        uiTopExt: 'Розширення — встановлення та керування розширеннями і темами.',
+        uiTopHelp: 'Допомога — посилання на цю документацію.',
+        uiStatus: 'Рядок стану',
+        uiStatusPos: 'Позиція курсора (рядок:стовпець)',
+        uiStatusSel: 'Розмір виділення (рядків × символів)',
+        uiStatusPath: 'Шлях до поточного файлу',
+        uiStatusEnc: 'Кодування (UTF-8)',
+        uiStatusLang: 'Мова програмування (випадаючий список)',
+        uiStatusEol: 'Символи кінця рядка (LF / CRLF)',
+        uiStatusNote: 'Рядок стану можна вимкнути в налаштуваннях.',
+        files: 'Робота з файлами та папками',
+        filesNew: 'Новий файл — створює вкладку untitled_*.txt.',
+        filesOpen: 'Відкрити файл — діалог вибору файлу. Підтримуються зображення (PNG, JPG, GIF, SVG та ін.) — вони відкриваються у вбудованому переглядачі.',
+        filesFolder: 'Відкрити папку — показує вміст папки в провіднику зліва. Можна навігувати по підпапках, клікати по файлах для відкриття.',
+        filesSave: 'Зберегти — зберігає поточний файл. Якщо файл безіменний — відкриється діалог «Зберегти як».',
+        filesSaveAs: 'Зберегти як — зберегти копію під новим іменем.',
+        filesClose: 'Закрити вкладку — закриває поточний файл (без підтвердження, але історія зберігається).',
+        filesCloseAll: 'Кнопка ✕ (закрити всі) на панелі швидких дій закриває всі вкладки.',
+        filesExplorer: 'Провідник — показує дерево файлів. Підтримується навігація «Назад» і кнопка очищення. Розмір провідника можна змінювати перетягуванням правої межі.',
+        editing: 'Редагування',
+        editingHighlight: 'Автоматична підсвітка синтаксису для JavaScript, TypeScript, HTML, CSS, Python, PHP, Java, C++, Go, Ruby, Rust, SQL, XML, YAML, Markdown, Shell та інших.',
+        editingLang: 'Мову можна перемкнути вручну через випадаючий список у рядку стану або через меню «Мова».',
+        editingComment: 'Закоментувати — додає/прибирає коментар для поточного рядка або виділеного блока (Ctrl+/).',
+        editingFormat: 'Форматувати — автоматично вирівнює код (доступно для JS, TS, HTML, CSS, JSON, Markdown).',
+        editingUndo: 'Скасувати / Повторити — стандартні Ctrl+Z / Ctrl+Y.',
+        editingContext: 'Контекстне меню (ПКМ) — пошук, заміна, коментар, форматування, копіювати/вирізати/вставити, пошук у Google, зміна регістру.',
+        search: 'Пошук і заміна',
+        searchFind: 'Знайти — Ctrl+F (відкривається панель пошуку).',
+        searchReplace: 'Замінити — Ctrl+H (з’являється поле заміни).',
+        searchOptions: 'Опції: враховувати регістр, ціле слово, регулярні вирази (синтаксис PCRE).',
+        searchNav: 'Навігація по співпадіннях: кнопки «Знайти» (наступне), «Назад» (попереднє).',
+        searchReplaceAll: 'Кнопки «Замінити» (одне) і «Всі» (замінити всі).',
+        searchCount: 'Лічильник співпадінь відображається справа від опцій.',
+        settings: 'Налаштування та теми',
+        settingsGeneral: 'Загальне: ввімкнення/вимкнення рядка стану, іконок мов на вкладках.',
+        settingsLang: 'Мова інтерфейсу: російська, білоруська, українська, англійська (вибір зберігається).',
+        settingsNotifications: 'Сповіщення про оновлення — при наявності нової версії показується діалог.',
+        settingsHistory: 'Історія — список відкритих/збережених файлів з можливістю повторного відкриття або видалення запису.',
+        settingsAbout: 'Про програму — версія, автор, посилання.',
+        settingsScale: 'Масштаб — окремо розмір шрифта редактора (10–30px) і загальний масштаб інтерфейсу (80%–150%).',
+        extensions: 'Розширення та теми оформлення',
+        extensionsLoad: 'Snail Note підтримує завантаження користувацьких розширень (JavaScript) і тем (CSS).',
+        extensionsMenu: 'Через меню «Розширення» → «Розширення» відкривається сторінка керування (вбудований iframe з каталогом).',
+        extensionsThemes: '«Розширення» → «Теми» — дозволяє вибрати і застосувати готову тему Monaco.',
+        extensionsCustom: 'Теми можна встановлювати через custom-theme-link — автоматично парситься CSS-правило з оголошенням theme: "vs-dark" або --theme: "hc-black".',
+        extensionsBlob: 'Розширення, завантажені як Blob-URL, кешуються і відновлюються при перезапуску.',
+        shortcuts: 'Гарячі клавіші',
+        shortcutAction: 'Дія',
+        shortcutKey: 'Сполучення',
+        scNew: 'Новий файл',
+        scOpen: 'Відкрити файл',
+        scSave: 'Зберегти',
+        scSaveAs: 'Зберегти як',
+        scCloseTab: 'Закрити вкладку',
+        scCloseAll: 'Закрити всі вкладки',
+        scFind: 'Знайти',
+        scReplace: 'Замінити',
+        scComment: 'Закоментувати',
+        scFormat: 'Форматувати',
+        scUndo: 'Скасувати',
+        scRedo: 'Повторити',
+        scExplorer: 'Показати/приховати провідник',
+        scScale: 'Масштаб',
+        scZoomIn: 'Збільшити масштаб',
+        scZoomOut: 'Зменшити масштаб',
+        scZoomReset: 'Скинути масштаб',
+        scNote: 'Сполучення клавіш також працюють у меню (підказки відображаються при наведенні на пункти).',
+        footerNote: 'Snail Note створено bebka16 · Вихідний код та додаткова інформація доступні на GitHub.',
+        footerVersion: 'Версія 2.0',
+        footerSwitchEn: 'English',
+        footerSwitchRu: 'Русский'
+      },
+      en: {
+        docTitle: 'Snail Note — Documentation',
+        docSub: 'Text editor with syntax highlighting, file explorer, and extension support.',
+        toc: 'Contents',
+        tocIntro: 'Introduction',
+        tocInterface: 'Interface',
+        tocFiles: 'Files & Folders',
+        tocEditing: 'Editing',
+        tocSearch: 'Search & Replace',
+        tocSettings: 'Settings & Themes',
+        tocExtensions: 'Extensions & Themes',
+        tocShortcuts: 'Keyboard shortcuts',
+        intro: 'Introduction',
+        introText: 'Snail Note is a lightweight yet powerful code editor inspired by modern IDEs. It is built on top of the Monaco Editor (VS Code engine) and works as a desktop application (Electron) or in the browser. Key features: syntax highlighting for dozens of languages, tabs, file explorer, regex search, custom themes and extensions.',
+        interface: 'Interface',
+        uiTop: 'Top bar',
+        uiTopMenu: 'File — create, open, save, close tabs.',
+        uiTopEdit: 'Edit — find, replace, comment, format.',
+        uiTopView: 'View — toggle explorer, zoom interface.',
+        uiTopLang: 'Language — switch UI language (RU/BY/UA/EN).',
+        uiTopSettings: 'Settings — general, language, notifications, history, about.',
+        uiTopExt: 'Extensions — install and manage extensions and themes.',
+        uiTopHelp: 'Help — link to this documentation.',
+        uiStatus: 'Status bar',
+        uiStatusPos: 'Cursor position (line:column)',
+        uiStatusSel: 'Selection size (lines × chars)',
+        uiStatusPath: 'Path to current file',
+        uiStatusEnc: 'Encoding (UTF-8)',
+        uiStatusLang: 'Programming language (dropdown)',
+        uiStatusEol: 'Line endings (LF / CRLF)',
+        uiStatusNote: 'Status bar can be disabled in settings.',
+        files: 'Files & Folders',
+        filesNew: 'New file — creates an untitled_*.txt tab.',
+        filesOpen: 'Open file — file picker dialog. Images (PNG, JPG, GIF, SVG, etc.) open in the built-in viewer.',
+        filesFolder: 'Open folder — shows folder contents in the left explorer. Navigate subfolders, click files to open.',
+        filesSave: 'Save — saves the current file. If unnamed, "Save As" dialog opens.',
+        filesSaveAs: 'Save As — save a copy under a new name.',
+        filesClose: 'Close tab — closes the current file (no confirmation, but history is kept).',
+        filesCloseAll: '✕ (close all) button on the quick actions bar closes all tabs.',
+        filesExplorer: 'Explorer — shows file tree. Back navigation and clear button supported. Resize by dragging the right border.',
+        editing: 'Editing',
+        editingHighlight: 'Automatic syntax highlighting for JavaScript, TypeScript, HTML, CSS, Python, PHP, Java, C++, Go, Ruby, Rust, SQL, XML, YAML, Markdown, Shell and more.',
+        editingLang: 'Language can be manually changed via the status bar dropdown or the Language menu.',
+        editingComment: 'Comment — toggles comment on current line or selection (Ctrl+/).',
+        editingFormat: 'Format — auto-indent and format code (available for JS, TS, HTML, CSS, JSON, Markdown).',
+        editingUndo: 'Undo / Redo — standard Ctrl+Z / Ctrl+Y.',
+        editingContext: 'Context menu (right-click) — find, replace, comment, format, copy/cut/paste, search Google, change case.',
+        search: 'Search & Replace',
+        searchFind: 'Find — Ctrl+F (opens search panel).',
+        searchReplace: 'Replace — Ctrl+H (shows replace field).',
+        searchOptions: 'Options: match case, whole word, regular expressions (PCRE syntax).',
+        searchNav: 'Navigate matches: "Find" (next), "Back" (previous).',
+        searchReplaceAll: 'Buttons: "Replace" (one) and "All" (replace all).',
+        searchCount: 'Match counter appears on the right of options.',
+        settings: 'Settings & Themes',
+        settingsGeneral: 'General: toggle status bar, language icons on tabs.',
+        settingsLang: 'UI language: Russian, Belarusian, Ukrainian, English (choice is saved).',
+        settingsNotifications: 'Update notifications — shows a dialog when a new version is available.',
+        settingsHistory: 'History — list of opened/saved files with reopen and delete actions.',
+        settingsAbout: 'About — version, author, links.',
+        settingsScale: 'Scale — separate editor font size (10–30px) and overall interface zoom (80%–150%).',
+        extensions: 'Extensions & Themes',
+        extensionsLoad: 'Snail Note supports loading user extensions (JavaScript) and themes (CSS).',
+        extensionsMenu: 'Extensions → Extensions opens a management page (embedded iframe with a catalog).',
+        extensionsThemes: 'Extensions → Themes lets you pick and apply a ready-made Monaco theme.',
+        extensionsCustom: 'Themes can be installed via custom-theme-link — it automatically parses a CSS rule with theme: "vs-dark" or --theme: "hc-black".',
+        extensionsBlob: 'Extensions loaded as Blob-URLs are cached and restored on restart.',
+        shortcuts: 'Keyboard shortcuts',
+        shortcutAction: 'Action',
+        shortcutKey: 'Shortcut',
+        scNew: 'New file',
+        scOpen: 'Open file',
+        scSave: 'Save',
+        scSaveAs: 'Save As',
+        scCloseTab: 'Close tab',
+        scCloseAll: 'Close all tabs',
+        scFind: 'Find',
+        scReplace: 'Replace',
+        scComment: 'Comment',
+        scFormat: 'Format',
+        scUndo: 'Undo',
+        scRedo: 'Redo',
+        scExplorer: 'Toggle explorer',
+        scScale: 'Scale',
+        scZoomIn: 'Zoom in',
+        scZoomOut: 'Zoom out',
+        scZoomReset: 'Reset zoom',
+        scNote: 'Keyboard shortcuts also work in menus (tooltips show on hover).',
+        footerNote: 'Snail Note created by bebka16 · Source code and more info on GitHub.',
+        footerVersion: 'Version 2.0',
+        footerSwitchEn: 'English',
+        footerSwitchRu: 'Русский'
+      }
+    };
+
+    const langButtons = document.querySelectorAll('#langSwitcher button');
+    const content = document.getElementById('docContent');
+
+    function setLanguage(lang) {
+      // обновить активную кнопку
+      langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === lang));
+      // обновить все элементы с data-key
+      const strings = locales[lang] || locales.ru;
+      content.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (strings[key] !== undefined) {
+          el.textContent = strings[key];
+        }
+      });
+      // также обновить подвал и кнопки
+      document.querySelectorAll('[data-key]').forEach(el => {
+        const key = el.getAttribute('data-key');
+        if (strings[key] !== undefined && el.closest('#docContent') === null) {
+          // элементы вне #docContent (например, футер)
+          el.textContent = strings[key];
+        }
+      });
+      // отдельно для ссылок в футере (текст)
+      document.querySelector('.footer [data-key="footerSwitchEn"]').textContent = strings.footerSwitchEn || 'English';
+      document.querySelector('.footer [data-key="footerSwitchRu"]').textContent = strings.footerSwitchRu || 'Русский';
+    }
+
+    langButtons.forEach(btn => {
+      btn.addEventListener('click', function() {
+        const lang = this.dataset.lang;
+        setLanguage(lang);
+        // запомнить выбор
+        try { localStorage.setItem('snail-doc-lang', lang); } catch(e) {}
+      });
+    });
+
+    // восстановить сохранённый язык
+    try {
+      const saved = localStorage.getItem('snail-doc-lang');
+      if (saved && locales[saved]) {
+        setLanguage(saved);
+        // активировать соответствующую кнопку
+        langButtons.forEach(btn => btn.classList.toggle('active', btn.dataset.lang === saved));
+      }
+    } catch(e) {}
+  })();
+</script>
+
+</body>
+</html>
