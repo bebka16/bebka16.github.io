@@ -1,0 +1,1791 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+  <title>Dupa AI — intelligent assistant for everyone</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    :root {
+      --bg: #f7f7f5;
+      --bg-alt: #fafaf8;
+      --surface: #ffffff;
+      --border: #e8e8e6;
+      --border-strong: #d0cfca;
+      --text: #1f1f1f;
+      --text-soft: #3a3a3a;
+      --text-muted: #6b6b6b;
+      --text-faint: #8a8a8a;
+      --accent: #2c3e50;
+      --danger: #a33c34;
+      --danger-hover: #8b322b;
+      --primary: #1f1f1f;
+      --primary-hover: #3a3a3a;
+      --primary-text: #ffffff;
+      --overlay: rgba(0, 0, 0, 0.5);
+      --success: #2e7d32;
+      --grid-color: rgba(0, 0, 0, 0.03);
+    }
+
+    body.dark {
+      --bg: #18191b;
+      --bg-alt: #1d1e20;
+      --surface: #222325;
+      --border: #2d2e31;
+      --border-strong: #3c3d40;
+      --text: #ededec;
+      --text-soft: #c9c9c7;
+      --text-muted: #9a9a98;
+      --text-faint: #77787a;
+      --accent: #9db4c9;
+      --danger: #c9564a;
+      --danger-hover: #b34a3f;
+      --primary: #ededec;
+      --primary-hover: #cfcfce;
+      --primary-text: #18191b;
+      --overlay: rgba(0, 0, 0, 0.7);
+      --success: #5aa85e;
+      --grid-color: rgba(255, 255, 255, 0.02);
+    }
+
+    body {
+      background-color: var(--bg);
+      font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+      color: var(--text);
+      line-height: 1.4;
+      scroll-behavior: smooth;
+      min-height: 100vh;
+      transition: background-color 0.2s, color 0.2s;
+      position: relative;
+    }
+
+    body::before {
+      content: "";
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+      background-image:
+        linear-gradient(var(--grid-color) 1px, transparent 1px),
+        linear-gradient(90deg, var(--grid-color) 1px, transparent 1px);
+      background-size: 28px 28px;
+      background-position: center center;
+      transition: background-image 0.3s ease;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 0 28px;
+    }
+
+    h1 {
+      font-size: 28px;
+      font-weight: 500;
+      letter-spacing: -0.02em;
+      line-height: 1.25;
+      margin-bottom: 0.85rem;
+      color: var(--text);
+    }
+
+    h2 {
+      font-size: 1.7rem;
+      font-weight: 500;
+      letter-spacing: -0.01em;
+      margin-bottom: 1.2rem;
+      color: var(--text);
+    }
+
+    h3 {
+      font-size: 1.1rem;
+      font-weight: 500;
+      margin-bottom: 0.4rem;
+      color: var(--text);
+    }
+
+    .text-large {
+      font-size: 1rem;
+      line-height: 1.45;
+      color: var(--text-soft);
+      font-weight: 400;
+    }
+
+    .text-muted {
+      color: var(--text-muted);
+      font-size: 12px;
+      font-weight: 400;
+    }
+
+    .navbar {
+      padding: 0;
+      border-bottom: 1px solid var(--border);
+      background-color: var(--surface);
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      transition: background-color 0.2s, border-color 0.2s;
+      backdrop-filter: blur(8px);
+      background-color: rgba(255, 255, 255, 0.85);
+    }
+
+    body.dark .navbar {
+      background-color: rgba(34, 35, 37, 0.9);
+    }
+
+    .nav-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding: 6px 0;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-weight: 500;
+      font-size: 1.2rem;
+      letter-spacing: -0.2px;
+      color: var(--text);
+      text-decoration: none;
+      transition: transform 0.2s ease;
+    }
+
+    .logo:hover {
+      transform: scale(1.02);
+    }
+
+    .logo i {
+      font-size: 1.4rem;
+      color: var(--accent);
+      transition: transform 0.3s ease;
+    }
+
+    .logo:hover i {
+      transform: rotate(15deg);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 24px;
+      align-items: center;
+      flex-wrap: wrap;
+    }
+
+    .nav-links a {
+      text-decoration: none;
+      color: var(--text-soft);
+      font-size: 12px;
+      font-weight: 400;
+      transition: color 0.2s, transform 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--text);
+      transform: translateY(-1px);
+    }
+
+    .theme-toggle {
+      background: transparent;
+      border: 1px solid var(--border);
+      color: var(--text-soft);
+      width: 28px;
+      height: 28px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-size: 12px;
+      transition: background 0.2s, border 0.2s, transform 0.3s;
+    }
+
+    .theme-toggle:hover {
+      background-color: var(--bg-alt);
+      border-color: var(--border-strong);
+      transform: rotate(30deg);
+    }
+
+    .btn-outline {
+      border: 1px solid var(--border);
+      padding: 6px 14px;
+      background: transparent;
+      font-weight: 400;
+      font-size: 12px;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      color: var(--text);
+      display: inline-block;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-outline:hover {
+      background-color: var(--bg-alt);
+      border-color: var(--border-strong);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.05);
+    }
+
+    /* Гамбургер-меню */
+    .hamburger {
+      display: none;
+      background: transparent;
+      border: none;
+      color: var(--text);
+      font-size: 20px;
+      cursor: pointer;
+      padding: 4px 8px;
+    }
+
+    .hero {
+      padding: 56px 34px 48px 34px;
+      position: relative;
+      z-index: 2;
+    }
+
+    .badge {
+      display: inline-block;
+      background-color: var(--border);
+      padding: 4px 12px;
+      font-size: 0.75rem;
+      font-weight: 400;
+      color: var(--text-soft);
+      margin-bottom: 0.85rem;
+      width: fit-content;
+      animation: fadeInUp 0.6s ease forwards;
+    }
+
+    .btn-primary {
+      background-color: var(--primary);
+      color: var(--primary-text);
+      border: none;
+      padding: 8px 18px;
+      padding-top: 9px;
+      font-weight: 400;
+      font-size: 12px;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      text-decoration: none;
+      display: inline-block;
+      font-family: inherit;
+    }
+
+    .btn-primary:hover {
+      background-color: var(--primary-hover);
+      transform: translateY(-2px);
+      box-shadow: 0 6px 12px rgba(0,0,0,0.1);
+    }
+
+    .btn-secondary {
+      background-color: transparent;
+      border: 1px solid var(--border);
+      padding: 8px 18px;
+      font-weight: 400;
+      font-size: 0.85rem;
+      text-decoration: none;
+      color: var(--text);
+      transition: all 0.2s ease;
+      display: inline-block;
+      cursor: pointer;
+      font-family: inherit;
+    }
+
+    .btn-secondary:hover {
+      background-color: var(--bg-alt);
+      border-color: var(--border-strong);
+    }
+
+    .modal-overlay {
+      display: none;
+      position: fixed;
+      top: 0;
+      left: 0;
+      width: 100%;
+      height: 100%;
+      background: var(--overlay);
+      z-index: 1000;
+      justify-content: center;
+      align-items: center;
+      backdrop-filter: blur(4px);
+    }
+
+    .modal-overlay.active {
+      display: flex;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .modal {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 30px;
+      max-width: 500px;
+      width: 90%;
+      max-height: 80vh;
+      overflow-y: auto;
+      animation: slideUp 0.4s ease;
+      position: relative;
+      z-index: 1001;
+    }
+
+    @keyframes slideUp {
+      from { opacity: 0; transform: translateY(30px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    .modal h2 {
+      color: var(--text);
+      margin-bottom: 20px;
+      font-size: 1.5rem;
+    }
+
+    .modal .input-group {
+      margin-bottom: 15px;
+    }
+
+    .modal .input-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      font-weight: 400;
+    }
+
+    .modal .input-group input, .modal .input-group select {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.2s;
+    }
+
+    .modal .input-group input:focus, .modal .input-group select:focus {
+      border-color: var(--text-faint);
+    }
+
+    .modal .btn-primary {
+      width: 100%;
+      text-align: center;
+      margin-top: 10px;
+    }
+
+    .danger-button {
+      background-color: var(--danger) !important;
+      color: #ffffff !important;
+    }
+
+    .danger-button:hover {
+      background-color: var(--danger-hover) !important;
+    }
+
+    .auth-screen, .chat-screen {
+      width: 100%;
+      position: relative;
+      z-index: 2;
+    }
+
+    .auth-screen.hidden, .chat-screen.hidden {
+      display: none;
+    }
+
+    #loginFormBlock, #registerFormBlock {
+      transition: opacity 0.25s ease;
+    }
+
+    #loginFormBlock.hidden, #registerFormBlock.hidden {
+      display: none !important;
+    }
+
+    .auth-form {
+      width: 100%;
+      max-width: 400px;
+      margin: 0 auto;
+    }
+
+    .input-group {
+      margin-bottom: 15px;
+    }
+
+    .input-group label {
+      display: block;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+      font-weight: 400;
+    }
+
+    .input-group input {
+      width: 100%;
+      padding: 10px;
+      border: 1px solid var(--border);
+      font-size: 14px;
+      font-family: inherit;
+      outline: none;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .input-group input:focus {
+      border-color: var(--text-faint);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.03);
+    }
+
+    .error-message {
+      color: var(--danger);
+      font-size: 12px;
+      text-align: center;
+      min-height: 20px;
+      margin-bottom: 10px;
+      animation: fadeIn 0.3s ease;
+    }
+
+    .switch-auth {
+      text-align: center;
+      margin-top: 15px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    .switch-auth a {
+      color: var(--text);
+      text-decoration: none;
+      font-weight: 500;
+      cursor: pointer;
+      transition: color 0.2s;
+    }
+
+    .switch-auth a:hover {
+      text-decoration: underline;
+      color: var(--accent);
+    }
+
+    .chat-layout {
+      display: flex;
+      gap: 0;
+      height: calc(100vh - 53px);
+      position: relative;
+      z-index: 2;
+    }
+
+    .sidebar {
+      width: 260px;
+      background: var(--surface);
+      border-right: 1px solid var(--border);
+      display: flex;
+      flex-direction: column;
+      flex-shrink: 0;
+      transition: background-color 0.2s;
+    }
+
+    .new-chat-btn {
+      margin: 12px;
+      padding: 8px;
+      background: var(--primary);
+      color: var(--primary-text);
+      border: none;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .new-chat-btn:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+    }
+
+    .chats-list {
+      flex: 1;
+      overflow-y: auto;
+      padding: 8px;
+    }
+
+    .chats-list::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .chats-list::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+    }
+
+    .chat-item {
+      padding: 10px 12px;
+      margin-bottom: 4px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: 12px;
+      border: 1px solid transparent;
+      animation: fadeIn 0.4s ease;
+    }
+
+    .chat-item:hover {
+      background: var(--bg);
+      transform: translateX(4px);
+    }
+
+    .chat-item.active {
+      background: var(--bg-alt);
+      border-color: var(--border);
+    }
+
+    .chat-item-content {
+      flex: 1;
+      overflow: hidden;
+    }
+
+    .chat-item-title {
+      font-weight: 400;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+      color: var(--text);
+    }
+
+    .chat-item-date {
+      font-size: 10px;
+      color: var(--text-faint);
+      margin-top: 2px;
+    }
+
+    .delete-chat-btn {
+      background: none;
+      border: none;
+      color: var(--text-faint);
+      cursor: pointer;
+      padding: 2px 6px;
+      font-size: 16px;
+      opacity: 0;
+      transition: all 0.2s ease;
+    }
+
+    .chat-item:hover .delete-chat-btn {
+      opacity: 1;
+    }
+
+    .delete-chat-btn:hover {
+      color: var(--danger);
+      transform: scale(1.2);
+    }
+
+    .main-chat {
+      flex: 1;
+      display: flex;
+      flex-direction: column;
+      min-width: 0;
+      height: 100%;
+      background-color: transparent;
+    }
+
+    .messages-container {
+      flex: 1;
+      overflow-y: auto;
+      padding: 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+      background-color: transparent;
+    }
+
+    .messages-container::-webkit-scrollbar {
+      width: 4px;
+    }
+
+    .messages-container::-webkit-scrollbar-thumb {
+      background: var(--border-strong);
+    }
+
+    .message {
+      max-width: 70%;
+      padding: 12px 16px;
+      font-size: 13px;
+      line-height: 1.5;
+      word-wrap: break-word;
+      animation: messageAppear 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+      transition: transform 0.2s;
+    }
+
+    @keyframes messageAppear {
+      from {
+        opacity: 0;
+        transform: translateY(16px) scale(0.98);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0) scale(1);
+      }
+    }
+
+    .user-message {
+      background: var(--primary);
+      color: var(--primary-text);
+      align-self: flex-end;
+      margin-left: auto;
+    }
+
+    .assistant-message {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      color: var(--text);
+      align-self: flex-start;
+    }
+
+    .typing-indicator {
+      display: none;
+      align-self: flex-start;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      padding: 12px 16px;
+      color: var(--text-muted);
+      font-size: 12px;
+      animation: pulse 1.5s infinite;
+    }
+
+    @keyframes pulse {
+      0% { opacity: 0.6; }
+      50% { opacity: 1; }
+      100% { opacity: 0.6; }
+    }
+
+    .typing-indicator.active {
+      display: block;
+    }
+
+    .input-container {
+      padding: 16px 20px;
+      background: var(--surface);
+      border-top: 1px solid var(--border);
+      display: flex;
+      gap: 10px;
+    }
+
+    .message-input {
+      flex: 1;
+      padding: 10px 14px;
+      border: 1px solid var(--border);
+      font-size: 13px;
+      font-family: inherit;
+      outline: none;
+      background: var(--surface);
+      color: var(--text);
+      transition: border-color 0.2s, box-shadow 0.2s;
+    }
+
+    .message-input:focus {
+      border-color: var(--text-faint);
+      box-shadow: 0 0 0 2px rgba(0,0,0,0.03);
+    }
+
+    .send-button {
+      padding: 10px 20px;
+      background: var(--primary);
+      color: var(--primary-text);
+      border: none;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      transition: all 0.25s ease;
+    }
+
+    .send-button:hover {
+      background: var(--primary-hover);
+      transform: translateY(-1px);
+    }
+
+    .send-button:disabled {
+      opacity: 0.6;
+      cursor: not-allowed;
+    }
+
+    .settings-section {
+      margin-bottom: 20px;
+      padding-bottom: 20px;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .settings-section:last-child {
+      border-bottom: none;
+      margin-bottom: 0;
+      padding-bottom: 0;
+    }
+
+    .settings-section h3 {
+      font-size: 13px;
+      margin-bottom: 10px;
+    }
+
+    .theme-options {
+      display: flex;
+      gap: 8px;
+    }
+
+    .theme-option {
+      flex: 1;
+      border: 1px solid var(--border);
+      background: var(--bg);
+      color: var(--text);
+      padding: 8px;
+      font-size: 12px;
+      font-family: inherit;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 6px;
+      transition: all 0.2s ease;
+    }
+
+    .theme-option.active {
+      border-color: var(--text);
+      background: var(--bg-alt);
+    }
+
+    .theme-option:hover {
+      background: var(--bg-alt);
+      transform: scale(1.02);
+    }
+
+    button, a, div, section, header, footer, nav, .btn, .card, .badge, .modal, .chat-item, .message, .sidebar, .new-chat-btn, .header-button, .send-button, .message-input,
+    input, select {
+      border-radius: 0 !important;
+    }
+
+    @keyframes fadeInUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    @keyframes fadeIn {
+      from { opacity: 0; }
+      to { opacity: 1; }
+    }
+
+    h1 {
+      animation: fadeInUp 0.7s ease forwards;
+    }
+
+    .text-large {
+      animation: fadeInUp 0.8s ease forwards;
+    }
+
+    .auth-form {
+      animation: fadeInUp 0.9s ease forwards;
+    }
+
+    /* Мобильная версия */
+    @media (max-width: 780px) {
+      .container {
+        padding: 0 20px;
+      }
+
+      h1 {
+        font-size: 2rem;
+      }
+
+      h2 {
+        font-size: 1.5rem;
+      }
+
+      .hero {
+        padding: 40px 22px 32px;
+      }
+
+      .nav-inner {
+        flex-direction: row;
+        align-items: center;
+      }
+
+      .hamburger {
+        display: block;
+      }
+
+      .nav-links {
+        display: none;
+      }
+
+      .chat-layout {
+        flex-direction: column;
+        height: calc(100vh - 53px);
+      }
+
+      .sidebar {
+        display: none;
+        position: fixed;
+        top: 53px;
+        left: 0;
+        width: 100%;
+        height: calc(100vh - 53px);
+        z-index: 99;
+        background: var(--surface);
+      }
+
+      .sidebar.mobile-open {
+        display: flex;
+      }
+
+      .main-chat {
+        height: 100%;
+      }
+    }
+
+    body, p, span, a, li, h1, h2, h3, h4, .text, .btn, .badge, .logo, .nav-links a, .btn-outline, .btn-primary, .btn-secondary {
+      font-weight: 400;
+    }
+
+    h1, h2, h3, .logo {
+      font-weight: 500;
+    }
+  </style>
+</head>
+<body>
+<nav class="navbar">
+  <div class="container nav-inner">
+    <a href="#" class="logo">
+    
+      <span style="font-size: 16px;">Dupa AI</span>
+    </a>
+    <button class="hamburger" id="hamburgerBtn">
+      <i class="fas fa-bars"></i>
+    </button>
+    <div class="nav-links" id="navLinks">
+      <a href="#" style="display: none;" id="navLogin">Sign In</a>
+      <a href="#" style="display: none;" id="navRegister" class="btn-outline">Register</a>
+      <button style="display: none;" class="theme-toggle" id="themeToggleAuth" title="Toggle theme"><i class="fas fa-moon"></i></button>
+    </div>
+    <div class="nav-links" id="navChatLinks">
+      <span style="font-size:14px; display:flex; align-items:center; gap:6px;"><span id="currentUsername"></span></span>
+      <button class="btn-outline" id="settingsBtn" style="font-size:11px;">Settings</button>
+      <button style="display: none;" class="btn-outline" id="clearHistoryBtn" style="font-size:11px;">Clear</button>
+      <a href="#" id="navLogout" class="btn-outline">Logout</a>
+      <button style="display: none;" class="theme-toggle" id="themeToggleChat" title="Toggle theme"><i class="fas fa-moon"></i></button>
+    </div>
+  </div>
+</nav>
+<main>
+  <div id="authScreen" class="auth-screen">
+    <div class="container hero" id="authFormContainer">
+      <span class="badge" id="authBadge"><i class="fas fa-robot" style="font-size: 0.7rem;"></i> intelligent assistant</span>
+      <h1 id="authTitle">Your AI companion for any task.</h1>
+      <p class="text-large" id="authSubtitle" style="max-width: 620px; font-size: 12px;">Dupa AI — a smart assistant with chat history, multilingual support, and automatic internet search when needed.</p>
+
+      <div class="auth-form" style="margin-top: 28px;" id="loginFormBlock">
+        <div class="error-message" id="loginError"></div>
+        <div class="input-group">
+          <label for="loginUsername">Username</label>
+          <input type="text" id="loginUsername" placeholder="Enter username" required autocomplete="username">
+        </div>
+        <div class="input-group">
+          <label for="loginPassword">Password</label>
+          <input type="password" id="loginPassword" placeholder="Enter password" required autocomplete="current-password">
+        </div>
+        <button type="submit" class="btn-primary" id="loginSubmit" style="width:100%;">Sign In</button>
+        <p class="switch-auth">
+          Don't have an account? <a id="showRegisterFormLink">Register</a>
+        </p>
+      </div>
+
+      <div class="auth-form hidden" style="margin-top: 28px;" id="registerFormBlock">
+        <div class="error-message" id="registerError"></div>
+        <div class="input-group">
+          <label for="registerUsername">Username</label>
+          <input type="text" id="registerUsername" placeholder="Min 3 characters" required autocomplete="username">
+        </div>
+        <div class="input-group">
+          <label for="registerPassword">Password</label>
+          <input type="password" id="registerPassword" placeholder="Min 6 characters" required autocomplete="new-password">
+        </div>
+        <div class="input-group">
+          <label for="confirmPassword">Confirm Password</label>
+          <input type="password" id="confirmPassword" placeholder="Repeat password" required autocomplete="new-password">
+        </div>
+        <button type="submit" class="btn-primary" id="registerSubmit" style="width:100%;">Register</button>
+        <p class="switch-auth">
+          Already have an account? <a id="showLoginFormLink">Sign In</a>
+        </p>
+      </div>
+    </div>
+  </div>
+
+  <div id="chatScreen" class="chat-screen hidden">
+    <div class="chat-layout">
+      <div class="sidebar" id="sidebar">
+        <div style="display: none;" class="sidebar-header"><i class="fas fa-comments"></i> <span id="chatsTitle">Chats</span></div>
+        <button class="new-chat-btn" id="newChatBtn">+ <span id="newChatText">New Chat</span></button>
+        <div class="chats-list" id="chatsList"></div>
+      </div>
+      <div class="main-chat">
+        <div class="messages-container" id="messagesContainer">
+          <div class="typing-indicator" id="typingIndicator">Dupa is typing...</div>
+        </div>
+        <div class="input-container">
+          <input type="text" class="message-input" id="messageInput" placeholder="Type your message..." autocomplete="off">
+          <button class="send-button" id="sendButton">Send</button>
+        </div>
+      </div>
+    </div>
+  </div>
+</main>
+<div class="modal-overlay" id="settingsModal">
+  <div class="modal">
+    <h2 id="settingsTitle">Settings</h2>
+    <div class="settings-section">
+      <h3 id="themeTitle">Theme</h3>
+      <div class="theme-options">
+        <button class="theme-option" id="themeOptionLight" data-theme="light"><i class="fas fa-sun"></i> Light</button>
+        <button class="theme-option" id="themeOptionDark" data-theme="dark"><i class="fas fa-moon"></i> Dark</button>
+      </div>
+    </div>
+    <div class="settings-section">
+      <h3 id="languageTitle">Language</h3>
+      <div class="input-group">
+        <select id="languageSelect">
+          <option value="en">English</option>
+          <option value="ru">Русский</option>
+          <option value="be">Беларуская</option>
+          <option value="uk">Українська</option>
+        </select>
+      </div>
+    </div>
+    <div class="settings-section">
+      <button class="btn-primary danger-button" id="deleteAllChatsBtn" style="width:100%;">
+        Delete All Chats
+      </button>
+    </div>
+    <div class="settings-section">
+      <h3 id="deleteAccountTitle">Delete Account</h3>
+      <div class="input-group">
+        <label for="deleteAccountPassword" id="deleteAccountLabel">Enter password to confirm</label>
+        <input type="password" id="deleteAccountPassword" placeholder="Enter password">
+      </div>
+      <button class="btn-primary danger-button" id="deleteAccountBtn" style="width:100%;">
+        Delete Account
+      </button>
+    </div>
+    <button class="btn-secondary" id="closeSettingsBtn" style="width:100%; margin-top: 16px;">Close</button>
+  </div>
+</div>
+<script>
+  const translations = {
+    en: {
+      site_title: 'Dupa AI — intelligent assistant for everyone',
+      intelligent_assistant: 'intelligent assistant',
+      hero_title: 'Your AI companion for any task.',
+      hero_subtitle: 'Dupa AI — a smart assistant with chat history, multilingual support, and automatic internet search when needed.',
+      username: 'Username',
+      enter_username: 'Enter username',
+      password: 'Password',
+      enter_password: 'Enter password',
+      sign_in: 'Sign In',
+      no_account: "Don't have an account?",
+      register_link: 'Register',
+      create_account: 'create account',
+      join_title: 'Join Dupa AI.',
+      join_subtitle: 'Create your account and start chatting with intelligent assistant right now.',
+      min_username: 'Min 3 characters',
+      min_password: 'Min 6 characters',
+      confirm_password: 'Confirm Password',
+      repeat_password: 'Repeat password',
+      already_have_account: 'Already have an account?',
+      sign_in_link: 'Sign In',
+      error_passwords_match: 'Passwords do not match',
+      error_registration: 'Registration error',
+      success_registration: 'Registration successful! Please sign in.',
+      error_login: 'Login error',
+      confirm_clear_chat: 'Clear current chat history?',
+      confirm_delete_chat: 'Delete this chat?',
+      confirm_delete_all_chats: 'Are you sure you want to delete ALL chats? This cannot be undone!',
+      confirm_delete_account: 'ARE YOU SURE? Account and all data will be permanently deleted!',
+      session_expired: 'Session expired. Please login again.',
+      error_occurred: 'An error occurred. Please try again later.',
+      settings_saved: 'Settings saved',
+      all_chats_deleted: 'All chats deleted',
+      account_deleted: 'Account deleted',
+      typing: 'Dupa is typing...',
+      new_chat_default: 'New Chat',
+      type_message: 'Type your message...',
+      settings: 'Settings',
+      theme: 'Theme',
+      language: 'Language',
+      delete_all_chats: 'Delete All Chats',
+      delete_account: 'Delete Account',
+      enter_password_confirm: 'Enter password to confirm',
+      close: 'Close',
+      logout: 'Logout',
+      clear: 'Clear',
+      chats: 'Chats',
+      new_chat: 'New Chat',
+      send: 'Send'
+    },
+    ru: {
+      site_title: 'Dupa AI — интеллектуальный помощник для каждого',
+      intelligent_assistant: 'интеллектуальный помощник',
+      hero_title: 'Ваш ИИ-компаньон для любых задач.',
+      hero_subtitle: 'Dupa AI — умный помощник с историей чатов, мультиязычной поддержкой и автоматическим поиском в интернете.',
+      username: 'Имя пользователя',
+      enter_username: 'Введите имя пользователя',
+      password: 'Пароль',
+      enter_password: 'Введите пароль',
+      sign_in: 'Войти',
+      no_account: 'Нет аккаунта?',
+      register_link: 'Регистрация',
+      create_account: 'создать аккаунт',
+      join_title: 'Присоединяйтесь к Dupa AI.',
+      join_subtitle: 'Создайте аккаунт и начните общаться с интеллектуальным помощником прямо сейчас.',
+      min_username: 'Минимум 3 символа',
+      min_password: 'Минимум 6 символов',
+      confirm_password: 'Подтвердите пароль',
+      repeat_password: 'Повторите пароль',
+      already_have_account: 'Уже есть аккаунт?',
+      sign_in_link: 'Войти',
+      error_passwords_match: 'Пароли не совпадают',
+      error_registration: 'Ошибка регистрации',
+      success_registration: 'Регистрация успешна! Теперь войдите.',
+      error_login: 'Ошибка входа',
+      confirm_clear_chat: 'Очистить историю текущего чата?',
+      confirm_delete_chat: 'Удалить этот чат?',
+      confirm_delete_all_chats: 'Вы уверены, что хотите удалить ВСЕ чаты? Это действие нельзя отменить!',
+      confirm_delete_account: 'ВЫ УВЕРЕНЫ? Аккаунт и все данные будут безвозвратно удалены!',
+      session_expired: 'Сессия истекла. Пожалуйста, войдите снова.',
+      error_occurred: 'Произошла ошибка. Попробуйте позже.',
+      settings_saved: 'Настройки сохранены',
+      all_chats_deleted: 'Все чаты удалены',
+      account_deleted: 'Аккаунт удален',
+      typing: 'Dupa печатает...',
+      new_chat_default: 'Новый чат',
+      type_message: 'Введите сообщение...',
+      settings: 'Настройки',
+      theme: 'Тема',
+      language: 'Язык',
+      delete_all_chats: 'Удалить все чаты',
+      delete_account: 'Удалить аккаунт',
+      enter_password_confirm: 'Введите пароль для подтверждения',
+      close: 'Закрыть',
+      logout: 'Выйти',
+      clear: 'Очистить',
+      chats: 'Чаты',
+      new_chat: 'Новый чат',
+      send: 'Отправить'
+    },
+    be: {
+      site_title: 'Dupa AI — інтэлектуальны памочнік для кожнага',
+      intelligent_assistant: 'інтэлектуальны памочнік',
+      hero_title: 'Ваш ШІ-кампаньён для любых задач.',
+      hero_subtitle: 'Dupa AI — разумны памочнік з гісторыяй чатаў, шматмоўнай падтрымкай і аўтаматычным пошукам у інтэрнэце.',
+      username: 'Імя карыстальніка',
+      enter_username: 'Увядзіце імя карыстальніка',
+      password: 'Пароль',
+      enter_password: 'Увядзіце пароль',
+      sign_in: 'Увайсці',
+      no_account: 'Няма акаўнта?',
+      register_link: 'Рэгістрацыя',
+      create_account: 'стварыць акаўнт',
+      join_title: 'Далучайцеся да Dupa AI.',
+      join_subtitle: 'Стварыце акаўнт і пачніце размаўляць з інтэлектуальным памочнікам прама зараз.',
+      min_username: 'Мінімум 3 сімвалы',
+      min_password: 'Мінімум 6 сімвалаў',
+      confirm_password: 'Пацвердзіце пароль',
+      repeat_password: 'Паўтарыце пароль',
+      already_have_account: 'Ужо ёсць акаўнт?',
+      sign_in_link: 'Увайсці',
+      error_passwords_match: 'Паролі не супадаюць',
+      error_registration: 'Памылка рэгістрацыі',
+      success_registration: 'Рэгістрацыя паспяховая! Цяпер увайдзіце.',
+      error_login: 'Памылка ўваходу',
+      confirm_clear_chat: 'Ачысціць гісторыю бягучага чата?',
+      confirm_delete_chat: 'Выдаліць гэты чат?',
+      confirm_delete_all_chats: 'Вы ўпэўнены, што хочаце выдаліць УСЕ чаты? Гэта дзеянне нельга адмяніць!',
+      confirm_delete_account: 'ВЫ ЎПЭЎНЕНЫ? Акаўнт і ўсе дадзеныя будуць незваротна выдалены!',
+      session_expired: 'Сесія скончылася. Калі ласка, увайдзіце зноў.',
+      error_occurred: 'Адбылася памылка. Паспрабуйце пазней.',
+      settings_saved: 'Налады захаваны',
+      all_chats_deleted: 'Усе чаты выдалены',
+      account_deleted: 'Акаўнт выдалены',
+      typing: 'Dupa друкуе...',
+      new_chat_default: 'Новы чат',
+      type_message: 'Увядзіце паведамленне...',
+      settings: 'Налады',
+      theme: 'Тэма',
+      language: 'Мова',
+      delete_all_chats: 'Выдаліць усе чаты',
+      delete_account: 'Выдаліць акаўнт',
+      enter_password_confirm: 'Увядзіце пароль для пацверджання',
+      close: 'Зачыніць',
+      logout: 'Выйсці',
+      clear: 'Ачысціць',
+      chats: 'Чаты',
+      new_chat: 'Новы чат',
+      send: 'Адправіць'
+    },
+    uk: {
+      site_title: 'Dupa AI — інтелектуальний помічник для кожного',
+      intelligent_assistant: 'інтелектуальний помічник',
+      hero_title: 'Ваш ШІ-компаньйон для будь-яких задач.',
+      hero_subtitle: 'Dupa AI — розумний помічник з історією чатів, багатомовною підтримкою та автоматичним пошуком в інтернеті.',
+      username: "Ім'я користувача",
+      enter_username: "Введіть ім'я користувача",
+      password: 'Пароль',
+      enter_password: 'Введіть пароль',
+      sign_in: 'Увійти',
+      no_account: 'Немає акаунта?',
+      register_link: 'Реєстрація',
+      create_account: 'створити акаунт',
+      join_title: 'Приєднуйтесь до Dupa AI.',
+      join_subtitle: 'Створіть акаунт і почніть спілкуватися з інтелектуальним помічником прямо зараз.',
+      min_username: 'Мінімум 3 символи',
+      min_password: 'Мінімум 6 символів',
+      confirm_password: 'Підтвердіть пароль',
+      repeat_password: 'Повторіть пароль',
+      already_have_account: 'Вже є акаунт?',
+      sign_in_link: 'Увійти',
+      error_passwords_match: 'Паролі не співпадають',
+      error_registration: 'Помилка реєстрації',
+      success_registration: 'Реєстрація успішна! Тепер увійдіть.',
+      error_login: 'Помилка входу',
+      confirm_clear_chat: 'Очистити історію поточного чату?',
+      confirm_delete_chat: 'Видалити цей чат?',
+      confirm_delete_all_chats: 'Ви впевнені, що хочете видалити ВСІ чати? Цю дію не можна скасувати!',
+      confirm_delete_account: 'ВИ ВПЕВНЕНІ? Акаунт і всі дані будуть безповоротно видалені!',
+      session_expired: 'Сесія закінчилася. Будь ласка, увійдіть знову.',
+      error_occurred: 'Сталася помилка. Спробуйте пізніше.',
+      settings_saved: 'Налаштування збережено',
+      all_chats_deleted: 'Всі чати видалено',
+      account_deleted: 'Акаунт видалено',
+      typing: 'Dupa друкує...',
+      new_chat_default: 'Новий чат',
+      type_message: 'Введіть повідомлення...',
+      settings: 'Налаштування',
+      theme: 'Тема',
+      language: 'Мова',
+      delete_all_chats: 'Видалити всі чати',
+      delete_account: 'Видалити акаунт',
+      enter_password_confirm: 'Введіть пароль для підтвердження',
+      close: 'Закрити',
+      logout: 'Вийти',
+      clear: 'Очистити',
+      chats: 'Чати',
+      new_chat: 'Новий чат',
+      send: 'Надіслати'
+    }
+  };
+
+  const API_URL = 'http://192.168.100.12:3000';
+  let authToken = localStorage.getItem('dupa_token') || null;
+  let currentChatId = null;
+  let chats = [];
+  let currentLanguage = localStorage.getItem('dupa_language') || 'en';
+  let currentTheme = localStorage.getItem('dupa_theme') || 'light';
+
+  function t(key) {
+    return translations[currentLanguage]?.[key] || translations['en'][key] || key;
+  }
+
+  function applyAllTranslations() {
+    document.title = t('site_title');
+    document.getElementById('authBadge').innerHTML = `<i class="fas fa-robot" style="font-size: 0.7rem;"></i> ${t('intelligent_assistant')}`;
+    document.getElementById('authTitle').textContent = t('hero_title');
+    document.getElementById('authSubtitle').textContent = t('hero_subtitle');
+    
+    // Login form
+    document.querySelector('#loginFormBlock .input-group:nth-child(2) label').textContent = t('username');
+    document.getElementById('loginUsername').placeholder = t('enter_username');
+    document.querySelector('#loginFormBlock .input-group:nth-child(3) label').textContent = t('password');
+    document.getElementById('loginPassword').placeholder = t('enter_password');
+    document.getElementById('loginSubmit').textContent = t('sign_in');
+    document.querySelector('#showRegisterFormLink').textContent = t('register_link');
+    
+    // Register form
+    document.querySelector('#registerFormBlock .input-group:nth-child(2) label').textContent = t('username');
+    document.getElementById('registerUsername').placeholder = t('min_username');
+    document.querySelector('#registerFormBlock .input-group:nth-child(3) label').textContent = t('password');
+    document.getElementById('registerPassword').placeholder = t('min_password');
+    document.querySelector('#registerFormBlock .input-group:nth-child(4) label').textContent = t('confirm_password');
+    document.getElementById('confirmPassword').placeholder = t('repeat_password');
+    document.getElementById('registerSubmit').textContent = t('register_link');
+    document.querySelector('#showLoginFormLink').textContent = t('sign_in_link');
+    
+    // Chat screen
+    document.getElementById('newChatBtn').innerHTML = `+ <span id="newChatText">${t('new_chat')}</span>`;
+    document.getElementById('chatsTitle').textContent = t('chats');
+    document.getElementById('typingIndicator').textContent = t('typing');
+    document.getElementById('messageInput').placeholder = t('type_message');
+    document.getElementById('sendButton').textContent = t('send');
+    document.getElementById('settingsBtn').textContent = t('settings');
+    document.getElementById('clearHistoryBtn').textContent = t('clear');
+    document.getElementById('navLogout').textContent = t('logout');
+    
+    // Settings modal
+    document.getElementById('settingsTitle').textContent = t('settings');
+    document.getElementById('themeTitle').textContent = t('theme');
+    document.getElementById('languageTitle').textContent = t('language');
+    document.getElementById('deleteAllChatsBtn').textContent = t('delete_all_chats');
+    document.getElementById('deleteAccountTitle').textContent = t('delete_account');
+    document.getElementById('deleteAccountLabel').textContent = t('enter_password_confirm');
+    document.getElementById('deleteAccountPassword').placeholder = t('enter_password');
+    document.getElementById('deleteAccountBtn').textContent = t('delete_account');
+    document.getElementById('closeSettingsBtn').textContent = t('close');
+    
+    // Nav
+    document.getElementById('navLogin').textContent = t('sign_in');
+    document.getElementById('navRegister').textContent = t('register_link');
+  }
+
+  function applyTheme(theme) {
+    currentTheme = theme;
+    localStorage.setItem('dupa_theme', theme);
+    document.body.classList.toggle('dark', theme === 'dark');
+    const icon = theme === 'dark' ? 'fa-sun' : 'fa-moon';
+    document.querySelectorAll('.theme-toggle i').forEach(el => {
+      el.className = `fas ${icon}`;
+    });
+    document.getElementById('themeOptionLight')?.classList.toggle('active', theme === 'light');
+    document.getElementById('themeOptionDark')?.classList.toggle('active', theme === 'dark');
+  }
+
+  function toggleTheme() {
+    applyTheme(currentTheme === 'dark' ? 'light' : 'dark');
+  }
+
+  // Инициализация
+  document.getElementById('themeToggleAuth').addEventListener('click', toggleTheme);
+  document.getElementById('themeToggleChat').addEventListener('click', toggleTheme);
+  document.getElementById('themeOptionLight').addEventListener('click', () => applyTheme('light'));
+  document.getElementById('themeOptionDark').addEventListener('click', () => applyTheme('dark'));
+
+  const authScreen = document.getElementById('authScreen');
+  const chatScreen = document.getElementById('chatScreen');
+  const loginFormBlock = document.getElementById('loginFormBlock');
+  const registerFormBlock = document.getElementById('registerFormBlock');
+  const navLinks = document.getElementById('navLinks');
+  const navChatLinks = document.getElementById('navChatLinks');
+  const messagesContainer = document.getElementById('messagesContainer');
+  const messageInput = document.getElementById('messageInput');
+  const sendButton = document.getElementById('sendButton');
+  const typingIndicator = document.getElementById('typingIndicator');
+  const currentUsername = document.getElementById('currentUsername');
+  const chatsList = document.getElementById('chatsList');
+  const settingsModal = document.getElementById('settingsModal');
+  const sidebar = document.getElementById('sidebar');
+  const hamburgerBtn = document.getElementById('hamburgerBtn');
+
+  function showAuthScreen() {
+    authScreen.classList.remove('hidden');
+    chatScreen.classList.add('hidden');
+    navLinks.style.display = '';
+    navChatLinks.style.display = 'none';
+    loginFormBlock.classList.remove('hidden');
+    registerFormBlock.classList.add('hidden');
+    sidebar.classList.remove('mobile-open');
+  }
+
+  function showChatScreen() {
+    authScreen.classList.add('hidden');
+    chatScreen.classList.remove('hidden');
+    navLinks.style.display = 'none';
+    navChatLinks.style.display = '';
+    sidebar.classList.remove('mobile-open');
+  }
+
+  // Мобильное меню
+  hamburgerBtn.addEventListener('click', () => {
+    if (authScreen.classList.contains('hidden')) {
+      sidebar.classList.toggle('mobile-open');
+    }
+  });
+
+  // Закрытие меню при клике на чат
+  chatsList.addEventListener('click', () => {
+    if (window.innerWidth <= 780) {
+      sidebar.classList.remove('mobile-open');
+    }
+  });
+
+  async function checkSession() {
+    if (!authToken) {
+      showAuthScreen();
+      return;
+    }
+    try {
+      const response = await fetch(`${API_URL}/api/verify-session`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken })
+      });
+      if (response.ok) {
+        const data = await response.json();
+        if (data.settings && data.settings.language) {
+          currentLanguage = data.settings.language;
+          localStorage.setItem('dupa_language', currentLanguage);
+        }
+        applyAllTranslations();
+        document.getElementById('languageSelect').value = currentLanguage;
+        chats = data.chats || [];
+        currentChatId = data.activeChatId;
+        currentUsername.textContent = data.username;
+        showChatScreen();
+        renderChatsList();
+        if (currentChatId) {
+          await switchToChat(currentChatId);
+        }
+      } else {
+        localStorage.removeItem('dupa_token');
+        authToken = null;
+        showAuthScreen();
+      }
+    } catch (error) {
+      console.error('Session check error:', error);
+      if (authToken) {
+        showChatScreen();
+      } else {
+        showAuthScreen();
+      }
+    }
+  }
+
+  document.getElementById('showRegisterFormLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    loginFormBlock.classList.add('hidden');
+    registerFormBlock.classList.remove('hidden');
+    document.getElementById('registerError').textContent = '';
+  });
+
+  document.getElementById('showLoginFormLink').addEventListener('click', (e) => {
+    e.preventDefault();
+    registerFormBlock.classList.add('hidden');
+    loginFormBlock.classList.remove('hidden');
+    document.getElementById('loginError').textContent = '';
+  });
+
+  document.getElementById('navLogin').addEventListener('click', (e) => {
+    e.preventDefault();
+    showAuthScreen();
+  });
+
+  document.getElementById('navRegister').addEventListener('click', (e) => {
+    e.preventDefault();
+    showAuthScreen();
+    loginFormBlock.classList.add('hidden');
+    registerFormBlock.classList.remove('hidden');
+  });
+
+  document.getElementById('loginSubmit').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('loginUsername').value;
+    const password = document.getElementById('loginPassword').value;
+    const errorElement = document.getElementById('loginError');
+    try {
+      const response = await fetch(`${API_URL}/api/login`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || t('error_login'));
+      }
+      authToken = data.token;
+      localStorage.setItem('dupa_token', authToken);
+      currentChatId = data.activeChatId;
+      chats = data.chats || [];
+      if (data.settings && data.settings.language) {
+        currentLanguage = data.settings.language;
+        localStorage.setItem('dupa_language', currentLanguage);
+      }
+      applyAllTranslations();
+      document.getElementById('languageSelect').value = currentLanguage;
+      showChatScreen();
+      currentUsername.textContent = data.username;
+      document.getElementById('loginUsername').value = '';
+      document.getElementById('loginPassword').value = '';
+      renderChatsList();
+      if (currentChatId) {
+        await switchToChat(currentChatId);
+      }
+    } catch (error) {
+      errorElement.textContent = error.message;
+    }
+  });
+
+  document.getElementById('registerSubmit').addEventListener('click', async (e) => {
+    e.preventDefault();
+    const username = document.getElementById('registerUsername').value;
+    const password = document.getElementById('registerPassword').value;
+    const confirmPassword = document.getElementById('confirmPassword').value;
+    const errorElement = document.getElementById('registerError');
+    if (password !== confirmPassword) {
+      errorElement.textContent = t('error_passwords_match');
+      return;
+    }
+    try {
+      const response = await fetch(`${API_URL}/api/register`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ username, password })
+      });
+      const data = await response.json();
+      if (!response.ok) {
+        throw new Error(data.error || t('error_registration'));
+      }
+      alert(t('success_registration'));
+      registerFormBlock.classList.add('hidden');
+      loginFormBlock.classList.remove('hidden');
+      document.getElementById('registerUsername').value = '';
+      document.getElementById('registerPassword').value = '';
+      document.getElementById('confirmPassword').value = '';
+    } catch (error) {
+      errorElement.textContent = error.message;
+    }
+  });
+
+  document.getElementById('navLogout').addEventListener('click', logout);
+
+  async function logout() {
+    try {
+      await fetch(`${API_URL}/api/logout`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken })
+      });
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
+    localStorage.removeItem('dupa_token');
+    authToken = null;
+    currentChatId = null;
+    chats = [];
+    showAuthScreen();
+    messagesContainer.innerHTML = '';
+    const typingInd = document.getElementById('typingIndicator');
+    if (typingInd) {
+      typingInd.classList.remove('active');
+      typingInd.textContent = t('typing');
+    }
+    messagesContainer.appendChild(typingIndicator);
+    chatsList.innerHTML = '';
+  }
+
+  document.getElementById('settingsBtn').addEventListener('click', () => {
+    document.getElementById('languageSelect').value = currentLanguage;
+    settingsModal.classList.add('active');
+    sidebar.classList.remove('mobile-open');
+  });
+
+  document.getElementById('closeSettingsBtn').addEventListener('click', () => {
+    settingsModal.classList.remove('active');
+  });
+
+  settingsModal.addEventListener('click', (e) => {
+    if (e.target === settingsModal) {
+      settingsModal.classList.remove('active');
+    }
+  });
+
+  document.getElementById('languageSelect').addEventListener('change', async (e) => {
+    const newLanguage = e.target.value;
+    try {
+      const response = await fetch(`${API_URL}/api/settings/language`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken, language: newLanguage })
+      });
+      if (response.ok) {
+        currentLanguage = newLanguage;
+        localStorage.setItem('dupa_language', currentLanguage);
+        applyAllTranslations();
+        renderChatsList();
+        alert(t('settings_saved'));
+      }
+    } catch (error) {
+      console.error('Update language error:', error);
+    }
+  });
+
+  document.getElementById('deleteAllChatsBtn').addEventListener('click', async () => {
+    if (!confirm(t('confirm_delete_all_chats'))) return;
+    try {
+      const response = await fetch(`${API_URL}/api/chats/delete-all`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken })
+      });
+      if (response.ok) {
+        alert(t('all_chats_deleted'));
+        window.location.reload();
+      }
+    } catch (error) {
+      console.error('Delete all chats error:', error);
+    }
+  });
+
+  document.getElementById('deleteAccountBtn').addEventListener('click', async () => {
+    const password = document.getElementById('deleteAccountPassword').value;
+    if (!password) {
+      alert(t('enter_password_confirm'));
+      return;
+    }
+    if (!confirm(t('confirm_delete_account'))) return;
+    try {
+      const response = await fetch(`${API_URL}/api/account/delete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken, password })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        alert(t('account_deleted'));
+        localStorage.removeItem('dupa_token');
+        authToken = null;
+        currentChatId = null;
+        chats = [];
+        settingsModal.classList.remove('active');
+        showAuthScreen();
+        messagesContainer.innerHTML = '';
+        const typingInd = document.getElementById('typingIndicator');
+        if (typingInd) {
+          typingInd.classList.remove('active');
+          typingInd.textContent = t('typing');
+        }
+        messagesContainer.appendChild(typingIndicator);
+        chatsList.innerHTML = '';
+      } else {
+        alert(data.error || t('error_occurred'));
+      }
+    } catch (error) {
+      console.error('Delete account error:', error);
+      alert(t('error_occurred'));
+    }
+  });
+
+  document.getElementById('newChatBtn').addEventListener('click', async () => {
+    try {
+      const response = await fetch(`${API_URL}/api/chat/new`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken, title: t('new_chat_default') })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        chats = data.chats;
+        currentChatId = data.chatId;
+        renderChatsList();
+        messagesContainer.innerHTML = '';
+        const typingInd = document.getElementById('typingIndicator');
+        if (typingInd) {
+          typingInd.classList.remove('active');
+          typingInd.textContent = t('typing');
+        }
+        messagesContainer.appendChild(typingIndicator);
+        sidebar.classList.remove('mobile-open');
+      }
+    } catch (error) {
+      console.error('Create chat error:', error);
+    }
+  });
+
+  document.getElementById('clearHistoryBtn').addEventListener('click', async () => {
+    if (!currentChatId) return;
+    if (!confirm(t('confirm_clear_chat'))) {
+      return;
+    }
+    try {
+      const response = await fetch(`${API_URL}/api/clear-history`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken, chatId: currentChatId })
+      });
+      if (response.ok) {
+        messagesContainer.innerHTML = '';
+        const typingInd = document.getElementById('typingIndicator');
+        if (typingInd) {
+          typingInd.classList.remove('active');
+          typingInd.textContent = t('typing');
+        }
+        messagesContainer.appendChild(typingIndicator);
+      }
+    } catch (error) {
+      console.error('Clear history error:', error);
+    }
+  });
+
+  function renderChatsList() {
+    chatsList.innerHTML = '';
+    chats.forEach(chat => {
+      const chatItem = document.createElement('div');
+      chatItem.classList.add('chat-item');
+      if (chat.id === currentChatId) {
+        chatItem.classList.add('active');
+      }
+      const date = new Date(chat.createdAt).toLocaleDateString();
+      const title = chat.title === 'New Chat' || chat.title === 'Новый чат' || chat.title === 'Новы чат' || chat.title === 'Новий чат' ? t('new_chat_default') : chat.title;
+      chatItem.innerHTML = `
+        <div class="chat-item-content">
+          <div class="chat-item-title">${title}</div>
+          <div class="chat-item-date">${date}</div>
+        </div>
+        <button class="delete-chat-btn" data-chat-id="${chat.id}">×</button>
+      `;
+      chatItem.addEventListener('click', (e) => {
+        if (!e.target.classList.contains('delete-chat-btn')) {
+          switchToChat(chat.id);
+        }
+      });
+      chatItem.querySelector('.delete-chat-btn').addEventListener('click', (e) => {
+        e.stopPropagation();
+        deleteChat(chat.id);
+      });
+      chatsList.appendChild(chatItem);
+    });
+  }
+
+  async function switchToChat(chatId) {
+    try {
+      const response = await fetch(`${API_URL}/api/chat/switch`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken, chatId })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        currentChatId = data.chatId;
+        renderChatsList();
+        messagesContainer.innerHTML = '';
+        const typingInd = document.getElementById('typingIndicator');
+        if (typingInd) {
+          typingInd.classList.remove('active');
+          typingInd.textContent = t('typing');
+        }
+        messagesContainer.appendChild(typingIndicator);
+        if (data.history && data.history.length > 0) {
+          data.history.forEach(msg => {
+            addMessageToUI(msg.content, msg.role === 'user' ? 'user' : 'assistant');
+          });
+        }
+      }
+    } catch (error) {
+      console.error('Switch chat error:', error);
+    }
+  }
+
+  async function deleteChat(chatId) {
+    if (!confirm(t('confirm_delete_chat'))) return;
+    try {
+      const response = await fetch(`${API_URL}/api/chat/delete`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ token: authToken, chatId })
+      });
+      const data = await response.json();
+      if (response.ok) {
+        chats = data.chats;
+        currentChatId = data.activeChatId;
+        renderChatsList();
+        if (currentChatId) {
+          await switchToChat(currentChatId);
+        } else {
+          messagesContainer.innerHTML = '';
+          const typingInd = document.getElementById('typingIndicator');
+          if (typingInd) {
+            typingInd.classList.remove('active');
+            typingInd.textContent = t('typing');
+          }
+          messagesContainer.appendChild(typingIndicator);
+        }
+      }
+    } catch (error) {
+      console.error('Delete chat error:', error);
+    }
+  }
+
+  function addMessageToUI(text, sender) {
+    const messageDiv = document.createElement('div');
+    messageDiv.classList.add('message');
+    messageDiv.classList.add(sender === 'user' ? 'user-message' : 'assistant-message');
+    messageDiv.textContent = text;
+    messagesContainer.insertBefore(messageDiv, typingIndicator);
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+  }
+
+  async function sendMessage() {
+    const message = messageInput.value.trim();
+    if (!message || !authToken || !currentChatId) return;
+    addMessageToUI(message, 'user');
+    messageInput.value = '';
+    sendButton.disabled = true;
+    typingIndicator.classList.add('active');
+    messagesContainer.scrollTop = messagesContainer.scrollHeight;
+    try {
+      const response = await fetch(`${API_URL}/api/chat`, {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          message,
+          token: authToken,
+          chatId: currentChatId
+        })
+      });
+      if (response.status === 401) {
+        alert(t('session_expired'));
+        logout();
+        return;
+      }
+      const data = await response.json();
+      typingIndicator.classList.remove('active');
+      addMessageToUI(data.reply, 'assistant');
+      const chatsResponse = await fetch(`${API_URL}/api/chats?token=${authToken}`);
+      if (chatsResponse.ok) {
+        const chatsData = await chatsResponse.json();
+        chats = chatsData.chats;
+        renderChatsList();
+      }
+    } catch (error) {
+      console.error('Send message error:', error);
+      typingIndicator.classList.remove('active');
+      addMessageToUI(t('error_occurred'), 'assistant');
+    } finally {
+      sendButton.disabled = false;
+      messageInput.focus();
+    }
+  }
+
+  sendButton.addEventListener('click', sendMessage);
+  messageInput.addEventListener('keypress', (e) => {
+    if (e.key === 'Enter' && !e.shiftKey) {
+      e.preventDefault();
+      sendMessage();
+    }
+  });
+
+  document.getElementById('loginPassword').addEventListener('keypress', (e) => {
+    if (e.key === 'Enter') {
+      e.preventDefault();
+      document.getElementById('loginSubmit').click();
+    }
+  });
+
+  applyTheme(currentTheme);
+  applyAllTranslations();
+  document.getElementById('languageSelect').value = currentLanguage;
+  checkSession();
+</script>
+</body>
+</html>
