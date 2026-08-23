@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
-    <title>Media Player</title>
+    <title>Decibel Media Player</title>
     <style>
         * {
             margin: 0;
@@ -503,8 +503,8 @@
 <div class="container">
     <header class="header">
         <div class="header-left">
-            <h1>Decibel Media Player</h1>
-            <span class="sub">by bebka16</span>
+            <h1 id="appName">Decibel Media Player</h1>
+            <span class="sub" id="subText">by bebka16</span>
         </div>
         <div class="header-right">
             <div class="lang-dropdown" id="langDropdown">
@@ -526,8 +526,8 @@
     <div class="hero-section">
         <div class="hero-text">
             <div class="logo-area">
-                <div class="logo-icon" aria-label="Логотип Snail Note"></div>
-                <span class="app-title">Decibel Media Player</span>
+                <div class="logo-icon" aria-label="Логотип Decibel Media Player"></div>
+                <span class="app-title" id="appTitle">Decibel Media Player</span>
             </div>
             <p class="hero-description" id="heroDesc">
                 Медиаплеер, в котором нету лишнего функционала. Максимально удобный поиск
@@ -540,7 +540,7 @@
                 <a href="#downloadTitle" id="downloadLink">Скачать</a>
             </div>
         </div>
-        <div class="hero-screenshot" title="Главное окно DMP" role="img" aria-label="Скриншот интерфейса Snail Note"></div>
+        <div class="hero-screenshot" title="Главное окно DMP" role="img" aria-label="Скриншот интерфейса Decibel Media Player"></div>
     </div>
 
     <div class="download-section">
@@ -549,12 +549,12 @@
             <div class="download-card" id="winCard">
                 <div class="os-label" id="winLabel">Windows <span>10 / 11</span></div>
                 <a href="https://github.com/bebka16/snailnote/releases/download/snailcode-2-1/SnailNote21Windows.exe" class="download-button" id="winBtn"><span>↓</span> Установщик .exe</a>
-                <div class="download-meta">v1.2 — 112 МБ</div>
+                <div class="download-meta" id="winMeta">v1.2 — 112 МБ</div>
             </div>
             <div class="download-card" id="linuxCard">
                 <div class="os-label" id="linuxLabel">Linux <span>недоступно</span></div>
                 <a class="download-button" id="linuxBtn"><span>↓</span> Загрузить</a>
-                <div class="download-meta">Этот проект достаточно старый, раньше я не портировал программы под Linux.</div>
+                <div class="download-meta" id="linuxMeta">Этот проект достаточно старый, раньше я не портировал программы под Linux.</div>
             </div>
         </div>
     </div>
@@ -563,7 +563,7 @@
         <h2 id="detailsTitle">О программе</h2>
         <p id="detailsDesc">Decibel Media Player — интуитивно понятый аудиоплеер с эквалайзером, настройками звуковых эффектов, с возможностью настроить внешний вид программы и добавлять аудиофайлы всех, даже редких форматов в высоком качестве или без сжатия. Интерфейс не перегружен, и вы быстро разберётесь, как пользоваться программой.</p>
         <ul id="detailsList">
-            <li>Возможность вырать внешний вид интерфейса</li>
+            <li>Возможность выбрать внешний вид интерфейса</li>
             <li>Эквалайзер</li>
             <li>Поддержка английского, русского, белорусского и украинского языков</li>
             <li>Поддержка всех популярных форматов, в том числе loseless</li>
@@ -588,32 +588,35 @@
 
 <div class="lightbox" id="lightbox">
     <span class="lightbox-close" id="lightboxClose">&times;</span>
-    <img src="" alt="Скриншот Snail Note" id="lightboxImg">
+    <img src="" alt="Скриншот Decibel Media Player" id="lightboxImg">
 </div>
 
 <script>
     const translations = {
         ru: {
+            appName: 'Decibel Media Player',
+            appTitle: 'Decibel Media Player',
             langName: 'Русский',
             sub: 'by bebka16',
-            heroDesc: 'Собственный редактор кода без лишних функций. Минималистичный интерфейс, быстрая работа с большими файлами и интеллектуальная подсветка синтаксиса для повседневной разработки.',
-            docLink: 'Документация',
-            repoLink: 'Репозиторий',
+            heroDesc: 'Медиаплеер, в котором нету лишнего функционала. Максимально удобный поиск музыки слева, и отображение обложки или аудиоспектра справа. Эквалайзер, настройка оформления.',
+            docLink: 'Freesoft',
+            repoLink: 'Uptodown',
             downloadLink: 'Скачать',
-            downloadTitle: 'Скачать Snail Note',
+            downloadTitle: 'Скачать DMP',
             winLabel: 'Windows',
             linuxLabel: 'Linux',
             winBtn: 'Установщик .exe',
             linuxBtn: 'Загрузить',
-            detailsTitle: 'Возможности Snail Note',
-            detailsDesc: 'Snail Note создан для тех, кто ценит скорость и не любит перегруженные интерфейсы. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом на разных языках программирования.',
+            winMeta: 'v1.2 — 112 МБ',
+            linuxMeta: 'Этот проект достаточно старый, раньше я не портировал программы под Linux.',
+            detailsTitle: 'О программе',
+            detailsDesc: 'Decibel Media Player — интуитивно понятый аудиоплеер с эквалайзером, настройками звуковых эффектов, с возможностью настроить внешний вид программы и добавлять аудиофайлы всех, даже редких форматов в высоком качестве или без сжатия. Интерфейс не перегружен, и вы быстро разберётесь, как пользоваться программой.',
             detailsList: [
-                'Подсветка синтаксиса для десятка языков программирования',
-                'Магазин расширений и тем, которые пополняются сообществом',
-                'Система вкладок и разделение окна',
-                'Возможность предпросмотра HTML',
-                'Удобный проводник файлов для больших проектов',
-                'Автосохранение и восстановление сессий'
+                'Возможность выбрать внешний вид интерфейса',
+                'Эквалайзер',
+                'Поддержка английского, русского, белорусского и украинского языков',
+                'Поддержка всех популярных форматов, в том числе loseless',
+                'Удобная библиотека треков'
             ],
             footer: '© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.',
             license: 'Лицензия MIT',
@@ -621,26 +624,29 @@
             contact: 'Связаться'
         },
         en: {
+            appName: 'Decibel Media Player',
+            appTitle: 'Decibel Media Player',
             langName: 'English',
             sub: 'by bebka16',
-            heroDesc: 'A custom code editor without unnecessary features. Minimalist interface, fast performance with large files, and intelligent syntax highlighting for everyday development.',
-            docLink: 'Documentation',
-            repoLink: 'Repository',
+            heroDesc: 'A media player with no unnecessary features. Very convenient music search on the left, and cover art or audio spectrum display on the right. Equalizer, appearance customization.',
+            docLink: 'Freesoft',
+            repoLink: 'Uptodown',
             downloadLink: 'Download',
-            downloadTitle: 'Download Snail Note',
+            downloadTitle: 'Download DMP',
             winLabel: 'Windows',
             linuxLabel: 'Linux',
             winBtn: 'Installer .exe',
             linuxBtn: 'Download',
-            detailsTitle: 'Snail Note Features',
-            detailsDesc: 'Snail Note is designed for those who value speed and dislike overloaded interfaces. The editor does not try to be an IDE, but provides everything needed for comfortable coding in various programming languages.',
+            winMeta: 'v1.2 — 112 MB',
+            linuxMeta: 'This project is quite old, I did not port programs to Linux back then.',
+            detailsTitle: 'About',
+            detailsDesc: 'Decibel Media Player is an intuitive audio player with an equalizer, sound effects settings, the ability to customize the appearance of the program and add audio files of all, even rare formats in high quality or without compression. The interface is not overloaded, and you will quickly figure out how to use the program.',
             detailsList: [
-                'Syntax highlighting for dozens of programming languages',
-                'Extension and theme store, replenished by the community',
-                'Tab system and window splitting',
-                'HTML preview capability',
-                'Convenient file explorer for large projects',
-                'Auto-save and session recovery'
+                'Ability to choose the interface appearance',
+                'Equalizer',
+                'Support for English, Russian, Belarusian and Ukrainian languages',
+                'Support for all popular formats, including lossless',
+                'Convenient track library'
             ],
             footer: '© 2022 — 2026, bebka16. All rights reserved. Use of materials without attribution is prohibited.',
             license: 'MIT License',
@@ -648,26 +654,29 @@
             contact: 'Contact'
         },
         be: {
+            appName: 'Decibel Media Player',
+            appTitle: 'Decibel Media Player',
             langName: 'Беларуская',
             sub: 'by bebka16',
-            heroDesc: 'Уласны рэдактар кода без лішніх функцый. Мінімалістычны інтэрфейс, хуткая праца з вялікімі файламі і інтэлектуальная падсветка сінтаксісу для штодзённай распрацоўкі.',
-            docLink: 'Дакументацыя',
-            repoLink: 'Рэпазіторый',
+            heroDesc: 'Медыяплэер, у якім няма лішняга функцыяналу. Максімальна зручны пошук музыкі злева, і адлюстраванне вокладкі або аўдыяспектра справа. Эквалайзер, настройка афармлення.',
+            docLink: 'Freesoft',
+            repoLink: 'Uptodown',
             downloadLink: 'Спампаваць',
-            downloadTitle: 'Спампаваць Snail Note',
+            downloadTitle: 'Спампаваць DMP',
             winLabel: 'Windows',
             linuxLabel: 'Linux',
             winBtn: 'Усталёўнік .exe',
             linuxBtn: 'Спампаваць',
-            detailsTitle: 'Магчымасці Snail Note',
-            detailsDesc: 'Snail Note створаны для тых, хто цэніць хуткасць і не любіць перагружаныя інтэрфейсы. Рэдактар не імкнецца быць асяроддзем распрацоўкі, але дае ўсё неабходнае для камфортнай працы з кодам на розных мовах праграмавання.',
+            winMeta: 'v1.2 — 112 МБ',
+            linuxMeta: 'Гэты праект дастаткова стары, раней я не партаваў праграмы пад Linux.',
+            detailsTitle: 'Аб праграме',
+            detailsDesc: 'Decibel Media Player — інтуітыўна зразумелы аўдыяплэер з эквалайзерам, наладамі гукавых эфектаў, з магчымасцю наладзіць знешні выгляд праграмы і дадаваць аўдыяфайлы ўсіх, нават рэдкіх фарматаў у высокай якасці або без сціску. Інтэрфейс не перагружаны, і вы хутка разбярэцеся, як карыстацца праграмай.',
             detailsList: [
-                'Падсветка сінтаксісу для дзясятка моў праграмавання',
-                'Крама пашырэнняў і тэм, якія папаўняюцца супольнасцю',
-                'Сістэма ўкладак і падзел акна',
-                'Магчымасць перадпрагляду HTML',
-                'Зручны праваднік файлаў для вялікіх праектаў',
-                'Аўтазахаванне і аднаўленне сесій'
+                'Магчымасць выбраць знешні выгляд інтэрфейсу',
+                'Эквалайзер',
+                'Падтрымка англійскай, рускай, беларускай і ўкраінскай моў',
+                'Падтрымка ўсіх папулярных фарматаў, у тым ліку loseless',
+                'Зручная бібліятэка трэкаў'
             ],
             footer: '© 2022 — 2026, bebka16. Усе правы абаронены. Выкарыстанне матэрыялаў без указання аўтарства забаронена.',
             license: 'Ліцэнзія MIT',
@@ -675,26 +684,29 @@
             contact: 'Звязацца'
         },
         uk: {
+            appName: 'Decibel Media Player',
+            appTitle: 'Decibel Media Player',
             langName: 'Українська',
             sub: 'by bebka16',
-            heroDesc: 'Власний редактор коду без зайвих функцій. Мінімалістичний інтерфейс, швидка робота з великими файлами та інтелектуальне підсвічування синтаксису для повсякденної розробки.',
-            docLink: 'Документація',
-            repoLink: 'Репозиторій',
+            heroDesc: 'Медіаплеєр, в якому немає зайвого функціоналу. Максимально зручний пошук музики зліва, і відображення обкладинки або аудіоспектра справа. Еквалайзер, налаштування оформлення.',
+            docLink: 'Freesoft',
+            repoLink: 'Uptodown',
             downloadLink: 'Завантажити',
-            downloadTitle: 'Завантажити Snail Note',
+            downloadTitle: 'Завантажити DMP',
             winLabel: 'Windows',
             linuxLabel: 'Linux',
             winBtn: 'Інсталятор .exe',
             linuxBtn: 'Завантажити',
-            detailsTitle: 'Можливості Snail Note',
-            detailsDesc: 'Snail Note створений для тих, хто цінує швидкість і не любить перевантажені інтерфейси. Редактор не намагається бути середовищем розробки, але дає все необхідне для комфортної роботи з кодом на різних мовах програмування.',
+            winMeta: 'v1.2 — 112 МБ',
+            linuxMeta: 'Цей проєкт досить старий, раніше я не портував програми під Linux.',
+            detailsTitle: 'Про програму',
+            detailsDesc: 'Decibel Media Player — інтуїтивно зрозумілий аудіоплеєр з еквалайзером, налаштуваннями звукових ефектів, з можливістю налаштувати зовнішній вигляд програми і додавати аудіофайли всіх, навіть рідкісних форматів у високій якості або без стиснення. Інтерфейс не перевантажений, і ви швидко розберетеся, як користуватися програмою.',
             detailsList: [
-                'Підсвічування синтаксису для десятка мов програмування',
-                'Магазин розширень і тем, які поповнюються спільнотою',
-                'Система вкладок і розділення вікна',
-                'Можливість попереднього перегляду HTML',
-                'Зручний провідник файлів для великих проєктів',
-                'Автозбереження та відновлення сесій'
+                'Можливість вибрати зовнішній вигляд інтерфейсу',
+                'Еквалайзер',
+                'Підтримка англійської, російської, білоруської та української мов',
+                'Підтримка всіх популярних форматів, у тому числі loseless',
+                'Зручна бібліотека треків'
             ],
             footer: '© 2022 — 2026, bebka16. Усі права захищені. Використання матеріалів без зазначення авторства заборонено.',
             license: 'Ліцензія MIT',
@@ -712,6 +724,8 @@
             if (!translations[lang]) lang = 'ru';
             const t = translations[lang];
             
+            document.getElementById('appName').textContent = t.appName;
+            document.getElementById('appTitle').textContent = t.appTitle;
             document.querySelector('.header-left .sub').textContent = t.sub;
             document.getElementById('heroDesc').textContent = t.heroDesc;
             
@@ -726,6 +740,9 @@
             
             document.getElementById('winBtn').innerHTML = '<span>↓</span> ' + t.winBtn;
             document.getElementById('linuxBtn').innerHTML = '<span>↓</span> ' + t.linuxBtn;
+            
+            document.getElementById('winMeta').textContent = t.winMeta;
+            document.getElementById('linuxMeta').textContent = t.linuxMeta;
             
             document.getElementById('detailsTitle').textContent = t.detailsTitle;
             document.getElementById('detailsDesc').textContent = t.detailsDesc;
@@ -743,12 +760,12 @@
             if(contactLink) contactLink.textContent = t.contact;
             
             currentLangLabel.textContent = t.langName;
-            localStorage.setItem('bebka16-snail-lang', lang);
+            localStorage.setItem('bebka16-dmp-lang', lang);
             langMenu.classList.remove('show');
         }
 
         function getStoredLang() {
-            return localStorage.getItem('bebka16-snail-lang') || 'ru';
+            return localStorage.getItem('bebka16-dmp-lang') || 'ru';
         }
 
         langDropdown.addEventListener('click', function(e) {
