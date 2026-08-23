@@ -298,10 +298,6 @@
             background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h11.377v11.372H0V0zm12.623 0H24v11.372H12.623V0zM0 12.623h11.377V24H0v-11.377zm12.623 0H24V24H12.623V12.623z" fill="black"/></svg>');
         }
 
-        .download-card:nth-child(2)::after {
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Tux.png/250px-Tux.png');
-        }
-
         .os-label {
             font-weight: 500;
             font-size: 14px;
@@ -504,7 +500,7 @@
     <header class="header">
         <div class="header-left">
             <h1>Decibel Legacy</h1>
-            <span class="sub">by bebka16</span>
+            <span class="sub" id="sub">by bebka16</span>
         </div>
         <div class="header-right">
             <div class="lang-dropdown" id="langDropdown">
@@ -548,7 +544,7 @@
             <div class="download-card" id="winCard">
                 <div class="os-label" id="winLabel">Windows <span>XP, Vista, 7, 8, 8.1, 10, 11</span></div>
                 <a href="" class="download-button" id="winBtn"><span>↓</span> Установщик .exe</a>
-                <div class="download-meta">v2.1.0 — 112 МБ</div>
+                <div class="download-meta" id="winMeta">v2.1.0 — 112 МБ</div>
             </div>
         </div>
     </div>
@@ -584,7 +580,7 @@
 
 <div class="lightbox" id="lightbox">
     <span class="lightbox-close" id="lightboxClose">&times;</span>
-    <img src="" alt="Скриншот Snail Note" id="lightboxImg">
+    <img src="" alt="Скриншот Decibel Legacy" id="lightboxImg">
 </div>
 
 <script>
@@ -592,110 +588,110 @@
         ru: {
             langName: 'Русский',
             sub: 'by bebka16',
-            heroDesc: 'Собственный редактор кода без лишних функций. Минималистичный интерфейс, быстрая работа с большими файлами и интеллектуальная подсветка синтаксиса для повседневной разработки.',
-            docLink: 'Документация',
-            repoLink: 'Репозиторий',
+            heroDesc: 'Самописный антивирус под Windows, использующий огромную базу данных хэшей от MalwareBazaar и свои собственные наработки для поиска вирусов. Также имеет защиту съёмных носителей и центр уведомлений.',
+            docLink: 'Freesoft',
             downloadLink: 'Скачать',
-            downloadTitle: 'Скачать Snail Note',
+            downloadTitle: 'Скачать Decibel Legacy',
             winLabel: 'Windows',
-            linuxLabel: 'Linux',
+            winLabelSpan: 'XP, Vista, 7, 8, 8.1, 10, 11',
             winBtn: 'Установщик .exe',
-            linuxBtn: 'Загрузить',
-            detailsTitle: 'Возможности Snail Note',
-            detailsDesc: 'Snail Note создан для тех, кто ценит скорость и не любит перегруженные интерфейсы. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом на разных языках программирования.',
+            winMeta: 'v2.1.0 — 112 МБ',
+            detailsTitle: 'Возможности Decibel Legacy',
+            detailsDesc: 'Это быстрый антивирус, способный обеспечить дополнительную защиту вашего компьютера. Интерфейс максимально понятный, а система обнаружения вирусов, основанная на хэшах, не будет сильно нагружать компьютер даже во время проверки. При работе в фоне антивирус также отлично работает даже на слабых компьютерах.',
             detailsList: [
-                'Подсветка синтаксиса для десятка языков программирования',
-                'Магазин расширений и тем, которые пополняются сообществом',
-                'Система вкладок и разделение окна',
-                'Возможность предпросмотра HTML',
-                'Удобный проводник файлов для больших проектов',
-                'Автосохранение и восстановление сессий'
+                'Есть центр уведомлений, который покажет всплывающее окно при найденных угрозах',
+                'Есть сервис для защиты съёмных носителей',
+                'Может записать на флешку мини-антивирус, который вы сможете запустить на другом компьютере и проверить флешку без установки программы',
+                'Удобная таблица карантина, из которого можно просмотреть список всех найденных вирусов и выполнить удаление',
+                'Возможность защиты в реальном времени',
+                'При удалении вируса, вы можете просмотреть отчёт о проверке файла на VirusTotal'
             ],
             footer: '© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.',
             license: 'Лицензия MIT',
             source: 'Исходный код',
-            contact: 'Связаться'
+            contact: 'Связаться',
+            lightboxAlt: 'Скриншот Decibel Legacy'
         },
         en: {
             langName: 'English',
             sub: 'by bebka16',
-            heroDesc: 'A custom code editor without unnecessary features. Minimalist interface, fast performance with large files, and intelligent syntax highlighting for everyday development.',
-            docLink: 'Documentation',
-            repoLink: 'Repository',
+            heroDesc: 'A self-written antivirus for Windows that uses a huge hash database from MalwareBazaar and its own developments to search for viruses. It also has removable media protection and a notification center.',
+            docLink: 'Freesoft',
             downloadLink: 'Download',
-            downloadTitle: 'Download Snail Note',
+            downloadTitle: 'Download Decibel Legacy',
             winLabel: 'Windows',
-            linuxLabel: 'Linux',
+            winLabelSpan: 'XP, Vista, 7, 8, 8.1, 10, 11',
             winBtn: 'Installer .exe',
-            linuxBtn: 'Download',
-            detailsTitle: 'Snail Note Features',
-            detailsDesc: 'Snail Note is designed for those who value speed and dislike overloaded interfaces. The editor does not try to be an IDE, but provides everything needed for comfortable coding in various programming languages.',
+            winMeta: 'v2.1.0 — 112 MB',
+            detailsTitle: 'Decibel Legacy Features',
+            detailsDesc: 'This is a fast antivirus that can provide additional protection for your computer. The interface is as clear as possible, and the hash-based virus detection system will not heavily load your computer even during scanning. When working in the background, the antivirus also works great even on weak computers.',
             detailsList: [
-                'Syntax highlighting for dozens of programming languages',
-                'Extension and theme store, replenished by the community',
-                'Tab system and window splitting',
-                'HTML preview capability',
-                'Convenient file explorer for large projects',
-                'Auto-save and session recovery'
+                'There is a notification center that will show a pop-up window when threats are found',
+                'There is a service for protecting removable media',
+                'It can write a mini-antivirus to a USB flash drive, which you can run on another computer and check the flash drive without installing the program',
+                'A convenient quarantine table from which you can view a list of all found viruses and delete them',
+                'Real-time protection capability',
+                'When deleting a virus, you can view a report on the file check on VirusTotal'
             ],
             footer: '© 2022 — 2026, bebka16. All rights reserved. Use of materials without attribution is prohibited.',
             license: 'MIT License',
             source: 'Source Code',
-            contact: 'Contact'
+            contact: 'Contact',
+            lightboxAlt: 'Decibel Legacy Screenshot'
         },
         be: {
             langName: 'Беларуская',
             sub: 'by bebka16',
-            heroDesc: 'Уласны рэдактар кода без лішніх функцый. Мінімалістычны інтэрфейс, хуткая праца з вялікімі файламі і інтэлектуальная падсветка сінтаксісу для штодзённай распрацоўкі.',
-            docLink: 'Дакументацыя',
-            repoLink: 'Рэпазіторый',
+            heroDesc: 'Самапісны антывірус пад Windows, які выкарыстоўвае вялізную базу дадзеных хэшаў ад MalwareBazaar і свае ўласныя напрацоўкі для пошуку вірусаў. Таксама мае абарону здымных носьбітаў і цэнтр апавяшчэнняў.',
+            docLink: 'Freesoft',
             downloadLink: 'Спампаваць',
-            downloadTitle: 'Спампаваць Snail Note',
+            downloadTitle: 'Спампаваць Decibel Legacy',
             winLabel: 'Windows',
-            linuxLabel: 'Linux',
+            winLabelSpan: 'XP, Vista, 7, 8, 8.1, 10, 11',
             winBtn: 'Усталёўнік .exe',
-            linuxBtn: 'Спампаваць',
-            detailsTitle: 'Магчымасці Snail Note',
-            detailsDesc: 'Snail Note створаны для тых, хто цэніць хуткасць і не любіць перагружаныя інтэрфейсы. Рэдактар не імкнецца быць асяроддзем распрацоўкі, але дае ўсё неабходнае для камфортнай працы з кодам на розных мовах праграмавання.',
+            winMeta: 'v2.1.0 — 112 МБ',
+            detailsTitle: 'Магчымасці Decibel Legacy',
+            detailsDesc: 'Гэта хуткі антывірус, здольны забяспечыць дадатковую абарону вашага кампутара. Інтэрфейс максімальна зразумелы, а сістэма выяўлення вірусаў, заснаваная на хэшах, не будзе моцна нагружаць кампутар нават падчас праверкі. Пры працы ў фоне антывірус таксама выдатна працуе нават на слабых кампутарах.',
             detailsList: [
-                'Падсветка сінтаксісу для дзясятка моў праграмавання',
-                'Крама пашырэнняў і тэм, якія папаўняюцца супольнасцю',
-                'Сістэма ўкладак і падзел акна',
-                'Магчымасць перадпрагляду HTML',
-                'Зручны праваднік файлаў для вялікіх праектаў',
-                'Аўтазахаванне і аднаўленне сесій'
+                'Ёсць цэнтр апавяшчэнняў, які пакажа ўсплывальнае акно пры знойдзеных пагрозах',
+                'Ёсць сэрвіс для абароны здымных носьбітаў',
+                'Можа запісаць на флешку міні-антывірус, які вы зможаце запусціць на іншым кампутары і праверыць флешку без усталёўкі праграмы',
+                'Зручная табліца карантыну, з якой можна прагледзець спіс усіх знойдзеных вірусаў і выканаць выдаленне',
+                'Магчымасць абароны ў рэальным часе',
+                'Пры выдаленні віруса, вы можаце прагледзець справаздачу аб праверцы файла на VirusTotal'
             ],
             footer: '© 2022 — 2026, bebka16. Усе правы абаронены. Выкарыстанне матэрыялаў без указання аўтарства забаронена.',
             license: 'Ліцэнзія MIT',
             source: 'Зыходны код',
-            contact: 'Звязацца'
+            contact: 'Звязацца',
+            lightboxAlt: 'Скрыншот Decibel Legacy'
         },
         uk: {
             langName: 'Українська',
             sub: 'by bebka16',
-            heroDesc: 'Власний редактор коду без зайвих функцій. Мінімалістичний інтерфейс, швидка робота з великими файлами та інтелектуальне підсвічування синтаксису для повсякденної розробки.',
-            docLink: 'Документація',
-            repoLink: 'Репозиторій',
+            heroDesc: 'Самописний антивірус під Windows, що використовує величезну базу даних хешів від MalwareBazaar та власні напрацювання для пошуку вірусів. Також має захист знімних носіїв та центр сповіщень.',
+            docLink: 'Freesoft',
             downloadLink: 'Завантажити',
-            downloadTitle: 'Завантажити Snail Note',
+            downloadTitle: 'Завантажити Decibel Legacy',
             winLabel: 'Windows',
-            linuxLabel: 'Linux',
+            winLabelSpan: 'XP, Vista, 7, 8, 8.1, 10, 11',
             winBtn: 'Інсталятор .exe',
-            linuxBtn: 'Завантажити',
-            detailsTitle: 'Можливості Snail Note',
-            detailsDesc: 'Snail Note створений для тих, хто цінує швидкість і не любить перевантажені інтерфейси. Редактор не намагається бути середовищем розробки, але дає все необхідне для комфортної роботи з кодом на різних мовах програмування.',
+            winMeta: 'v2.1.0 — 112 МБ',
+            detailsTitle: 'Можливості Decibel Legacy',
+            detailsDesc: 'Це швидкий антивірус, здатний забезпечити додатковий захист вашого комп\'ютера. Інтерфейс максимально зрозумілий, а система виявлення вірусів, заснована на хешах, не буде сильно навантажувати комп\'ютер навіть під час перевірки. При роботі у фоновому режимі антивірус також чудово працює навіть на слабких комп\'ютерах.',
             detailsList: [
-                'Підсвічування синтаксису для десятка мов програмування',
-                'Магазин розширень і тем, які поповнюються спільнотою',
-                'Система вкладок і розділення вікна',
-                'Можливість попереднього перегляду HTML',
-                'Зручний провідник файлів для великих проєктів',
-                'Автозбереження та відновлення сесій'
+                'Є центр сповіщень, який покаже спливаюче вікно при знайдених загрозах',
+                'Є сервіс для захисту знімних носіїв',
+                'Може записати на флешку міні-антивірус, який ви зможете запустити на іншому комп\'ютері та перевірити флешку без встановлення програми',
+                'Зручна таблиця карантину, з якої можна переглянути список усіх знайдених вірусів та виконати видалення',
+                'Можливість захисту в реальному часі',
+                'При видаленні вірусу ви можете переглянути звіт про перевірку файлу на VirusTotal'
             ],
             footer: '© 2022 — 2026, bebka16. Усі права захищені. Використання матеріалів без зазначення авторства заборонено.',
             license: 'Ліцензія MIT',
             source: 'Вихідний код',
-            contact: 'Зв\'язатися'
+            contact: 'Зв\'язатися',
+            lightboxAlt: 'Скриншот Decibel Legacy'
         }
     };
 
@@ -708,20 +704,18 @@
             if (!translations[lang]) lang = 'ru';
             const t = translations[lang];
             
-            document.querySelector('.header-left .sub').textContent = t.sub;
+            document.getElementById('sub').textContent = t.sub;
             document.getElementById('heroDesc').textContent = t.heroDesc;
             
             document.getElementById('docLink').textContent = t.docLink;
-            document.getElementById('repoLink').textContent = t.repoLink;
             document.getElementById('downloadLink').textContent = t.downloadLink;
             
             document.getElementById('downloadTitle').textContent = t.downloadTitle;
             
-            document.getElementById('winLabel').innerHTML = t.winLabel + ' <span>10 / 11</span>';
-            document.getElementById('linuxLabel').innerHTML = t.linuxLabel + ' <span>.Zip application</span>';
+            document.getElementById('winLabel').innerHTML = t.winLabel + ' <span>' + t.winLabelSpan + '</span>';
             
             document.getElementById('winBtn').innerHTML = '<span>↓</span> ' + t.winBtn;
-            document.getElementById('linuxBtn').innerHTML = '<span>↓</span> ' + t.linuxBtn;
+            document.getElementById('winMeta').textContent = t.winMeta;
             
             document.getElementById('detailsTitle').textContent = t.detailsTitle;
             document.getElementById('detailsDesc').textContent = t.detailsDesc;
@@ -737,14 +731,17 @@
             
             const contactLink = document.getElementById('contactLink');
             if(contactLink) contactLink.textContent = t.contact;
+
+            const lightboxImg = document.getElementById('lightboxImg');
+            if(lightboxImg) lightboxImg.alt = t.lightboxAlt;
             
             currentLangLabel.textContent = t.langName;
-            localStorage.setItem('bebka16-snail-lang', lang);
+            localStorage.setItem('bebka16-legacy-lang', lang);
             langMenu.classList.remove('show');
         }
 
         function getStoredLang() {
-            return localStorage.getItem('bebka16-snail-lang') || 'ru';
+            return localStorage.getItem('bebka16-legacy-lang') || 'ru';
         }
 
         langDropdown.addEventListener('click', function(e) {
