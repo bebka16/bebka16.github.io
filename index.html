@@ -353,6 +353,53 @@
             font-weight: 600;
         }
 
+        .custom-promo-block {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 0.8rem 1rem;
+            margin-bottom: 1.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+            transition: box-shadow 0.2s;
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            width: 100%;
+            min-height: 80px;
+        }
+
+        .custom-promo-block:hover {
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
+        }
+
+        .promo-image {
+            width: 90px;
+            height: 90px;
+            flex-shrink: 0;
+            background-size: cover;
+            background-position: center;
+            border-radius: 4px;
+            border: 1px solid #eaeef2;
+        }
+
+        .promo-text {
+            flex: 1;
+            min-width: 0;
+        }
+
+        .promo-text h2 {
+            font-size: 16px;
+            font-weight: 600;
+            color: #24292f;
+            margin-bottom: 0.3rem;
+        }
+
+        .promo-text p {
+            font-size: 0.9rem;
+            color: #57606a;
+            line-height: 1.4;
+        }
+
         .footer {
             margin-top: auto;
             border-top: 1px solid #d0d7de;
@@ -388,6 +435,8 @@
             .history-item { flex-direction: column; gap: 0.2rem; }
             .history-year { min-width: auto; }
             .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+            .custom-promo-block { flex-direction: column; align-items: flex-start; }
+            .promo-image { width: 100%; height: 140px; }
         }
         a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
     </style>
@@ -415,6 +464,14 @@
             <a href="https://bebka16bot.t.me">Contact me</a>
         </div>
     </header>
+
+    <div class="custom-promo-block">
+        <div class="promo-image" style="background-image: url('images/promo.webp');"></div>
+        <div class="promo-text">
+            <h2 id="promoTitle">Разработка сайтов на заказ</h2>
+            <p id="promoDescription">Я решил заниматься разработкой сайтов на заказ, чтобы моё многолетнее хобби программирования наконец-то стало приносить мне доход. Буду признателен, если вы распроните это или воспользуетесь моими услугами. Чтобы связаться со мной, напишите в <a href="">Telegram-бота</a></p>
+        </div>
+    </div>
 
     <div class="section-title" id="projectsTitle">Projects</div>
     <div class="projects-grid">
@@ -481,6 +538,8 @@
     (function() {
         const translations = {
             en: {
+                promoTitle: "Custom website development",
+                promoDescription: `I decided to start developing custom websites so that my years-long programming hobby would finally start generating income. I'd be grateful if you spread the word or use my services. To contact me, write to the <a href="https://bebka16bot.t.me">Telegram bot</a>.`,
                 projectsTitle: "Projects",
                 desc1: "A dedicated code editor without unnecessary features.",
                 desc2: "A media player focused on convenient music library search.",
@@ -495,6 +554,8 @@
                 footer: "© 2022 — 2026, bebka16, all rights are reserved. The use of resources without attribution is prohibited by copyright law."
             },
             be: {
+                promoTitle: "Распрацоўка сайтаў на заказ",
+                promoDescription: `Я вырашыў займацца распрацоўкай сайтаў на заказ, каб маё шматгадовае хобі праграмавання нарэшце стала прыносіць мне прыбытак. Буду ўдзячны, калі вы раскажаце пра гэта ці скарыстаецеся маімі паслугамі. Каб звязацца са мной, напішыце ў <a href="https://bebka16bot.t.me">Telegram-бота</a>.`,
                 projectsTitle: "Праекты",
                 desc1: "Свой уласны рэдактар кода без лішніх функцый.",
                 desc2: "Медыяплэер з акцэнтам на зручны пошук музычнай бібліятэкі.",
@@ -509,6 +570,8 @@
                 footer: "© 2022 — 2026, bebka16, усе правы абаронены. Выкарыстанне рэсурсаў без указання аўтарства забаронена законам аб аўтарскіх правах."
             },
             ru: {
+                promoTitle: "Разработка сайтов на заказ",
+                promoDescription: `Я решил заниматься разработкой сайтов на заказ, чтобы моё многолетнее хобби программирования наконец-то стало приносить мне доход. Буду признателен, если вы распроните это или воспользуетесь моими услугами. Чтобы связаться со мной, напишите в <a href="https://bebka16bot.t.me">Telegram-бота</a>.`,
                 projectsTitle: "Проекты",
                 desc1: "Собственный редактор кода без лишних функций.",
                 desc2: "Медиаплеер с акцентом на удобный поиск музыкальной библиотеки.",
@@ -523,6 +586,8 @@
                 footer: "© 2022 — 2026, bebka16, все права защищены. Использование ресурсов без указания авторства запрещено законом об авторских правах."
             },
             uk: {
+                promoTitle: "Розробка сайтів на замовлення",
+                promoDescription: `Я вирішив займатися розробкою сайтів на замовлення, щоб моє багаторічне хобі програмування нарешті стало приносити мені дохід. Буду вдячний, якщо ви розкажете про це або скористаєтеся моїми послугами. Щоб зв'язатися зі мною, напишіть у <a href="https://bebka16bot.t.me">Telegram-бота</a>.`,
                 projectsTitle: "Проєкти",
                 desc1: "Виділений редактор коду без зайвих функцій.",
                 desc2: "Медіаплеєр з акцентом на зручний пошук музичної бібліотеки.",
@@ -545,6 +610,8 @@
         function setLanguage(lang) {
             if (!translations[lang]) lang = 'en';
             const t = translations[lang];
+            document.getElementById('promoTitle').textContent = t.promoTitle;
+            document.getElementById('promoDescription').innerHTML = t.promoDescription;
             document.getElementById('projectsTitle').textContent = t.projectsTitle;
             document.getElementById('desc1').textContent = t.desc1;
             document.getElementById('desc2').textContent = t.desc2;
