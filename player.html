@@ -1,9 +1,13 @@
 <!DOCTYPE html>
 <html lang="ru">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
     <title>Decibel Media Player</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
     <style>
         * {
             margin: 0;
@@ -12,409 +16,341 @@
         }
 
         body {
-            background-color: #f6f8fa;
-            color: #24292f;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.5;
-            padding: 2rem 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            margin-top: 0;
-            padding-top: 0;
+            background-color: #f7f7f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+            color: #1f1f1f;
+            line-height: 1.4;
+            scroll-behavior: smooth;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            width: 100%;
-            flex: 1;
+            padding: 0 28px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 0.85rem;
+            color: #1f1f1f;
+        }
+
+        h2 {
+            font-size: 1.7rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.2rem;
+            color: #1f1f1f;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            color: #1f1f1f;
+        }
+
+        .text-large {
+            font-size: 12px;
+            line-height: 1.45;
+            color: #3a3a3a;
+            font-weight: 400;
+        }
+
+        .text-muted {
+            color: #6b6b6b;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .navbar {
+            padding: 6px 0;
+            border-bottom: 1px solid #e8e8e6;
+            background-color: #f7f7f5;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            font-size: 1.2rem;
+            letter-spacing: -0.2px;
+            color: #1f1f1f;
+            text-decoration: none;
+        }
+
+        .logo img {
+            width: 22px;
+            height: 22px;
+            object-fit: contain;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #3a3a3a;
+            font-size: 12px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #000000;
+        }
+
+        .btn-outline {
+            border: 1px solid #e0dfdb;
+            padding: 6px 14px;
+            background: transparent;
+            font-weight: 400;
+            font-size: 12px;
+            transition: background 0.2s, border 0.2s;
+            text-decoration: none;
+            color: #1f1f1f;
+            display: inline-block;
+        }
+
+        .btn-outline:hover {
+            background-color: #efefec;
+            border-color: #c7c6c2;
+        }
+
+        .hero {
+            padding: 56px 34px 48px 34px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #eaeae6;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #2c2c2c;
+            margin-bottom: 0.85rem;
+            width: fit-content;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: #1f1f1f;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            padding-top: 9px;
+            font-weight: 400;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a3a3a;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #e0dfdb;
+            padding: 8px 18px;
+            font-weight: 400;
+            font-size: 12px;
+            text-decoration: none;
+            color: #1f1f1f;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+
+        .btn-secondary:hover {
+            background-color: #efefec;
+        }
+
+        .services-section,
+        .feature-section {
+            padding: 52px 0;
+            border-top: 1px solid #e8e8e6;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 28px;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e6;
+            padding: 22px 20px;
+            transition: border-color 0.2s;
             display: flex;
             flex-direction: column;
         }
 
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: baseline;
-            padding-bottom: 0.7rem;
-            padding-top: 0.7rem;
-            border-bottom: 1px solid #d0d7de;
-            margin-bottom: 2.5rem;
+        .service-card:hover {
+            border-color: #d0cfca;
         }
 
-        .header-left {
-            display: flex;
-            align-items: baseline;
-            gap: 2rem;
-            flex-wrap: wrap;
-        }
-
-        .header-left h1 {
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #24292f;
-        }
-
-        .header-left .sub {
-            font-size: 0.85rem;
-            color: #57606a;
-            margin-top: 0.05rem;
-        }
-
-        .header-right {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.85rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .header-right a {
-            color: #0969da;
-            text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-        }
-
-        .header-right a:hover {
-            border-bottom-color: #0969da;
-        }
-
-        .lang-dropdown {
-            position: relative;
-            display: inline-block;
-            cursor: pointer;
-            font-weight: 500;
-            color: #0969da;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-            padding-right: 1.2rem;
-            user-select: none;
-        }
-        .lang-dropdown:hover {
-            border-bottom-color: #0969da;
-        }
-        .lang-dropdown .arrow {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.7rem;
-            pointer-events: none;
-        }
-        .lang-dropdown .lang-label {
-            display: inline-block;
-        }
-        .lang-dropdown .dropdown-menu {
-            display: none;
-            position: absolute;
-            top: 100%;
-            left: 0;
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            min-width: 130px;
-            z-index: 15;
-            margin-top: 4px;
-        }
-        .lang-dropdown .dropdown-menu.show {
-            display: block;
-        }
-        .lang-dropdown .dropdown-menu a {
-            display: block;
-            padding: 0.4rem 0.8rem;
-            color: #24292f;
-            text-decoration: none;
-            border-bottom: none;
+        .service-card p {
+            color: #4a4a4a;
+            line-height: 1.45;
+            margin-bottom: 9px;
+            font-size: 12px;
             font-weight: 400;
-            transition: background 0.1s;
-        }
-        .lang-dropdown .dropdown-menu a:hover {
-            background: #f0f6fc;
-            border-bottom: none;
+            flex: 1;
         }
 
-        .hero-section {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 2.5rem;
-            margin-bottom: 3rem;
-            align-items: center;
-        }
-
-        .hero-text {
-            flex: 1 1 320px;
-        }
-
-        .logo-area {
+        .os-label {
             display: flex;
             align-items: center;
-            gap: 0.8rem;
-            margin-bottom: 1.2rem;
+            gap: 10px;
+            margin-bottom: 0;
         }
 
-        .logo-icon {
-            width: 52px;
-            height: 52px;
+        .os-label i {
+            font-size: 1.6rem;
+            color: #2c3e50;
+        }
+
+        .os-sub {
+            display: block;
+            font-size: 12px;
+            font-weight: 400;
+            color: #6b6b6b;
+            margin-top: 5px;
+            margin-bottom: 7px;
+        }
+
+        .download-meta {
+            color: #6b6b6b;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 44px;
+            align-items: start;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .feature-list li {
             display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 14px;
+            font-size: 13px;
+            font-weight: 400;
+            line-height: 1.5;
+            color: #3a3a3a;
+        }
+
+        .feature-list li::before {
+            content: "";
+            flex-shrink: 0;
+            width: 5px;
+            height: 5px;
+            background-color: #2c2c2c;
+            border-radius: 50%;
+            margin-top: 7px;
+        }
+
+        .side-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e6;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .side-card h3 {
+            font-size: 0.95rem;
+        }
+
+        .side-card p,
+        .side-card span {
+            color: #4a4a4a;
+            font-size: 12px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .screenshot-row {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 10px;
+            margin-top: 14px;
+        }
+
+        .screenshot-thumb {
+            width: 100%;
+            height: 96px;
+            background-size: cover;
+            background-position: top left;
+            border: 1px solid #e8e8e6;
+            cursor: pointer;
+            transition: border-color 0.2s, opacity 0.2s;
+            background-color: #f3f4f6;
+        }
+
+        .screenshot-thumb:hover {
+            border-color: #d0cfca;
+            opacity: 0.9;
+        }
+
+        .hero-grid {
+            display: grid;
+            grid-template-columns: 1fr 1.2fr;
+            gap: 44px;
             align-items: center;
-            justify-content: center;
-            font-size: 24px;
-            font-weight: 600;
-            color: #24292f;
-            background-image: url('images/dmp.webp');
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-        }
-
-        .app-title {
-            font-size: 32px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #24292f;
-        }
-
-        .hero-description {
-            font-size: 0.9rem;
-            color: #57606a;
-            margin-bottom: 1.5rem;
-            max-width: 480px;
-        }
-
-        .hero-links {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1.2rem;
-            margin-bottom: 1.5rem;
-        }
-
-        .hero-links a {
-            color: #0969da;
-            text-decoration: none;
-            font-weight: 500;
-            font-size: 0.9rem;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-        }
-
-        .hero-links a:hover {
-            border-bottom-color: #0969da;
-        }
-
-        .badge-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.5rem;
-        }
-
-        .badge {
-            background: #f0f6fc;
-            color: #0969da;
-            font-size: 0.75rem;
-            padding: 0.15rem 0.7rem;
-            border-radius: 12px;
-            border: 1px solid #d0d7de;
-            font-weight: 500;
         }
 
         .hero-screenshot {
-            flex: 1 1 480px;
+            width: 100%;
             aspect-ratio: 16 / 10;
-            background-position: top left;
-            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
             background-image: url('note/dmpp.png');
-            background-color: #f3f4f6;
+            background-size: cover;
+            background-position: top left;
+            background-color: #ffffff;
+            border: 1px solid #e8e8e6;
+            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.05);
             transition: box-shadow 0.2s;
         }
 
         .hero-screenshot:hover {
-            box-shadow: 0 8px 28px rgba(0,0,0,0.15);
-        }
-
-        .download-section {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1.8rem;
-            padding-top: 20px;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-
-        .download-title {
-            font-size: 14px;
-            font-weight: 600;
-            color: #24292f;
-            margin-bottom: 10px;
-        }
-
-        .download-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-            gap: 1.2rem;
-        }
-
-        .download-card {
-            background: #f6f8fa;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1.2rem;
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            position: relative;
-            overflow: hidden;
-        }
-
-        .download-card:hover {
-            border-color: #8b949e;
-            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
-        }
-
-        .download-card::after {
-            content: "";
-            position: absolute;
-            top: -10px;
-            right: -15px;
-            width: 70px;
-            height: 70px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: center;
-            opacity: 0.12;
-            filter: grayscale(100%) brightness(0%);
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .download-card:nth-child(1)::after {
-            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h11.377v11.372H0V0zm12.623 0H24v11.372H12.623V0zM0 12.623h11.377V24H0v-11.377zm12.623 0H24V24H12.623V12.623z" fill="black"/></svg>');
-        }
-
-        .download-card:nth-child(2)::after {
-            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Tux.png/250px-Tux.png');
-        }
-
-        .os-label {
-            font-weight: 500;
-            font-size: 14px;
-            color: #24292f;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-            position: relative;
-            z-index: 1;
-        }
-
-        .os-label span {
-            font-size: 0.8rem;
-            font-weight: 400;
-            color: #57606a;
-        }
-
-        .download-button {
-            color: #0969da;
-            text-decoration: none;
-            font-weight: 400;
-            font-size: 14px;
-            border-radius: 2px;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.4rem;
-            transition: background 0.2s;
-            border: 1px solid transparent;
-            width: fit-content;
-            position: relative;
-            z-index: 1;
-        }
-
-        .download-button:hover {
-            text-decoration: underline;
-        }
-
-        .download-meta {
-            font-size: 0.75rem;
-            color: #57606a;
-            position: relative;
-            z-index: 1;
-        }
-
-        .details-block {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1.8rem;
-            padding-top: 20px;
-            margin-bottom: 2.5rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-        }
-
-        .details-block h2 {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 1rem;
-            color: #24292f;
-        }
-
-        .details-block p {
-            color: #57606a;
-            margin-bottom: 1rem;
-            font-size: 0.9rem;
-            max-width: 800px;
-        }
-
-        .details-block ul {
-            list-style: none;
-            padding: 0;
-            margin-bottom: 1.5rem;
-            color: #57606a;
-            font-size: 0.9rem;
-        }
-
-        .details-block ul li {
-            padding: 0.2rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.5rem;
-        }
-
-        .details-block ul li::before {
-            content: "•";
-            color: #0969da;
-            font-weight: 700;
-        }
-
-        .screenshot-row {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 1rem;
-            margin-top: 1.5rem;
-        }
-
-        .screenshot-thumb {
-            width: 180px;
-            height: 110px;
-            background-size: cover;
-            background-position: top left;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            cursor: pointer;
-            transition: transform 0.2s, box-shadow 0.2s;
-            background-color: #f3f4f6;
-            flex-shrink: 0;
-        }
-
-        .screenshot-thumb:hover {
-            transform: scale(1.03);
-            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
-            border-color: #8b949e;
+            box-shadow: 0 8px 28px rgba(0, 0, 0, 0.09);
         }
 
         .lightbox {
@@ -424,7 +360,7 @@
             left: 0;
             width: 100%;
             height: 100%;
-            background: rgba(0,0,0,0.8);
+            background: rgba(0, 0, 0, 0.82);
             z-index: 100;
             align-items: center;
             justify-content: center;
@@ -438,8 +374,7 @@
         .lightbox img {
             max-width: 85%;
             max-height: 80%;
-            border-radius: 2px;
-            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            box-shadow: 0 12px 40px rgba(0, 0, 0, 0.5);
             border: 2px solid #ffffff;
             background: #fff;
         }
@@ -459,368 +394,509 @@
             opacity: 1;
         }
 
-        .footer {
-            margin-top: auto;
-            border-top: 1px solid #d0d7de;
-            padding-top: 1.5rem;
+        footer {
+            padding: 40px 0 28px;
+        }
+
+        .footer-inner {
+            border-top: 1px solid #e8e8e6;
+            margin-top: 8px;
+            padding-top: 24px;
             display: flex;
-            flex-wrap: wrap;
             justify-content: space-between;
             align-items: center;
-            color: #57606a;
-            font-size: 0.8rem;
+            flex-wrap: wrap;
+            gap: 12px;
         }
 
-        .footer a {
-            color: #0969da;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
+        .footer-inner p {
+            font-size: 0.75rem;
+            color: #8a8a8a;
         }
 
         .footer-links {
             display: flex;
-            gap: 1.5rem;
+            gap: 24px;
+            flex-wrap: wrap;
         }
 
-        @media (max-width: 700px) {
-            body { padding: 1rem 0.8rem; }
-            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-            .hero-section { flex-direction: column; }
-            .hero-screenshot { aspect-ratio: 16/9; width: 100%; }
-            .download-grid { grid-template-columns: 1fr; }
-            .screenshot-thumb { width: 140px; height: 88px; }
-            .log-item { flex-direction: column; gap: 0.2rem; }
-            .log-version { min-width: auto; }
-            .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+        .footer-links a {
+            text-decoration: none;
+            color: #3a3a3a;
+            font-size: 0.75rem;
+            font-weight: 400;
         }
-        a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
+
+        .footer-links a:hover {
+            color: #000;
+        }
+
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            user-select: none;
+            font-size: 12px;
+            color: #3a3a3a;
+        }
+
+        .lang-dropdown .arrow {
+            font-size: 9px;
+            margin-left: 3px;
+        }
+
+        .lang-dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            right: 0;
+            background: #ffffff;
+            border: 1px solid #e8e8e6;
+            min-width: 140px;
+            z-index: 20;
+            margin-top: 8px;
+        }
+
+        .lang-dropdown .dropdown-menu.show {
+            display: block;
+        }
+
+        .lang-dropdown .dropdown-menu a {
+            display: block;
+            padding: 8px 14px;
+            color: #1f1f1f;
+            text-decoration: none;
+            font-size: 12px;
+            font-weight: 400;
+            transition: background 0.15s;
+        }
+
+        .lang-dropdown .dropdown-menu a:hover {
+            background: #f0efec;
+        }
+
+        * {
+            border-radius: 0 !important;
+        }
+
+        body,
+        p,
+        span,
+        a,
+        li,
+        h1,
+        h2,
+        h3,
+        h4,
+        .text,
+        .btn,
+        .badge,
+        .logo,
+        .nav-links a,
+        .btn-outline,
+        .btn-primary,
+        .btn-secondary {
+            font-weight: 400;
+        }
+
+        h1,
+        h2,
+        h3,
+        .logo {
+            font-weight: 500;
+        }
+
+        @media (max-width: 780px) {
+            .container {
+                padding: 0 20px;
+            }
+
+            h1 {
+                font-size: 2rem;
+            }
+
+            h2 {
+                font-size: 1.5rem;
+            }
+
+            .feature-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .nav-inner {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+
+            .hero {
+                padding: 40px 22px 32px;
+            }
+
+            .hero-grid {
+                grid-template-columns: 1fr;
+                gap: 28px;
+            }
+
+            .services-section,
+            .feature-section {
+                padding: 44px 0;
+            }
+
+            .services-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .screenshot-row {
+                grid-template-columns: 1fr 1fr;
+            }
+        }
     </style>
 </head>
 <body>
-<div class="container">
-    <header class="header">
-        <div class="header-left">
-            <h1 id="appName">Decibel Media Player</h1>
-            <span class="sub" id="subText">by bebka16</span>
+
+    <nav class="navbar">
+        <div class="container nav-inner">
+            <a href="/" class="logo">
+                <span style="font-size: 16px;">bebka16</span>
+            </a>
+            <div class="nav-links">
+                <div class="lang-dropdown" id="langDropdown">
+                    <span id="currentLangLabel">Русский</span><span class="arrow">▾</span>
+                    <div class="dropdown-menu" id="langMenu">
+                        <a href="#" data-lang="en">English</a>
+                        <a href="#" data-lang="be">Беларуская</a>
+                        <a href="#" data-lang="ru">Русский</a>
+                        <a href="#" data-lang="uk">Українська</a>
+                    </div>
+                </div>
+                <a href="https://github.com/bebka16">GitHub</a>
+                <a href="https://bebkalive.t.me/">Telegram</a>
+                <a href="https://bebka16bot.t.me" class="btn-outline" id="contactLink">Связаться</a>
+            </div>
         </div>
-        <div class="header-right">
-            <div class="lang-dropdown" id="langDropdown">
-                <span class="lang-label" id="currentLangLabel">Русский</span>
-                <span class="arrow" style="font-size: 16px;">↶</span>
-                <div class="dropdown-menu" id="langMenu">
-                    <a href="#" data-lang="en">English</a>
-                    <a href="#" data-lang="be">Беларуская</a>
-                    <a href="#" data-lang="ru">Русский</a>
-                    <a href="#" data-lang="uk">Українська</a>
+    </nav>
+
+    <main>
+        <div class="container hero">
+            <div class="hero-grid">
+                <div class="hero-text">
+                    <span class="badge"><i class="fab fa-windows" style="font-size: 0.7rem;"></i> Windows</span>
+                    <h1>Decibel Media Player</h1>
+                    <p class="text-large" id="heroDesc">
+                        Медиаплеер, в котором нету лишнего функционала. Максимально удобный поиск музыки слева, и отображение обложки или аудиоспектра справа. Эквалайзер, настройка оформления.
+                    </p>
+                    <div class="hero-buttons">
+                        <a href="#download" class="btn-primary" id="downloadLink">Скачать <i class="fas fa-arrow-down" style="margin-left: 5px; font-size: 0.7rem;"></i></a>
+                        <a href="https://freesoft.ru/windows/decibel-media-player/versions/11-200667" class="btn-secondary" id="docLink">Freesoft</a>
+                        <a href="https://decibel-media-player.en.uptodown.com/windows" class="btn-secondary" id="repoLink">Uptodown</a>
+                    </div>
+                </div>
+                <div class="hero-screenshot" id="heroShot" title="Decibel Media Player" role="img"></div>
+            </div>
+        </div>
+
+        <section id="download" class="services-section">
+            <div class="container">
+                <h2 id="downloadTitle">Скачать DMP</h2>
+                <div class="services-grid">
+                    <div class="service-card" id="winCard">
+                        <h3 class="os-label"><i class="fab fa-windows"></i><span id="winLabel">Windows</span></h3>
+                        <a style="display: flex; align-items: center;"><span class="os-sub" id="winLabelSpan" style="margin-top: 8px;">10, 11</span>&nbsp;<div class="download-meta" id="winMeta">v1.2 — 112 МБ</div></a>
+                        <a href="https://dl.freesoftru.net/apps/56/556/55530/DMP%201.2.exe" class="btn-primary" id="winBtn" style="width: fit-content;"><i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Установщик .exe</a>
+                        
+                    </div>
+                    <div class="service-card" id="linuxCard">
+                        <h3 class="os-label"><i class="fab fa-linux"></i><span id="linuxLabel">Linux</span></h3>
+                        <a style="display: flex; align-items: center; margin-top: 10px; margin-bottom: 10px;"><span style="display: none;" class="os-sub" id="linuxSub">недоступно</span><div class="download-meta" id="linuxMeta">Этот проект достаточно старый, раньше я не портировал программы под Linux.</div></a>
+                        <a class="btn-primary" id="linuxBtn" style="width: fit-content; cursor: not-allowed;"><i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Загрузить</a>
+                        
+                    </div>
                 </div>
             </div>
-            <a href="https://github.com/bebka16">GitHub</a>
-            <a href="https://bebkalive.t.me/">Telegram</a>
-            <a href="https://bebka16bot.t.me" id="contactLink">Связаться</a>
-        </div>
-    </header>
+        </section>
 
-    <div class="hero-section">
-        <div class="hero-text">
-            <div class="logo-area">
-                <div class="logo-icon" aria-label="Логотип Decibel Media Player"></div>
-                <span class="app-title" id="appTitle">Decibel Media Player</span>
+        <section id="features" class="feature-section">
+            <div class="container">
+                <div class="feature-grid">
+                    <div>
+                        <span class="badge"> v1.2</span>
+                        <h2 id="detailsTitle">О программе</h2>
+                        <p class="text-large" style="max-width: 620px;" id="detailsDesc">Decibel Media Player — интуитивно понятый аудиоплеер с эквалайзером, настройками звуковых эффектов, с возможностью настроить внешний вид программы и добавлять аудиофайлы всех, даже редких форматов в высоком качестве или без сжатия. Интерфейс не перегружен, и вы быстро разберётесь, как пользоваться программой.</p>
+                        <ul class="feature-list" id="detailsList">
+                            <li><span>Возможность выбрать внешний вид интерфейса</span></li>
+                            <li><span>Эквалайзер</span></li>
+                            <li><span>Поддержка английского, русского, белорусского и украинского языков</span></li>
+                            <li><span>Поддержка всех популярных форматов, в том числе loseless</span></li>
+                            <li><span>Удобная библиотека треков</span></li>
+                        </ul>
+                    </div>
+                    <div>
+                        <div class="side-card">
+                            <h3 id="screensTitle">Скриншоты</h3>
+                            <p id="screensSubtitle">Нажмите на скриншот, чтобы открыть его в полном размере.</p>
+                            <div class="screenshot-row" id="screenshotRow">
+                                <div class="screenshot-thumb" style="background-image: url('images/6.webp');" data-full="images/6.webp" title="Мне лень писать описание"></div>
+                                <div class="screenshot-thumb" style="background-image: url('images/7.webp');" data-full="images/7.webp" title="Ну реально лень"></div>
+                                <div class="screenshot-thumb" style="background-image: url('images/8.webp');" data-full="images/8.webp" title="ЫЫЫЫЫ"></div>
+                                <div class="screenshot-thumb" style="background-image: url('images/9.webp');" data-full="images/9.webp" title="Что ты хочешь тут увидеть?"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
             </div>
-            <p class="hero-description" id="heroDesc">
-                Медиаплеер, в котором нету лишнего функционала. Максимально удобный поиск
-                музыки слева, и отображение обложки или аудиоспектра справа. Эквалайзер, 
-                настройка оформления.
-            </p>
-            <div class="hero-links" id="heroLinks">
-                <a href="https://freesoft.ru/windows/decibel-media-player/versions/11-200667" id="docLink">Freesoft</a>
-                <a href="https://decibel-media-player.en.uptodown.com/windows" id="repoLink">Uptodown</a>
-                <a href="#downloadTitle" id="downloadLink">Скачать</a>
-            </div>
-        </div>
-        <div class="hero-screenshot" title="Главное окно DMP" role="img" aria-label="Скриншот интерфейса Decibel Media Player"></div>
-    </div>
+        </section>
+    </main>
 
-    <div class="download-section">
-        <div class="download-title" id="downloadTitle">Скачать DMP</div>
-        <div class="download-grid">
-            <div class="download-card" id="winCard">
-                <div class="os-label" id="winLabel">Windows <span>10 / 11</span></div>
-                <a href="https://dl.freesoftru.net/apps/56/556/55530/DMP%201.2.exe" class="download-button" id="winBtn"><span>↓</span> Установщик .exe</a>
-                <div class="download-meta" id="winMeta">v1.2 — 112 МБ</div>
+    <footer>
+        <div class="container">
+            <div class="footer-inner">
+                <p id="footerText">© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.</p>
+                <div class="footer-links">
+                    <a href="https://en.wikipedia.org/wiki/MIT_License" id="licenseLink">Лицензия MIT</a>
+                    <a href="https://github.com/bebka16" id="sourceLink">Исходный код</a>
+                </div>
             </div>
-            <div class="download-card" id="linuxCard">
-                <div class="os-label" id="linuxLabel">Linux <span>недоступно</span></div>
-                <a class="download-button" style="cursor: not-allowed;" id="linuxBtn"><span>↓</span> Загрузить</a>
-                <div class="download-meta" id="linuxMeta">Этот проект достаточно старый, раньше я не портировал программы под Linux.</div>
-            </div>
-        </div>
-    </div>
-
-    <div class="details-block">
-        <h2 id="detailsTitle">О программе</h2>
-        <p id="detailsDesc">Decibel Media Player — интуитивно понятый аудиоплеер с эквалайзером, настройками звуковых эффектов, с возможностью настроить внешний вид программы и добавлять аудиофайлы всех, даже редких форматов в высоком качестве или без сжатия. Интерфейс не перегружен, и вы быстро разберётесь, как пользоваться программой.</p>
-        <ul id="detailsList">
-            <li>Возможность выбрать внешний вид интерфейса</li>
-            <li>Эквалайзер</li>
-            <li>Поддержка английского, русского, белорусского и украинского языков</li>
-            <li>Поддержка всех популярных форматов, в том числе loseless</li>
-            <li>Удобная библиотека треков</li>
-        </ul>
-        <div class="screenshot-row" id="screenshotRow">
-            <div class="screenshot-thumb" style="background-image: url('images/6.webp');" data-full="images/6.webp" title="Мне лень писать описание"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/7.webp');" data-full="images/7.webp" title="Ну реально лень"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/8.webp');" data-full="images/8.webp" title="ЫЫЫЫЫ"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/9.webp');" data-full="images/9.webp" title="Что ты хочешь тут увидеть?"></div>
-        </div>
-    </div>
-
-    <footer class="footer">
-        <span id="footerText">© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.</span>
-        <div class="footer-links">
-            <a href="https://en.wikipedia.org/wiki/MIT_License" id="licenseLink">Лицензия MIT</a>
-            <a href="https://github.com/bebka16" id="sourceLink">Исходный код</a>
         </div>
     </footer>
-</div>
 
-<div class="lightbox" id="lightbox">
-    <span class="lightbox-close" id="lightboxClose">&times;</span>
-    <img src="" alt="Скриншот Decibel Media Player" id="lightboxImg">
-</div>
+    <div class="lightbox" id="lightbox">
+        <span class="lightbox-close" id="lightboxClose">&times;</span>
+        <img src="" alt="Скриншот Decibel Media Player" id="lightboxImg">
+    </div>
 
-<script>
-    const translations = {
-        ru: {
-            appName: 'Decibel Media Player',
-            appTitle: 'Decibel Media Player',
-            langName: 'Русский',
-            sub: 'by bebka16',
-            heroDesc: 'Медиаплеер, в котором нету лишнего функционала. Максимально удобный поиск музыки слева, и отображение обложки или аудиоспектра справа. Эквалайзер, настройка оформления.',
-            docLink: 'Freesoft',
-            repoLink: 'Uptodown',
-            downloadLink: 'Скачать',
-            downloadTitle: 'Скачать DMP',
-            winLabel: 'Windows',
-            linuxLabel: 'Linux',
-            winBtn: 'Установщик .exe',
-            linuxBtn: 'Загрузить',
-            winMeta: 'v1.2 — 112 МБ',
-            linuxMeta: 'Этот проект достаточно старый, раньше я не портировал программы под Linux.',
-            detailsTitle: 'О программе',
-            detailsDesc: 'Decibel Media Player — интуитивно понятый аудиоплеер с эквалайзером, настройками звуковых эффектов, с возможностью настроить внешний вид программы и добавлять аудиофайлы всех, даже редких форматов в высоком качестве или без сжатия. Интерфейс не перегружен, и вы быстро разберётесь, как пользоваться программой.',
-            detailsList: [
-                'Возможность выбрать внешний вид интерфейса',
-                'Эквалайзер',
-                'Поддержка английского, русского, белорусского и украинского языков',
-                'Поддержка всех популярных форматов, в том числе loseless',
-                'Удобная библиотека треков'
-            ],
-            footer: '© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.',
-            license: 'Лицензия MIT',
-            source: 'Исходный код',
-            contact: 'Связаться'
-        },
-        en: {
-            appName: 'Decibel Media Player',
-            appTitle: 'Decibel Media Player',
-            langName: 'English',
-            sub: 'by bebka16',
-            heroDesc: 'A media player with no unnecessary features. Very convenient music search on the left, and cover art or audio spectrum display on the right. Equalizer, appearance customization.',
-            docLink: 'Freesoft',
-            repoLink: 'Uptodown',
-            downloadLink: 'Download',
-            downloadTitle: 'Download DMP',
-            winLabel: 'Windows',
-            linuxLabel: 'Linux',
-            winBtn: 'Installer .exe',
-            linuxBtn: 'Download',
-            winMeta: 'v1.2 — 112 MB',
-            linuxMeta: 'This project is quite old, I did not port programs to Linux back then.',
-            detailsTitle: 'About',
-            detailsDesc: 'Decibel Media Player is an intuitive audio player with an equalizer, sound effects settings, the ability to customize the appearance of the program and add audio files of all, even rare formats in high quality or without compression. The interface is not overloaded, and you will quickly figure out how to use the program.',
-            detailsList: [
-                'Ability to choose the interface appearance',
-                'Equalizer',
-                'Support for English, Russian, Belarusian and Ukrainian languages',
-                'Support for all popular formats, including lossless',
-                'Convenient track library'
-            ],
-            footer: '© 2022 — 2026, bebka16. All rights reserved. Use of materials without attribution is prohibited.',
-            license: 'MIT License',
-            source: 'Source Code',
-            contact: 'Contact'
-        },
-        be: {
-            appName: 'Decibel Media Player',
-            appTitle: 'Decibel Media Player',
-            langName: 'Беларуская',
-            sub: 'by bebka16',
-            heroDesc: 'Медыяплэер, у якім няма лішняга функцыяналу. Максімальна зручны пошук музыкі злева, і адлюстраванне вокладкі або аўдыяспектра справа. Эквалайзер, настройка афармлення.',
-            docLink: 'Freesoft',
-            repoLink: 'Uptodown',
-            downloadLink: 'Спампаваць',
-            downloadTitle: 'Спампаваць DMP',
-            winLabel: 'Windows',
-            linuxLabel: 'Linux',
-            winBtn: 'Усталёўнік .exe',
-            linuxBtn: 'Спампаваць',
-            winMeta: 'v1.2 — 112 МБ',
-            linuxMeta: 'Гэты праект дастаткова стары, раней я не партаваў праграмы пад Linux.',
-            detailsTitle: 'Аб праграме',
-            detailsDesc: 'Decibel Media Player — інтуітыўна зразумелы аўдыяплэер з эквалайзерам, наладамі гукавых эфектаў, з магчымасцю наладзіць знешні выгляд праграмы і дадаваць аўдыяфайлы ўсіх, нават рэдкіх фарматаў у высокай якасці або без сціску. Інтэрфейс не перагружаны, і вы хутка разбярэцеся, як карыстацца праграмай.',
-            detailsList: [
-                'Магчымасць выбраць знешні выгляд інтэрфейсу',
-                'Эквалайзер',
-                'Падтрымка англійскай, рускай, беларускай і ўкраінскай моў',
-                'Падтрымка ўсіх папулярных фарматаў, у тым ліку loseless',
-                'Зручная бібліятэка трэкаў'
-            ],
-            footer: '© 2022 — 2026, bebka16. Усе правы абаронены. Выкарыстанне матэрыялаў без указання аўтарства забаронена.',
-            license: 'Ліцэнзія MIT',
-            source: 'Зыходны код',
-            contact: 'Звязацца'
-        },
-        uk: {
-            appName: 'Decibel Media Player',
-            appTitle: 'Decibel Media Player',
-            langName: 'Українська',
-            sub: 'by bebka16',
-            heroDesc: 'Медіаплеєр, в якому немає зайвого функціоналу. Максимально зручний пошук музики зліва, і відображення обкладинки або аудіоспектра справа. Еквалайзер, налаштування оформлення.',
-            docLink: 'Freesoft',
-            repoLink: 'Uptodown',
-            downloadLink: 'Завантажити',
-            downloadTitle: 'Завантажити DMP',
-            winLabel: 'Windows',
-            linuxLabel: 'Linux',
-            winBtn: 'Інсталятор .exe',
-            linuxBtn: 'Завантажити',
-            winMeta: 'v1.2 — 112 МБ',
-            linuxMeta: 'Цей проєкт досить старий, раніше я не портував програми під Linux.',
-            detailsTitle: 'Про програму',
-            detailsDesc: 'Decibel Media Player — інтуїтивно зрозумілий аудіоплеєр з еквалайзером, налаштуваннями звукових ефектів, з можливістю налаштувати зовнішній вигляд програми і додавати аудіофайли всіх, навіть рідкісних форматів у високій якості або без стиснення. Інтерфейс не перевантажений, і ви швидко розберетеся, як користуватися програмою.',
-            detailsList: [
-                'Можливість вибрати зовнішній вигляд інтерфейсу',
-                'Еквалайзер',
-                'Підтримка англійської, російської, білоруської та української мов',
-                'Підтримка всіх популярних форматів, у тому числі loseless',
-                'Зручна бібліотека треків'
-            ],
-            footer: '© 2022 — 2026, bebka16. Усі права захищені. Використання матеріалів без зазначення авторства заборонено.',
-            license: 'Ліцензія MIT',
-            source: 'Вихідний код',
-            contact: 'Зв\'язатися'
-        }
-    };
+    <script>
+        (function() {
+            const translations = {
+                ru: {
+                    langName: 'Русский',
+                    contact: 'Связаться',
+                    heroDesc: 'Медиаплеер, в котором нету лишнего функционала. Максимально удобный поиск музыки слева, и отображение обложки или аудиоспектра справа. Эквалайзер, настройка оформления.',
+                    downloadLink: `Скачать <i class="fas fa-arrow-down" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                    docLink: 'Freesoft',
+                    repoLink: 'Uptodown',
+                    downloadTitle: 'Скачать DMP',
+                    winLabel: 'Windows',
+                    winLabelSpan: '10, 11',
+                    winBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Установщик .exe`,
+                    winMeta: 'v1.2 — 112 МБ',
+                    linuxLabel: 'Linux',
+                    linuxSub: 'недоступно',
+                    linuxBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Загрузить`,
+                    linuxMeta: 'Этот проект достаточно старый, раньше я не портировал программы под Linux.',
+                    detailsTitle: 'О программе',
+                    detailsDesc: 'Decibel Media Player — интуитивно понятый аудиоплеер с эквалайзером, настройками звуковых эффектов, с возможностью настроить внешний вид программы и добавлять аудиофайлы всех, даже редких форматов в высоком качестве или без сжатия. Интерфейс не перегружен, и вы быстро разберётесь, как пользоваться программой.',
+                    detailsList: [
+                        'Возможность выбрать внешний вид интерфейса',
+                        'Эквалайзер',
+                        'Поддержка английского, русского, белорусского и украинского языков',
+                        'Поддержка всех популярных форматов, в том числе loseless',
+                        'Удобная библиотека треков'
+                    ],
+                    screensTitle: 'Скриншоты',
+                    screensSubtitle: 'Нажмите на скриншот, чтобы открыть его в полном размере.',
+                    footer: '© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.',
+                    license: 'Лицензия MIT',
+                    source: 'Исходный код',
+                    lightboxAlt: 'Скриншот Decibel Media Player'
+                },
+                en: {
+                    langName: 'English',
+                    contact: 'Contact me',
+                    heroDesc: 'A media player with no unnecessary features. Very convenient music search on the left, and cover art or audio spectrum display on the right. Equalizer, appearance customization.',
+                    downloadLink: `Download <i class="fas fa-arrow-down" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                    docLink: 'Freesoft',
+                    repoLink: 'Uptodown',
+                    downloadTitle: 'Download DMP',
+                    winLabel: 'Windows',
+                    winLabelSpan: '10, 11',
+                    winBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Installer .exe`,
+                    winMeta: 'v1.2 — 112 MB',
+                    linuxLabel: 'Linux',
+                    linuxSub: 'unavailable',
+                    linuxBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Download`,
+                    linuxMeta: 'This project is quite old, I did not port programs to Linux back then.',
+                    detailsTitle: 'About',
+                    detailsDesc: 'Decibel Media Player is an intuitive audio player with an equalizer, sound effects settings, the ability to customize the appearance of the program and add audio files of all, even rare formats in high quality or without compression. The interface is not overloaded, and you will quickly figure out how to use the program.',
+                    detailsList: [
+                        'Ability to choose the interface appearance',
+                        'Equalizer',
+                        'Support for English, Russian, Belarusian and Ukrainian languages',
+                        'Support for all popular formats, including lossless',
+                        'Convenient track library'
+                    ],
+                    screensTitle: 'Screenshots',
+                    screensSubtitle: 'Click a screenshot to open it in full size.',
+                    footer: '© 2022 — 2026, bebka16. All rights reserved. Use of materials without attribution is prohibited.',
+                    license: 'MIT License',
+                    source: 'Source Code',
+                    lightboxAlt: 'Decibel Media Player Screenshot'
+                },
+                be: {
+                    langName: 'Беларуская',
+                    contact: 'Звязацца',
+                    heroDesc: 'Медыяплэер, у якім няма лішняга функцыяналу. Максімальна зручны пошук музыкі злева, і адлюстраванне вокладкі або аўдыяспектра справа. Эквалайзер, настройка афармлення.',
+                    downloadLink: `Спампаваць <i class="fas fa-arrow-down" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                    docLink: 'Freesoft',
+                    repoLink: 'Uptodown',
+                    downloadTitle: 'Спампаваць DMP',
+                    winLabel: 'Windows',
+                    winLabelSpan: '10, 11',
+                    winBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Усталёўнік .exe`,
+                    winMeta: 'v1.2 — 112 МБ',
+                    linuxLabel: 'Linux',
+                    linuxSub: 'недаступна',
+                    linuxBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Спампаваць`,
+                    linuxMeta: 'Гэты праект дастаткова стары, раней я не партаваў праграмы пад Linux.',
+                    detailsTitle: 'Аб праграме',
+                    detailsDesc: 'Decibel Media Player — інтуітыўна зразумелы аўдыяплэер з эквалайзерам, наладамі гукавых эфектаў, з магчымасцю наладзіць знешні выгляд праграмы і дадаваць аўдыяфайлы ўсіх, нават рэдкіх фарматаў у высокай якасці або без сціску. Інтэрфейс не перагружаны, і вы хутка разбярэцеся, як карыстацца праграмай.',
+                    detailsList: [
+                        'Магчымасць выбраць знешні выгляд інтэрфейсу',
+                        'Эквалайзер',
+                        'Падтрымка англійскай, рускай, беларускай і ўкраінскай моў',
+                        'Падтрымка ўсіх папулярных фарматаў, у тым ліку loseless',
+                        'Зручная бібліятэка трэкаў'
+                    ],
+                    screensTitle: 'Скрыншоты',
+                    screensSubtitle: 'Націсніце на скрыншот, каб адкрыць яго ў поўным памеры.',
+                    footer: '© 2022 — 2026, bebka16. Усе правы абаронены. Выкарыстанне матэрыялаў без указання аўтарства забаронена.',
+                    license: 'Ліцэнзія MIT',
+                    source: 'Зыходны код',
+                    lightboxAlt: 'Скрыншот Decibel Media Player'
+                },
+                uk: {
+                    langName: 'Українська',
+                    contact: "Зв'язатися",
+                    heroDesc: 'Медіаплеєр, в якому немає зайвого функціоналу. Максимально зручний пошук музики зліва, і відображення обкладинки або аудіоспектра справа. Еквалайзер, налаштування оформлення.',
+                    downloadLink: `Завантажити <i class="fas fa-arrow-down" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                    docLink: 'Freesoft',
+                    repoLink: 'Uptodown',
+                    downloadTitle: 'Завантажити DMP',
+                    winLabel: 'Windows',
+                    winLabelSpan: '10, 11',
+                    winBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Інсталятор .exe`,
+                    winMeta: 'v1.2 — 112 МБ',
+                    linuxLabel: 'Linux',
+                    linuxSub: 'недоступний',
+                    linuxBtn: `<i class="fas fa-download" style="margin-right: 6px; font-size: 0.7rem;"></i> Завантажити`,
+                    linuxMeta: 'Цей проєкт досить старий, раніше я не портував програми під Linux.',
+                    detailsTitle: 'Про програму',
+                    detailsDesc: "Decibel Media Player — інтуїтивно зрозумілий аудіоплеєр з еквалайзером, налаштуваннями звукових ефектів, з можливістю налаштувати зовнішній вигляд програми і додавати аудіофайли всіх, навіть рідкісних форматів у високій якості або без стиснення. Інтерфейс не перевантажений, і ви швидко розберетеся, як користуватися програмою.",
+                    detailsList: [
+                        'Можливість вибрати зовнішній вигляд інтерфейсу',
+                        'Еквалайзер',
+                        'Підтримка англійської, російської, білоруської та української мов',
+                        'Підтримка всіх популярних форматів, у тому числі loseless',
+                        'Зручна бібліотека треків'
+                    ],
+                    screensTitle: 'Скриншоти',
+                    screensSubtitle: 'Натисніть на скриншот, щоб відкрити його в повному розмірі.',
+                    footer: '© 2022 — 2026, bebka16. Усі права захищені. Використання матеріалів без зазначення авторства заборонено.',
+                    license: 'Ліцензія MIT',
+                    source: 'Вихідний код',
+                    lightboxAlt: 'Скриншот Decibel Media Player'
+                }
+            };
 
-    (function() {
-        const langDropdown = document.getElementById('langDropdown');
-        const langMenu = document.getElementById('langMenu');
-        const currentLangLabel = document.getElementById('currentLangLabel');
+            const langDropdown = document.getElementById('langDropdown');
+            const langMenu = document.getElementById('langMenu');
+            const currentLangLabel = document.getElementById('currentLangLabel');
 
-        function applyTranslation(lang) {
-            if (!translations[lang]) lang = 'ru';
-            const t = translations[lang];
-            
-            document.getElementById('appName').textContent = t.appName;
-            document.getElementById('appTitle').textContent = t.appTitle;
-            document.querySelector('.header-left .sub').textContent = t.sub;
-            document.getElementById('heroDesc').textContent = t.heroDesc;
-            
-            document.getElementById('docLink').textContent = t.docLink;
-            document.getElementById('repoLink').textContent = t.repoLink;
-            document.getElementById('downloadLink').textContent = t.downloadLink;
-            
-            document.getElementById('downloadTitle').textContent = t.downloadTitle;
-            
-            document.getElementById('winLabel').innerHTML = t.winLabel + ' <span>10 / 11</span>';
-            document.getElementById('linuxLabel').innerHTML = t.linuxLabel + ' <span>.Zip application</span>';
-            
-            document.getElementById('winBtn').innerHTML = '<span>↓</span> ' + t.winBtn;
-            document.getElementById('linuxBtn').innerHTML = '<span>↓</span> ' + t.linuxBtn;
-            
-            document.getElementById('winMeta').textContent = t.winMeta;
-            document.getElementById('linuxMeta').textContent = t.linuxMeta;
-            
-            document.getElementById('detailsTitle').textContent = t.detailsTitle;
-            document.getElementById('detailsDesc').textContent = t.detailsDesc;
-            
-            const listItems = document.querySelectorAll('#detailsList li');
-            t.detailsList.forEach((item, index) => {
-                if(listItems[index]) listItems[index].textContent = item;
+            function setLanguage(lang) {
+                if (!translations[lang]) lang = 'ru';
+                const t = translations[lang];
+
+                document.getElementById('contactLink').textContent = t.contact;
+                document.getElementById('heroDesc').textContent = t.heroDesc;
+                document.getElementById('downloadLink').innerHTML = t.downloadLink;
+                document.getElementById('docLink').textContent = t.docLink;
+                document.getElementById('repoLink').textContent = t.repoLink;
+                document.getElementById('downloadTitle').textContent = t.downloadTitle;
+                document.getElementById('winLabel').textContent = t.winLabel;
+                document.getElementById('winLabelSpan').textContent = t.winLabelSpan;
+                document.getElementById('winBtn').innerHTML = t.winBtn;
+                document.getElementById('winMeta').textContent = t.winMeta;
+                document.getElementById('linuxLabel').textContent = t.linuxLabel;
+                document.getElementById('linuxSub').textContent = t.linuxSub;
+                document.getElementById('linuxBtn').innerHTML = t.linuxBtn;
+                document.getElementById('linuxMeta').textContent = t.linuxMeta;
+                document.getElementById('detailsTitle').textContent = t.detailsTitle;
+                document.getElementById('detailsDesc').textContent = t.detailsDesc;
+
+                const spans = document.querySelectorAll('#detailsList li span');
+                t.detailsList.forEach(function(item, index) {
+                    if (spans[index]) spans[index].textContent = item;
+                });
+
+                document.getElementById('screensTitle').textContent = t.screensTitle;
+                document.getElementById('screensSubtitle').textContent = t.screensSubtitle;
+                document.getElementById('footerText').textContent = t.footer;
+                document.getElementById('licenseLink').textContent = t.license;
+                document.getElementById('sourceLink').textContent = t.source;
+                document.getElementById('lightboxImg').alt = t.lightboxAlt;
+                currentLangLabel.textContent = t.langName;
+
+                localStorage.setItem('bebka16-lang', lang);
+                langMenu.classList.remove('show');
+            }
+
+            function getStoredLang() {
+                return localStorage.getItem('bebka16-lang') || 'ru';
+            }
+
+            langDropdown.addEventListener('click', function(e) {
+                e.stopPropagation();
+                langMenu.classList.toggle('show');
             });
-            
-            document.getElementById('footerText').textContent = t.footer;
-            document.getElementById('licenseLink').textContent = t.license;
-            document.getElementById('sourceLink').textContent = t.source;
-            
-            const contactLink = document.getElementById('contactLink');
-            if(contactLink) contactLink.textContent = t.contact;
-            
-            currentLangLabel.textContent = t.langName;
-            localStorage.setItem('bebka16-dmp-lang', lang);
-            langMenu.classList.remove('show');
-        }
 
-        function getStoredLang() {
-            return localStorage.getItem('bebka16-dmp-lang') || 'ru';
-        }
-
-        langDropdown.addEventListener('click', function(e) {
-            e.stopPropagation();
-            langMenu.classList.toggle('show');
-        });
-
-        document.addEventListener('click', function() {
-            langMenu.classList.remove('show');
-        });
-
-        langMenu.querySelectorAll('a').forEach(function(item) {
-            item.addEventListener('click', function(e) {
-                e.preventDefault();
-                const lang = this.getAttribute('data-lang');
-                applyTranslation(lang);
+            document.addEventListener('click', function() {
+                langMenu.classList.remove('show');
             });
-        });
 
-        applyTranslation(getStoredLang());
+            langMenu.querySelectorAll('a').forEach(function(item) {
+                item.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    const lang = this.getAttribute('data-lang');
+                    setLanguage(lang);
+                });
+            });
 
-        const lightbox = document.getElementById('lightbox');
-        const lightboxImg = document.getElementById('lightboxImg');
-        const lightboxClose = document.getElementById('lightboxClose');
-        const thumbs = document.querySelectorAll('.screenshot-thumb');
+            setLanguage(getStoredLang());
 
-        thumbs.forEach(thumb => {
-            thumb.addEventListener('click', function() {
-                const fullSrc = this.getAttribute('data-full');
-                if(fullSrc) {
-                    lightboxImg.src = fullSrc;
-                    lightbox.classList.add('active');
+            const lightbox = document.getElementById('lightbox');
+            const lightboxImg = document.getElementById('lightboxImg');
+            const lightboxClose = document.getElementById('lightboxClose');
+            const thumbs = document.querySelectorAll('.screenshot-thumb');
+
+            thumbs.forEach(function(thumb) {
+                thumb.addEventListener('click', function() {
+                    const fullSrc = this.getAttribute('data-full');
+                    if (fullSrc) {
+                        lightboxImg.src = fullSrc;
+                        lightbox.classList.add('active');
+                    }
+                });
+            });
+
+            lightboxClose.addEventListener('click', function() {
+                lightbox.classList.remove('active');
+                lightboxImg.src = '';
+            });
+
+            lightbox.addEventListener('click', function(e) {
+                if (e.target === lightbox) {
+                    lightbox.classList.remove('active');
+                    lightboxImg.src = '';
                 }
             });
-        });
 
-        lightboxClose.addEventListener('click', function() {
-            lightbox.classList.remove('active');
-            lightboxImg.src = '';
-        });
-
-        lightbox.addEventListener('click', function(e) {
-            if(e.target === lightbox) {
-                lightbox.classList.remove('active');
-                lightboxImg.src = '';
-            }
-        });
-
-        document.addEventListener('keydown', function(e) {
-            if(e.key === 'Escape' && lightbox.classList.contains('active')) {
-                lightbox.classList.remove('active');
-                lightboxImg.src = '';
-            }
-        });
-    })();
-</script>
+            document.addEventListener('keydown', function(e) {
+                if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                    lightbox.classList.remove('active');
+                    lightboxImg.src = '';
+                }
+            });
+        })();
+    </script>
 </body>
 </html>
