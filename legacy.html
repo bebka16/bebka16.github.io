@@ -167,7 +167,7 @@
             font-size: 24px;
             font-weight: 600;
             color: #24292f;
-            background-image: url('snail.png');
+            background-image: url('images/ant.png');
             background-size: contain;
             background-repeat: no-repeat;
             background-position: center;
@@ -228,7 +228,7 @@
             aspect-ratio: 16 / 10;
             background-position: top left;
             box-shadow: 0 4px 16px rgba(0,0,0,0.1);
-            background-image: url('note/dark.png');
+            background-image: url('note/lega.png');
             background-color: #f3f4f6;
             transition: box-shadow 0.2s;
         }
@@ -526,56 +526,50 @@
     <div class="hero-section">
         <div class="hero-text">
             <div class="logo-area">
-                <div class="logo-icon" aria-label="Логотип Snail Note"></div>
-                <span class="app-title">Snail Note</span>
+                <div class="logo-icon" aria-label="Логотип Legacy"></div>
+                <span class="app-title">Decibel Legacy</span>
             </div>
             <p class="hero-description" id="heroDesc">
-                Собственный редактор кода без лишних функций. Минималистичный интерфейс, 
-                быстрая работа с большими файлами и интеллектуальная подсветка синтаксиса 
-                для повседневной разработки.
+                Самописный антивирус под Windows, использующий огомную базу данных хэшей
+                от MalwareBaзaar и свои собственные наработки для поиска вирусов. Также
+                имеет защиту съёмных носителей, есть центр уведомлений.
             </p>
             <div class="hero-links" id="heroLinks">
-                <a href="note/docs.html" id="docLink">Документация</a>
-                <a href="https://github.com/bebka16/snailnote" id="repoLink">Репозиторий</a>
+                <a href="note/docs.html" id="docLink">Freesoft</a>
                 <a href="#downloadTitle" id="downloadLink">Скачать</a>
             </div>
         </div>
-        <div class="hero-screenshot" title="Главное окно Snail Note" role="img" aria-label="Скриншот интерфейса Snail Note"></div>
+        <div class="hero-screenshot" title="Главное окно Legacy" role="img" aria-label="Скриншот интерфейса Legacy"></div>
     </div>
 
     <div class="download-section">
-        <div class="download-title" id="downloadTitle">Скачать Snail Note</div>
+        <div class="download-title" id="downloadTitle">Скачать Decibel Legacy</div>
         <div class="download-grid">
             <div class="download-card" id="winCard">
-                <div class="os-label" id="winLabel">Windows <span>10 / 11</span></div>
-                <a href="https://github.com/bebka16/snailnote/releases/download/snailcode-2-1/SnailNote21Windows.exe" class="download-button" id="winBtn"><span>↓</span> Установщик .exe</a>
+                <div class="os-label" id="winLabel">Windows <span>XP, Vista, 7, 8, 8.1, 10, 11</span></div>
+                <a href="" class="download-button" id="winBtn"><span>↓</span> Установщик .exe</a>
                 <div class="download-meta">v2.1.0 — 112 МБ</div>
-            </div>
-            <div class="download-card" id="linuxCard">
-                <div class="os-label" id="linuxLabel">Linux <span>.Zip application</span></div>
-                <a href="https://github.com/bebka16/snailnote/releases/download/snailcode-2-1/SnailNoteLinux21.zip" class="download-button" id="linuxBtn"><span>↓</span> Загрузить</a>
-                <div class="download-meta">v2.1.0 — 141 МБ</div>
             </div>
         </div>
     </div>
 
     <div class="details-block">
-        <h2 id="detailsTitle">Возможности Snail Note</h2>
-        <p id="detailsDesc">Snail Note создан для тех, кто ценит скорость и не любит перегруженные интерфейсы. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом на разных языках программирования.</p>
+        <h2 id="detailsTitle">Возможности Decibel Legacy</h2>
+        <p id="detailsDesc">Это быстрый антивирус, способный обеспечить дополнительную защиту вашего компьютера. Интерфейс максимально понятный, а система обнаружения вирусов, основанная на хэшах, не будет сильно нагружать компьютер даже во время проверки. При работке в фоне антивирус также отлично работает даже на слабых компьютерах. </p>
         <ul id="detailsList">
-            <li>Подсветка синтаксиса для десятка языков программирования</li>
-            <li>Магазин расширений и тем, которые пополняются сообществом</li>
-            <li>Система вкладок и разделение окна</li>
-            <li>Возможность предпросмотра HTML</li>
-            <li>Удобный проводник файлов для больших проектов</li>
-            <li>Автосохранение и восстановление сессий</li>
+            <li>Есть центр уведомлений, который покажет всплывающее окно при найденных угрозах</li>
+            <li>Есть сервис для защиты съёмных носителей</li>
+            <li>Может записать на флешку мини-антивирус, который вы сможете запустить на другом компьютере и проверить флешку без установки программы</li>
+            <li>Удобная таблица карантина, из которого можно просмотреть список всех найденных вирусов и выполнить удаление</li>
+            <li>Возможность защиты в реальном времени</li>
+            <li>При удалении вируса, вы можете просомтреть отчёт о проверке файла на VirusTotal</li>
         </ul>
         <div class="screenshot-row" id="screenshotRow">
-            <div class="screenshot-thumb" style="background-image: url('images/1.png');" data-full="images/1.png" title="Редактор кода"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/2.png');" data-full="images/2.png" title="Тёмная тема"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/3.png');" data-full="images/3.png" title="Поиск и замена"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/4.png');" data-full="images/4.png" title="Разделение окна"></div>
-            <div class="screenshot-thumb" style="background-image: url('images/5.png');" data-full="images/5.png" title="Разделение окна"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/10.png');" data-full="images/10.png" title="s"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/11.png');" data-full="images/11.png" title="s"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/12.png');" data-full="images/12.png" title="s"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/13.png');" data-full="images/13.png" title="s"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/14.png');" data-full="images/14.png" title="s"></div>
         </div>
     </div>
 
