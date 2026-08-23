@@ -1,0 +1,809 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes"/>
+    <title>Media Player</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            background-color: #f6f8fa;
+            color: #24292f;
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
+            line-height: 1.5;
+            padding: 2rem 1.5rem;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+            margin-top: 0;
+            padding-top: 0;
+        }
+
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            width: 100%;
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+
+        .header {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: baseline;
+            padding-bottom: 0.7rem;
+            padding-top: 0.7rem;
+            border-bottom: 1px solid #d0d7de;
+            margin-bottom: 2.5rem;
+        }
+
+        .header-left {
+            display: flex;
+            align-items: baseline;
+            gap: 2rem;
+            flex-wrap: wrap;
+        }
+
+        .header-left h1 {
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #24292f;
+        }
+
+        .header-left .sub {
+            font-size: 0.85rem;
+            color: #57606a;
+            margin-top: 0.05rem;
+        }
+
+        .header-right {
+            display: flex;
+            gap: 1.5rem;
+            font-size: 0.85rem;
+            flex-wrap: wrap;
+            align-items: center;
+        }
+
+        .header-right a {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 500;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .header-right a:hover {
+            border-bottom-color: #0969da;
+        }
+
+        .lang-dropdown {
+            position: relative;
+            display: inline-block;
+            cursor: pointer;
+            font-weight: 500;
+            color: #0969da;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+            padding-right: 1.2rem;
+            user-select: none;
+        }
+        .lang-dropdown:hover {
+            border-bottom-color: #0969da;
+        }
+        .lang-dropdown .arrow {
+            position: absolute;
+            right: 0;
+            top: 50%;
+            transform: translateY(-50%);
+            font-size: 0.7rem;
+            pointer-events: none;
+        }
+        .lang-dropdown .lang-label {
+            display: inline-block;
+        }
+        .lang-dropdown .dropdown-menu {
+            display: none;
+            position: absolute;
+            top: 100%;
+            left: 0;
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
+            min-width: 130px;
+            z-index: 15;
+            margin-top: 4px;
+        }
+        .lang-dropdown .dropdown-menu.show {
+            display: block;
+        }
+        .lang-dropdown .dropdown-menu a {
+            display: block;
+            padding: 0.4rem 0.8rem;
+            color: #24292f;
+            text-decoration: none;
+            border-bottom: none;
+            font-weight: 400;
+            transition: background 0.1s;
+        }
+        .lang-dropdown .dropdown-menu a:hover {
+            background: #f0f6fc;
+            border-bottom: none;
+        }
+
+        .hero-section {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 2.5rem;
+            margin-bottom: 3rem;
+            align-items: center;
+        }
+
+        .hero-text {
+            flex: 1 1 320px;
+        }
+
+        .logo-area {
+            display: flex;
+            align-items: center;
+            gap: 0.8rem;
+            margin-bottom: 1.2rem;
+        }
+
+        .logo-icon {
+            width: 52px;
+            height: 52px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            font-weight: 600;
+            color: #24292f;
+            background-image: url('images/dmp.webp');
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+        }
+
+        .app-title {
+            font-size: 32px;
+            font-weight: 600;
+            letter-spacing: -0.02em;
+            color: #24292f;
+        }
+
+        .hero-description {
+            font-size: 0.9rem;
+            color: #57606a;
+            margin-bottom: 1.5rem;
+            max-width: 480px;
+        }
+
+        .hero-links {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1.2rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero-links a {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 500;
+            font-size: 0.9rem;
+            border-bottom: 1px solid transparent;
+            transition: border-color 0.2s;
+        }
+
+        .hero-links a:hover {
+            border-bottom-color: #0969da;
+        }
+
+        .badge-group {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.5rem;
+        }
+
+        .badge {
+            background: #f0f6fc;
+            color: #0969da;
+            font-size: 0.75rem;
+            padding: 0.15rem 0.7rem;
+            border-radius: 12px;
+            border: 1px solid #d0d7de;
+            font-weight: 500;
+        }
+
+        .hero-screenshot {
+            flex: 1 1 480px;
+            aspect-ratio: 16 / 10;
+            background-position: top left;
+            box-shadow: 0 4px 16px rgba(0,0,0,0.1);
+            background-image: url('note/dark.png');
+            background-color: #f3f4f6;
+            transition: box-shadow 0.2s;
+        }
+
+        .hero-screenshot:hover {
+            box-shadow: 0 8px 28px rgba(0,0,0,0.15);
+        }
+
+        .download-section {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1.8rem;
+            padding-top: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .download-title {
+            font-size: 14px;
+            font-weight: 600;
+            color: #24292f;
+            margin-bottom: 10px;
+        }
+
+        .download-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+            gap: 1.2rem;
+        }
+
+        .download-card {
+            background: #f6f8fa;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1.2rem;
+            display: flex;
+            flex-direction: column;
+            gap: 0.8rem;
+            transition: border-color 0.2s, box-shadow 0.2s;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .download-card:hover {
+            border-color: #8b949e;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+        }
+
+        .download-card::after {
+            content: "";
+            position: absolute;
+            top: -10px;
+            right: -15px;
+            width: 70px;
+            height: 70px;
+            background-size: contain;
+            background-repeat: no-repeat;
+            background-position: center;
+            opacity: 0.12;
+            filter: grayscale(100%) brightness(0%);
+            pointer-events: none;
+            z-index: 0;
+        }
+
+        .download-card:nth-child(1)::after {
+            background-image: url('data:image/svg+xml;utf8,<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24"><path d="M0 0h11.377v11.372H0V0zm12.623 0H24v11.372H12.623V0zM0 12.623h11.377V24H0v-11.377zm12.623 0H24V24H12.623V12.623z" fill="black"/></svg>');
+        }
+
+        .download-card:nth-child(2)::after {
+            background-image: url('https://upload.wikimedia.org/wikipedia/commons/thumb/a/af/Tux.png/250px-Tux.png');
+        }
+
+        .os-label {
+            font-weight: 500;
+            font-size: 14px;
+            color: #24292f;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+            position: relative;
+            z-index: 1;
+        }
+
+        .os-label span {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #57606a;
+        }
+
+        .download-button {
+            color: #0969da;
+            text-decoration: none;
+            font-weight: 400;
+            font-size: 14px;
+            border-radius: 2px;
+            display: inline-flex;
+            align-items: center;
+            gap: 0.4rem;
+            transition: background 0.2s;
+            border: 1px solid transparent;
+            width: fit-content;
+            position: relative;
+            z-index: 1;
+        }
+
+        .download-button:hover {
+            text-decoration: underline;
+        }
+
+        .download-meta {
+            font-size: 0.75rem;
+            color: #57606a;
+            position: relative;
+            z-index: 1;
+        }
+
+        .details-block {
+            background: #ffffff;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            padding: 1.8rem;
+            padding-top: 20px;
+            margin-bottom: 2.5rem;
+            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
+        }
+
+        .details-block h2 {
+            font-size: 14px;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            color: #24292f;
+        }
+
+        .details-block p {
+            color: #57606a;
+            margin-bottom: 1rem;
+            font-size: 0.9rem;
+            max-width: 800px;
+        }
+
+        .details-block ul {
+            list-style: none;
+            padding: 0;
+            margin-bottom: 1.5rem;
+            color: #57606a;
+            font-size: 0.9rem;
+        }
+
+        .details-block ul li {
+            padding: 0.2rem 0;
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+        }
+
+        .details-block ul li::before {
+            content: "•";
+            color: #0969da;
+            font-weight: 700;
+        }
+
+        .screenshot-row {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-top: 1.5rem;
+        }
+
+        .screenshot-thumb {
+            width: 180px;
+            height: 110px;
+            background-size: cover;
+            background-position: top left;
+            border: 1px solid #d0d7de;
+            border-radius: 2px;
+            cursor: pointer;
+            transition: transform 0.2s, box-shadow 0.2s;
+            background-color: #f3f4f6;
+            flex-shrink: 0;
+        }
+
+        .screenshot-thumb:hover {
+            transform: scale(1.03);
+            box-shadow: 0 6px 18px rgba(0,0,0,0.15);
+            border-color: #8b949e;
+        }
+
+        .lightbox {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0,0,0,0.8);
+            z-index: 100;
+            align-items: center;
+            justify-content: center;
+            flex-direction: column;
+        }
+
+        .lightbox.active {
+            display: flex;
+        }
+
+        .lightbox img {
+            max-width: 85%;
+            max-height: 80%;
+            border-radius: 2px;
+            box-shadow: 0 12px 40px rgba(0,0,0,0.5);
+            border: 2px solid #ffffff;
+            background: #fff;
+        }
+
+        .lightbox-close {
+            position: absolute;
+            top: 25px;
+            right: 35px;
+            color: #fff;
+            font-size: 32px;
+            cursor: pointer;
+            font-weight: 300;
+            opacity: 0.9;
+        }
+
+        .lightbox-close:hover {
+            opacity: 1;
+        }
+
+        .footer {
+            margin-top: auto;
+            border-top: 1px solid #d0d7de;
+            padding-top: 1.5rem;
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            align-items: center;
+            color: #57606a;
+            font-size: 0.8rem;
+        }
+
+        .footer a {
+            color: #0969da;
+            text-decoration: none;
+        }
+
+        .footer a:hover {
+            text-decoration: underline;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 1.5rem;
+        }
+
+        @media (max-width: 700px) {
+            body { padding: 1rem 0.8rem; }
+            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
+            .hero-section { flex-direction: column; }
+            .hero-screenshot { aspect-ratio: 16/9; width: 100%; }
+            .download-grid { grid-template-columns: 1fr; }
+            .screenshot-thumb { width: 140px; height: 88px; }
+            .log-item { flex-direction: column; gap: 0.2rem; }
+            .log-version { min-width: auto; }
+            .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
+        }
+        a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
+    </style>
+</head>
+<body>
+<div class="container">
+    <header class="header">
+        <div class="header-left">
+            <h1>Decibel Media Player</h1>
+            <span class="sub">by bebka16</span>
+        </div>
+        <div class="header-right">
+            <div class="lang-dropdown" id="langDropdown">
+                <span class="lang-label" id="currentLangLabel">Русский</span>
+                <span class="arrow" style="font-size: 16px;">↶</span>
+                <div class="dropdown-menu" id="langMenu">
+                    <a href="#" data-lang="en">English</a>
+                    <a href="#" data-lang="be">Беларуская</a>
+                    <a href="#" data-lang="ru">Русский</a>
+                    <a href="#" data-lang="uk">Українська</a>
+                </div>
+            </div>
+            <a href="https://github.com/bebka16">GitHub</a>
+            <a href="https://bebkalive.t.me/">Telegram</a>
+            <a href="https://bebka16bot.t.me" id="contactLink">Связаться</a>
+        </div>
+    </header>
+
+    <div class="hero-section">
+        <div class="hero-text">
+            <div class="logo-area">
+                <div class="logo-icon" aria-label="Логотип Snail Note"></div>
+                <span class="app-title">Decibel Media Player</span>
+            </div>
+            <p class="hero-description" id="heroDesc">
+                Медиаплеер, в котором нету лишнего функционала. Максимально удобный поиск
+                музыки слева, и отображение обложки или аудиоспектра справа. Эквалайзер, 
+                настройка оформления.
+            </p>
+            <div class="hero-links" id="heroLinks">
+                <a href="https://freesoft.ru/windows/decibel-media-player/versions/11-200667" id="docLink">Freesoft</a>
+                <a href="https://decibel-media-player.en.uptodown.com/windows" id="repoLink">Uptodown</a>
+                <a href="#downloadTitle" id="downloadLink">Скачать</a>
+            </div>
+        </div>
+        <div class="hero-screenshot" title="Главное окно DMP" role="img" aria-label="Скриншот интерфейса Snail Note"></div>
+    </div>
+
+    <div class="download-section">
+        <div class="download-title" id="downloadTitle">Скачать DMP</div>
+        <div class="download-grid">
+            <div class="download-card" id="winCard">
+                <div class="os-label" id="winLabel">Windows <span>10 / 11</span></div>
+                <a href="https://github.com/bebka16/snailnote/releases/download/snailcode-2-1/SnailNote21Windows.exe" class="download-button" id="winBtn"><span>↓</span> Установщик .exe</a>
+                <div class="download-meta">v1.2 — 112 МБ</div>
+            </div>
+            <div class="download-card" id="linuxCard">
+                <div class="os-label" id="linuxLabel">Linux <span>недоступно</span></div>
+                <a class="download-button" id="linuxBtn"><span>↓</span> Загрузить</a>
+                <div class="download-meta">Этот проект достаточно старый, раньше я не портировал программы под Linux.</div>
+            </div>
+        </div>
+    </div>
+
+    <div class="details-block">
+        <h2 id="detailsTitle">О программе</h2>
+        <p id="detailsDesc">Decibel Media Player — интуитивно понятый аудиоплеер с эквалайзером, настройками звуковых эффектов, с возможностью настроить внешний вид программы и добавлять аудиофайлы всех, даже редких форматов в высоком качестве или без сжатия. Интерфейс не перегружен, и вы быстро разберётесь, как пользоваться программой.</p>
+        <ul id="detailsList">
+            <li>Возможность вырать внешний вид интерфейса</li>
+            <li>Эквалайзер</li>
+            <li>Поддержка английского, русского, белорусского и украинского языков</li>
+            <li>Поддержка всех популярных форматов, в том числе loseless</li>
+            <li>Удобная библиотека треков</li>
+        </ul>
+        <div class="screenshot-row" id="screenshotRow">
+            <div class="screenshot-thumb" style="background-image: url('images/6.webp');" data-full="images/6.webp" title="Мне лень писать описание"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/7.webp');" data-full="images/7.webp" title="Ну реально лень"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/8.webp');" data-full="images/8.webp" title="ЫЫЫЫЫ"></div>
+            <div class="screenshot-thumb" style="background-image: url('images/9.webp');" data-full="images/9.webp" title="Что ты хочешь тут увидеть?"></div>
+        </div>
+    </div>
+
+    <footer class="footer">
+        <span id="footerText">© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.</span>
+        <div class="footer-links">
+            <a href="https://en.wikipedia.org/wiki/MIT_License" id="licenseLink">Лицензия MIT</a>
+            <a href="https://github.com/bebka16" id="sourceLink">Исходный код</a>
+        </div>
+    </footer>
+</div>
+
+<div class="lightbox" id="lightbox">
+    <span class="lightbox-close" id="lightboxClose">&times;</span>
+    <img src="" alt="Скриншот Snail Note" id="lightboxImg">
+</div>
+
+<script>
+    const translations = {
+        ru: {
+            langName: 'Русский',
+            sub: 'by bebka16',
+            heroDesc: 'Собственный редактор кода без лишних функций. Минималистичный интерфейс, быстрая работа с большими файлами и интеллектуальная подсветка синтаксиса для повседневной разработки.',
+            docLink: 'Документация',
+            repoLink: 'Репозиторий',
+            downloadLink: 'Скачать',
+            downloadTitle: 'Скачать Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Установщик .exe',
+            linuxBtn: 'Загрузить',
+            detailsTitle: 'Возможности Snail Note',
+            detailsDesc: 'Snail Note создан для тех, кто ценит скорость и не любит перегруженные интерфейсы. Редактор не пытается быть средой разработки, но даёт всё необходимое для комфортной работы с кодом на разных языках программирования.',
+            detailsList: [
+                'Подсветка синтаксиса для десятка языков программирования',
+                'Магазин расширений и тем, которые пополняются сообществом',
+                'Система вкладок и разделение окна',
+                'Возможность предпросмотра HTML',
+                'Удобный проводник файлов для больших проектов',
+                'Автосохранение и восстановление сессий'
+            ],
+            footer: '© 2022 — 2026, bebka16. Все права защищены. Использование материалов без указания авторства запрещено.',
+            license: 'Лицензия MIT',
+            source: 'Исходный код',
+            contact: 'Связаться'
+        },
+        en: {
+            langName: 'English',
+            sub: 'by bebka16',
+            heroDesc: 'A custom code editor without unnecessary features. Minimalist interface, fast performance with large files, and intelligent syntax highlighting for everyday development.',
+            docLink: 'Documentation',
+            repoLink: 'Repository',
+            downloadLink: 'Download',
+            downloadTitle: 'Download Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Installer .exe',
+            linuxBtn: 'Download',
+            detailsTitle: 'Snail Note Features',
+            detailsDesc: 'Snail Note is designed for those who value speed and dislike overloaded interfaces. The editor does not try to be an IDE, but provides everything needed for comfortable coding in various programming languages.',
+            detailsList: [
+                'Syntax highlighting for dozens of programming languages',
+                'Extension and theme store, replenished by the community',
+                'Tab system and window splitting',
+                'HTML preview capability',
+                'Convenient file explorer for large projects',
+                'Auto-save and session recovery'
+            ],
+            footer: '© 2022 — 2026, bebka16. All rights reserved. Use of materials without attribution is prohibited.',
+            license: 'MIT License',
+            source: 'Source Code',
+            contact: 'Contact'
+        },
+        be: {
+            langName: 'Беларуская',
+            sub: 'by bebka16',
+            heroDesc: 'Уласны рэдактар кода без лішніх функцый. Мінімалістычны інтэрфейс, хуткая праца з вялікімі файламі і інтэлектуальная падсветка сінтаксісу для штодзённай распрацоўкі.',
+            docLink: 'Дакументацыя',
+            repoLink: 'Рэпазіторый',
+            downloadLink: 'Спампаваць',
+            downloadTitle: 'Спампаваць Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Усталёўнік .exe',
+            linuxBtn: 'Спампаваць',
+            detailsTitle: 'Магчымасці Snail Note',
+            detailsDesc: 'Snail Note створаны для тых, хто цэніць хуткасць і не любіць перагружаныя інтэрфейсы. Рэдактар не імкнецца быць асяроддзем распрацоўкі, але дае ўсё неабходнае для камфортнай працы з кодам на розных мовах праграмавання.',
+            detailsList: [
+                'Падсветка сінтаксісу для дзясятка моў праграмавання',
+                'Крама пашырэнняў і тэм, якія папаўняюцца супольнасцю',
+                'Сістэма ўкладак і падзел акна',
+                'Магчымасць перадпрагляду HTML',
+                'Зручны праваднік файлаў для вялікіх праектаў',
+                'Аўтазахаванне і аднаўленне сесій'
+            ],
+            footer: '© 2022 — 2026, bebka16. Усе правы абаронены. Выкарыстанне матэрыялаў без указання аўтарства забаронена.',
+            license: 'Ліцэнзія MIT',
+            source: 'Зыходны код',
+            contact: 'Звязацца'
+        },
+        uk: {
+            langName: 'Українська',
+            sub: 'by bebka16',
+            heroDesc: 'Власний редактор коду без зайвих функцій. Мінімалістичний інтерфейс, швидка робота з великими файлами та інтелектуальне підсвічування синтаксису для повсякденної розробки.',
+            docLink: 'Документація',
+            repoLink: 'Репозиторій',
+            downloadLink: 'Завантажити',
+            downloadTitle: 'Завантажити Snail Note',
+            winLabel: 'Windows',
+            linuxLabel: 'Linux',
+            winBtn: 'Інсталятор .exe',
+            linuxBtn: 'Завантажити',
+            detailsTitle: 'Можливості Snail Note',
+            detailsDesc: 'Snail Note створений для тих, хто цінує швидкість і не любить перевантажені інтерфейси. Редактор не намагається бути середовищем розробки, але дає все необхідне для комфортної роботи з кодом на різних мовах програмування.',
+            detailsList: [
+                'Підсвічування синтаксису для десятка мов програмування',
+                'Магазин розширень і тем, які поповнюються спільнотою',
+                'Система вкладок і розділення вікна',
+                'Можливість попереднього перегляду HTML',
+                'Зручний провідник файлів для великих проєктів',
+                'Автозбереження та відновлення сесій'
+            ],
+            footer: '© 2022 — 2026, bebka16. Усі права захищені. Використання матеріалів без зазначення авторства заборонено.',
+            license: 'Ліцензія MIT',
+            source: 'Вихідний код',
+            contact: 'Зв\'язатися'
+        }
+    };
+
+    (function() {
+        const langDropdown = document.getElementById('langDropdown');
+        const langMenu = document.getElementById('langMenu');
+        const currentLangLabel = document.getElementById('currentLangLabel');
+
+        function applyTranslation(lang) {
+            if (!translations[lang]) lang = 'ru';
+            const t = translations[lang];
+            
+            document.querySelector('.header-left .sub').textContent = t.sub;
+            document.getElementById('heroDesc').textContent = t.heroDesc;
+            
+            document.getElementById('docLink').textContent = t.docLink;
+            document.getElementById('repoLink').textContent = t.repoLink;
+            document.getElementById('downloadLink').textContent = t.downloadLink;
+            
+            document.getElementById('downloadTitle').textContent = t.downloadTitle;
+            
+            document.getElementById('winLabel').innerHTML = t.winLabel + ' <span>10 / 11</span>';
+            document.getElementById('linuxLabel').innerHTML = t.linuxLabel + ' <span>.Zip application</span>';
+            
+            document.getElementById('winBtn').innerHTML = '<span>↓</span> ' + t.winBtn;
+            document.getElementById('linuxBtn').innerHTML = '<span>↓</span> ' + t.linuxBtn;
+            
+            document.getElementById('detailsTitle').textContent = t.detailsTitle;
+            document.getElementById('detailsDesc').textContent = t.detailsDesc;
+            
+            const listItems = document.querySelectorAll('#detailsList li');
+            t.detailsList.forEach((item, index) => {
+                if(listItems[index]) listItems[index].textContent = item;
+            });
+            
+            document.getElementById('footerText').textContent = t.footer;
+            document.getElementById('licenseLink').textContent = t.license;
+            document.getElementById('sourceLink').textContent = t.source;
+            
+            const contactLink = document.getElementById('contactLink');
+            if(contactLink) contactLink.textContent = t.contact;
+            
+            currentLangLabel.textContent = t.langName;
+            localStorage.setItem('bebka16-snail-lang', lang);
+            langMenu.classList.remove('show');
+        }
+
+        function getStoredLang() {
+            return localStorage.getItem('bebka16-snail-lang') || 'ru';
+        }
+
+        langDropdown.addEventListener('click', function(e) {
+            e.stopPropagation();
+            langMenu.classList.toggle('show');
+        });
+
+        document.addEventListener('click', function() {
+            langMenu.classList.remove('show');
+        });
+
+        langMenu.querySelectorAll('a').forEach(function(item) {
+            item.addEventListener('click', function(e) {
+                e.preventDefault();
+                const lang = this.getAttribute('data-lang');
+                applyTranslation(lang);
+            });
+        });
+
+        applyTranslation(getStoredLang());
+
+        const lightbox = document.getElementById('lightbox');
+        const lightboxImg = document.getElementById('lightboxImg');
+        const lightboxClose = document.getElementById('lightboxClose');
+        const thumbs = document.querySelectorAll('.screenshot-thumb');
+
+        thumbs.forEach(thumb => {
+            thumb.addEventListener('click', function() {
+                const fullSrc = this.getAttribute('data-full');
+                if(fullSrc) {
+                    lightboxImg.src = fullSrc;
+                    lightbox.classList.add('active');
+                }
+            });
+        });
+
+        lightboxClose.addEventListener('click', function() {
+            lightbox.classList.remove('active');
+            lightboxImg.src = '';
+        });
+
+        lightbox.addEventListener('click', function(e) {
+            if(e.target === lightbox) {
+                lightbox.classList.remove('active');
+                lightboxImg.src = '';
+            }
+        });
+
+        document.addEventListener('keydown', function(e) {
+            if(e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+                lightboxImg.src = '';
+            }
+        });
+    })();
+</script>
+</body>
+</html>
