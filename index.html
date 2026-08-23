@@ -1,9 +1,14 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-    <title>bebka16 website</title>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+    <title>bebka16 — personal projects</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:opsz,wght@14..32,300;14..32,400;14..32,500&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <link rel="stylesheet" href="https://sets.hugeicons.com/YOUR-SET-ID.css" crossorigin="anonymous">
     <style>
         * {
             margin: 0;
@@ -12,592 +17,679 @@
         }
 
         body {
-            background-color: #f6f8fa;
-            color: #24292f;
-            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, 'Helvetica Neue', Arial, sans-serif;
-            line-height: 1.5;
-            padding: 2rem 1.5rem;
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            margin-top: 0;
-            padding-top: 0;
+            background-color: #f7f7f5;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, 'Apple Color Emoji', 'Segoe UI Emoji', sans-serif;
+            color: #1f1f1f;
+            line-height: 1.4;
+            scroll-behavior: smooth;
         }
 
         .container {
-            max-width: 1200px;
+            max-width: 1100px;
             margin: 0 auto;
-            width: 100%;
-            flex: 1;
+            padding: 0 28px;
+        }
+
+        h1 {
+            font-size: 28px;
+            font-weight: 500;
+            letter-spacing: -0.02em;
+            line-height: 1.25;
+            margin-bottom: 0.85rem;
+            color: #1f1f1f;
+        }
+
+        h2 {
+            font-size: 1.7rem;
+            font-weight: 500;
+            letter-spacing: -0.01em;
+            margin-bottom: 1.2rem;
+            color: #1f1f1f;
+        }
+
+        h3 {
+            font-size: 1.1rem;
+            font-weight: 500;
+            margin-bottom: 0.4rem;
+            color: #1f1f1f;
+        }
+
+        .text-large {
+            font-size: 12px;
+            line-height: 1.45;
+            color: #3a3a3a;
+            font-weight: 400;
+        }
+
+        .text-muted {
+            color: #6b6b6b;
+            font-size: 12px;
+            font-weight: 400;
+        }
+
+        .navbar {
+            padding: 6px 0;
+            border-bottom: 1px solid #e8e8e6;
+            background-color: #f7f7f5;
+            position: sticky;
+            top: 0;
+            z-index: 10;
+        }
+
+        .nav-inner {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .logo {
+            display: flex;
+            align-items: center;
+            gap: 6px;
+            font-weight: 500;
+            font-size: 1.2rem;
+            letter-spacing: -0.2px;
+            color: #1f1f1f;
+            text-decoration: none;
+        }
+
+        .logo i {
+            font-size: 1.4rem;
+            color: #2c3e50;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 24px;
+            align-items: center;
+            flex-wrap: wrap;
+        }
+
+        .nav-links a {
+            text-decoration: none;
+            color: #3a3a3a;
+            font-size: 12px;
+            font-weight: 400;
+            transition: color 0.2s;
+        }
+
+        .nav-links a:hover {
+            color: #000000;
+        }
+
+        .btn-outline {
+            border: 1px solid #e0dfdb;
+            padding: 6px 14px;
+            background: transparent;
+            font-weight: 400;
+            font-size: 12px;
+            transition: background 0.2s, border 0.2s;
+            text-decoration: none;
+            color: #1f1f1f;
+            display: inline-block;
+        }
+
+        .btn-outline:hover {
+            background-color: #efefec;
+            border-color: #c7c6c2;
+        }
+
+        .hero {
+            padding: 56px 34px 48px 34px;
+        }
+
+        .badge {
+            display: inline-block;
+            background-color: #eaeaE6;
+            padding: 4px 12px;
+            font-size: 0.75rem;
+            font-weight: 400;
+            color: #2c2c2c;
+            margin-bottom: 0.85rem;
+            width: fit-content;
+        }
+
+        .hero-buttons {
+            display: flex;
+            gap: 14px;
+            margin-top: 28px;
+            flex-wrap: wrap;
+        }
+
+        .btn-primary {
+            background-color: #1f1f1f;
+            color: white;
+            border: none;
+            padding: 8px 18px;
+            padding-top: 9px;
+            font-weight: 400;
+            font-size: 12px;
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+            transition: background 0.2s;
+            text-decoration: none;
+        }
+
+        .btn-primary:hover {
+            background-color: #3a3a3a;
+        }
+
+        .btn-secondary {
+            background-color: transparent;
+            border: 1px solid #e0dfdb;
+            padding: 8px 18px;
+            font-weight: 400;
+            font-size: 12px;
+            text-decoration: none;
+            color: #1f1f1f;
+            transition: background 0.2s;
+            display: inline-block;
+        }
+        
+        #projectsTitle {
+            margin-bottom: 2px;
+        }
+
+        .btn-secondary:hover {
+            background-color: #efefec;
+        }
+
+        .services-section, .feature-section {
+            padding: 52px 0;
+            border-top: 1px solid #e8e8e6;
+        }
+
+        .services-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 28px;
+            margin-top: 20px;
+        }
+
+        .service-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e6;
+            padding: 22px 20px;
+            transition: border-color 0.2s;
             display: flex;
             flex-direction: column;
         }
 
-        .header {
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: baseline;
-            padding-bottom: 0.7rem;
-            padding-top: 0.7rem;
-            border-bottom: 1px solid #d0d7de;
-            margin-bottom: 1.5rem;
+        .service-card:hover {
+            border-color: #d0cfca;
         }
 
-        .header-left h1 {
-            font-size: 16px;
-            font-weight: 600;
-            letter-spacing: -0.02em;
-            color: #24292f;
+        .card-icon {
+            font-size: 1.8rem;
+            color: #2c3e50;
         }
 
-        .header-left .sub {
-            font-size: 0.85rem;
-            color: #57606a;
-            margin-top: 0.05rem;
+        .service-card p {
+            color: #4a4a4a;
+            line-height: 1.45;
+            margin-bottom: 9px;
+            font-size: 12px;
+            font-weight: 400;
+            flex: 1;
         }
 
-        .header-right {
-            display: flex;
-            gap: 1.5rem;
-            font-size: 0.85rem;
-            flex-wrap: wrap;
-            align-items: center;
-        }
-
-        .header-right a {
-            color: #0969da;
+        .link-icon {
+            font-size: 0.8rem;
+            font-weight: 400;
+            color: #1f1f1f;
             text-decoration: none;
-            font-weight: 500;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
+            display: inline-flex;
+            align-items: center;
+            gap: 6px;
+            border-bottom: 1px solid #e2e2e0;
+            padding-bottom: 2px;
+            width: fit-content;
         }
 
-        .header-right a:hover {
-            border-bottom-color: #0969da;
+        .link-icon:hover {
+            border-bottom-color: #1f1f1f;
+        }
+
+        .feature-grid {
+            display: grid;
+            grid-template-columns: 1.3fr 1fr;
+            gap: 44px;
+            align-items: start;
+        }
+
+        .feature-list {
+            list-style: none;
+            margin-top: 20px;
+        }
+
+        .feature-list span {
+            font-size: 13px;
+        }
+
+        .feature-list li {
+            display: flex;
+            align-items: flex-start;
+            gap: 12px;
+            margin-bottom: 16px;
+            font-size: 0.9rem;
+            font-weight: 400;
+        }
+
+        .feature-list i {
+            font-size: 1rem;
+            color: #2c3e50;
+            width: 24px;
+            margin-top: 2px;
+        }
+
+        .history-text p {
+            color: #3a3a3a;
+            font-size: 13px;
+            line-height: 1.6;
+            margin-bottom: 14px;
+        }
+
+        .side-card {
+            background: #ffffff;
+            border: 1px solid #e8e8e6;
+            padding: 20px;
+            margin-bottom: 20px;
+        }
+
+        .side-card h3 {
+            font-size: 0.95rem;
+        }
+
+        .side-card p, .side-card span {
+            color: #4a4a4a;
+            font-size: 12px;
+            line-height: 1.5;
+            font-weight: 400;
+        }
+
+        .cta-section {
+            background-color: #f0efec;
+            padding: 40px 36px;
+            border: 1px solid #e6e5e1;
+            display: flex;
+            align-items: center;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .cta-icon {
+            font-size: 2.2rem;
+            color: #2c3e50;
+            flex-shrink: 0;
+        }
+
+        .cta-text {
+            flex: 1;
+            min-width: 240px;
+        }
+
+        .cta-text h2 {
+            font-size: 1.3rem;
+            margin-bottom: 6px;
+        }
+
+        .cta-text p {
+            font-size: 12px;
+            color: #4a4a4a;
+        }
+
+        .cta-text p a {
+            color: #1f1f1f;
+            text-decoration: underline;
+        }
+
+        footer {
+            padding: 40px 0 28px;
+        }
+
+        .footer-inner {
+            border-top: 1px solid #e8e8e6;
+            margin-top: 8px;
+            padding-top: 24px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 12px;
+        }
+
+        .footer-inner p {
+            font-size: 0.75rem;
+            color: #8a8a8a;
+        }
+
+        .footer-links {
+            display: flex;
+            gap: 24px;
+            flex-wrap: wrap;
+        }
+
+        .footer-links a {
+            text-decoration: none;
+            color: #3a3a3a;
+            font-size: 0.75rem;
+            font-weight: 400;
+        }
+
+        .footer-links a:hover {
+            color: #000;
         }
 
         .lang-dropdown {
             position: relative;
             display: inline-block;
             cursor: pointer;
-            font-weight: 500;
-            color: #0969da;
-            border-bottom: 1px solid transparent;
-            transition: border-color 0.2s;
-            padding-right: 1.2rem;
             user-select: none;
+            font-size: 12px;
+            color: #3a3a3a;
         }
-        .lang-dropdown:hover {
-            border-bottom-color: #0969da;
-        }
+
         .lang-dropdown .arrow {
-            position: absolute;
-            right: 0;
-            top: 50%;
-            transform: translateY(-50%);
-            font-size: 0.7rem;
-            pointer-events: none;
+            font-size: 9px;
+            margin-left: 3px;
         }
-        .lang-dropdown .lang-label {
-            display: inline-block;
-        }
+
         .lang-dropdown .dropdown-menu {
             display: none;
             position: absolute;
             top: 100%;
-            left: 0;
+            right: 0;
             background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            box-shadow: 0 8px 20px rgba(0,0,0,0.12);
-            min-width: 120px;
-            z-index: 10;
-            margin-top: 4px;
+            border: 1px solid #e8e8e6;
+            min-width: 140px;
+            z-index: 20;
+            margin-top: 8px;
         }
+
         .lang-dropdown .dropdown-menu.show {
             display: block;
         }
+
         .lang-dropdown .dropdown-menu a {
             display: block;
-            padding: 0.4rem 0.8rem;
-            color: #24292f;
+            padding: 8px 14px;
+            color: #1f1f1f;
             text-decoration: none;
-            border-bottom: none;
+            font-size: 12px;
             font-weight: 400;
-            transition: background 0.1s;
+            transition: background 0.15s;
         }
+
         .lang-dropdown .dropdown-menu a:hover {
-            background: #f0f6fc;
-            border-bottom: none;
-        }
-        .lang-dropdown .dropdown-menu a:last-child {
-            border-bottom: none;
+            background: #f0efec;
         }
 
-        .section-title {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 0.8rem;
-            color: #24292f;
-            letter-spacing: -0.01em;
+        * {
+            border-radius: 0 !important;
         }
 
-        .projects-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
+        body, p, span, a, li, h1, h2, h3, h4, .text, .btn, .badge, .logo, .nav-links a, .btn-outline, .btn-primary, .btn-secondary, .link-icon, .footer-links a {
+            font-weight: 400;
         }
-
-        .project-card {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1rem 1rem 0.8rem;
-            padding-bottom: 0px;
-            transition: border-color 0.2s, box-shadow 0.2s;
-            display: flex;
-            flex-direction: column;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            position: relative;
-            overflow: hidden;
-            min-height: 130px;
-        }
-
-        .project-card:hover {
-            border-color: #8b949e;
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
-
-        .project-card .bg-image {
-            position: absolute;
-            top: -20px;
-            right: -20px;
-            width: 75px;
-            height: 75px;
-            background-size: contain;
-            background-repeat: no-repeat;
-            background-position: top right;
-            opacity: 0.6;
-            pointer-events: none;
-            z-index: 0;
-        }
-
-        .project-card .card-content {
-            position: relative;
-            z-index: 1;
-        }
-
-        .project-name {
-            font-size: 14px;
-            font-weight: 600;
-            margin-bottom: 0.3rem;
-        }
-
-        .project-name a {
-            color: #0969da;
-            text-decoration: none;
-        }
-
-        .project-name a:hover {
-            text-decoration: underline;
-        }
-
-        .project-description {
-            font-size: 0.82rem;
-            color: #57606a;
-            margin-bottom: 1rem;
-            flex: 1;
-        }
-
-        .project-link {
-            margin-top: auto;
-            padding-top: 0.3rem;
-            border-top: 1px solid #eaeef2;
-        }
-
-        .project-link a {
-            color: #0969da;
-            text-decoration: none;
-            font-size: 0.8rem;
+        h1, h2, h3, .logo {
             font-weight: 500;
-            display: inline-flex;
-            align-items: center;
-            gap: 0.3rem;
-            transition: gap 0.2s;
         }
 
-        .project-link a:hover {
-            gap: 0.6rem;
-            text-decoration: underline;
+        @media (max-width: 780px) {
+            .container { padding: 0 20px; }
+            h1 { font-size: 2rem; }
+            h2 { font-size: 1.5rem; }
+            .feature-grid { grid-template-columns: 1fr; gap: 28px; }
+            .nav-inner { flex-direction: column; align-items: flex-start; }
+            .hero { padding: 40px 22px 32px; }
+            .services-section, .feature-section { padding: 44px 0; }
+            .cta-section { flex-direction: column; align-items: flex-start; padding: 28px 20px; }
+            .services-grid { grid-template-columns: 1fr; }
         }
-
-        .extra-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
-            gap: 1.2rem;
-            margin-bottom: 2rem;
-        }
-
-        .info-card {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1rem 1rem 0.8rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: box-shadow 0.2s;
-        }
-
-        .info-card:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
-
-        .info-card h3 {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #24292f;
-            margin-bottom: 0.4rem;
-        }
-
-        .info-card ul {
-            list-style: none;
-            padding: 0;
-        }
-
-        .info-card ul li {
-            font-size: 0.82rem;
-            color: #57606a;
-            padding: 0.1rem 0;
-            display: flex;
-            align-items: center;
-            gap: 0.4rem;
-        }
-
-        .info-card ul li::before {
-            content: "·";
-            color: #0969da;
-            font-weight: 700;
-        }
-
-        .tag-group {
-            display: flex;
-            flex-wrap: wrap;
-            gap: 0.3rem 0.5rem;
-            margin-top: 0.15rem;
-        }
-
-        .tag {
-            background: #f0f6fc;
-            color: #0969da;
-            font-size: 0.72rem;
-            padding: 0.1rem 0.5rem;
-            border-radius: 12px;
-            border: 1px solid #d0d7de;
-        }
-
-        .history-block {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 1rem 1rem;
-            margin-bottom: 2rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: box-shadow 0.2s;
-            width: 100%;
-        }
-
-        .history-block:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
-
-        .history-block h2 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #24292f;
-            letter-spacing: -0.01em;
-        }
-
-        .history-timeline {
-            display: flex;
-            flex-direction: column;
-            gap: 0.8rem;
-        }
-
-        .history-item {
-            display: flex;
-            gap: 1.5rem;
-            padding: 0.4rem 0;
-            border-bottom: 1px solid #eaeef2;
-        }
-
-        .history-item:last-child {
-            border-bottom: none;
-        }
-
-        .history-year {
-            font-size: 0.85rem;
-            font-weight: 600;
-            color: #24292f;
-            min-width: 70px;
-            flex-shrink: 0;
-        }
-
-        .history-content {
-            font-size: 0.85rem;
-            color: #57606a;
-        }
-
-        .history-content strong {
-            color: #24292f;
-            font-weight: 600;
-        }
-
-        .custom-promo-block {
-            background: #ffffff;
-            border: 1px solid #d0d7de;
-            border-radius: 2px;
-            padding: 0.8rem 1rem;
-            margin-bottom: 1.5rem;
-            box-shadow: 0 2px 6px rgba(0, 0, 0, 0.08);
-            transition: box-shadow 0.2s;
-            display: flex;
-            align-items: center;
-            gap: 1rem;
-            width: 100%;
-            min-height: 80px;
-        }
-
-        .custom-promo-block:hover {
-            box-shadow: 0 4px 16px rgba(0, 0, 0, 0.12);
-        }
-
-        .promo-image {
-            width: 60px;
-            height: 60px;
-            flex-shrink: 0;
-            background-size: cover;
-            background-position: center;
-        }
-
-        .promo-text {
-            flex: 1;
-            min-width: 0;
-        }
-
-        .promo-text h2 {
-            font-size: 14px;
-            font-weight: 600;
-            color: #24292f;
-            margin-bottom: 0.2rem;
-        }
-
-        .promo-text p {
-            font-size: 0.85rem;
-            color: #57606a;
-            line-height: 1.4;
-        }
-
-        .footer {
-            margin-top: auto;
-            border-top: 1px solid #d0d7de;
-            padding-top: 1.5rem;
-            display: flex;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            align-items: center;
-            color: #57606a;
-            font-size: 0.8rem;
-        }
-
-        .footer a {
-            color: #0969da;
-            text-decoration: none;
-        }
-
-        .footer a:hover {
-            text-decoration: underline;
-        }
-
-        .footer-links {
-            display: flex;
-            gap: 1.5rem;
-        }
-
-        @media (max-width: 650px) {
-            body { padding: 1rem 0.8rem; }
-            .header { flex-direction: column; align-items: flex-start; gap: 0.5rem; }
-            .header-right { gap: 1rem; }
-            .projects-grid { grid-template-columns: 1fr; }
-            .extra-grid { grid-template-columns: 1fr; }
-            .history-item { flex-direction: column; gap: 0.2rem; }
-            .history-year { min-width: auto; }
-            .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
-            .custom-promo-block { flex-direction: column; align-items: flex-start; }
-            //.promo-image { width: 100%; height: 140px; }
-        }
-        a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
     </style>
 </head>
 <body>
-<div class="container">
 
-    <header class="header">
-        <div class="header-left">
-            <h1>bebka16</h1>
-        </div>
-        <div class="header-right">
+<nav class="navbar">
+    <div class="container nav-inner">
+        <a href="#" class="logo">
+            <span style="font-size: 16px;">bebka16</span>
+        </a>
+        <div class="nav-links">
             <div class="lang-dropdown" id="langDropdown">
-                <span class="lang-label" id="currentLangLabel">English</span>
-                <span class="arrow" style="font-size: 16px;">↶</span>
+                <span id="currentLangLabel">English</span><span class="arrow">▾</span>
                 <div class="dropdown-menu" id="langMenu">
                     <a href="#" data-lang="en">English</a>
                     <a href="#" data-lang="be">Беларуская</a>
                     <a href="#" data-lang="ru">Русский</a>
                     <a href="#" data-lang="uk">Українська</a>
+                    <a href="#" data-lang="mo">Молдовеняскэ (кирилицэ)</a>
                 </div>
             </div>
             <a href="https://github.com/bebka16">GitHub</a>
             <a href="https://bebkalive.t.me/">Telegram</a>
-            <a href="https://bebka16bot.t.me">Contact me</a>
+            <a href="https://bebka16bot.t.me" class="btn-outline">Contact me</a>
         </div>
-    </header>
+    </div>
+</nav>
 
-    <div class="custom-promo-block">
-        <div class="promo-image" style="background-image: url('images/k.webp');"></div>
-        <div class="promo-text">
-            <h2 id="promoTitle">Разработка сайтов на заказ</h2>
-            <p id="promoDescription">Я решил заниматься разработкой сайтов на заказ, чтобы моё многолетнее хобби программирования наконец-то стало приносить мне доход. Буду признателен, если вы распроните это или воспользуетесь моими услугами. Чтобы связаться со мной, напишите в <a href="">Telegram-бота</a></p>
+<main>
+    <div class="container hero">
+        <span style="display: none;" class="badge" id="heroBadge"><i class="fas fa-code" style="font-size: 0.7rem;"></i> indie developer, open source</span>
+        <h1 id="heroTitle">Hi, I'm bebka16.</h1>
+        <p class="text-large" style="max-width: 620px;" id="heroSubtitle">I build small, focused Windows and web tools without unnecessary features — and now most of them are open source.</p>
+        <div class="hero-buttons">
+            <a href="#projects" class="btn-primary" id="heroBtn1">View projects <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.7rem;"></i></a>
+            <a href="#history" class="btn-secondary" id="heroBtn2">Read my story</a>
         </div>
     </div>
 
-    <div class="section-title" id="projectsTitle">Projects</div>
-    <div class="projects-grid">
-
-        <div class="project-card">
-            <div class="bg-image" style="background-image: url('images/note.png');"></div>
-            <div class="card-content">
-                <div class="project-name">Snail Note</div>
-                <div class="project-description" id="desc1">A dedicated code editor without unnecessary features.</div>
-                <div class="project-link"><a id="goto1" href="note.html">Go to →</a></div>
+    <div class="container" style="padding-bottom: 36px;">
+        <div class="cta-section">
+            <img style="width: 30px;" src="images/cursor-in-window-stroke-rounded.svg"/>
+            <div class="cta-text">
+                <h2 id="promoTitle">Custom website development</h2>
+                <p id="promoDescription">I decided to start developing custom websites so that my years-long programming hobby would finally start generating income. I'd be grateful if you spread the word or use my services. To contact me, write to the <a href="https://bebka16bot.t.me">Telegram bot</a>.</p>
             </div>
         </div>
-
-        <div class="project-card">
-            <div class="bg-image" style="background-image: url('images/dmp.webp');"></div>
-            <div class="card-content">
-                <div class="project-name">Decibel Media Player</div>
-                <div class="project-description" id="desc2">A media player focused on convenient music library search.</div>
-                <div class="project-link"><a id="goto2" href="player.html">Go to →</a></div>
-            </div>
-        </div>
-
-        <div class="project-card">
-            <div class="bg-image" style="background-image: url('images/ant.png');"></div>
-            <div class="card-content">
-                <div class="project-name">Decibel Antivirus</div>
-                <div class="project-description" id="desc3">An antivirus with its own engine that uses hashes to detect viruses.</div>
-                <div class="project-link"><a id="goto3" href="legacy.html">Go to →</a></div>
-            </div>
-        </div>
-
-        <div class="project-card">
-            <div class="bg-image" style="background-image: url('images/other.webp');"></div>
-            <div class="card-content">
-                <div class="project-name">Other projects</div>
-                <div class="project-description" id="desc4">I’ve hidden many old projects from 2022–2025 to start with a clean slate. Some of them might still crop up in the future, but for now, that’s how it stands.</div>
-            </div>
-        </div>
-
     </div>
 
-    <div class="history-block">
-        <h2 id="historyTitle">History</h2>
-        <div class="history-timeline">
-            <div class="history-item">
-                <div class="history-content" id="historyText">
-                    Hi there. I've been developing Windows software since 2022. At first, I tried to make my own simple antivirus for one specific virus. It was an incredibly simple command-line program. Then the idea grew. <br>I started writing other programs — I made an archiver with encryption, built my own notepad with extended functionality, and then I moved into web development. I tried building a social network, a message board, cloud storage, and a secure anonymous messenger. I made my own analog of check-host.net, wrote browser extensions that warn about dangerous websites, and even published one in the Firefox Add-ons store. <br>All of this was brought together under one big roof — the Decibel Project — and everything was done within its framework. But over time, audience interest faded, and I completely shut down the old project. It was clunky, and its structure was hard to navigate. <br>Now I've decided to focus on specific projects that interest me the most, in order to make them useful for you. They're also now open source. Anyway, thanks for stopping by — I hope you enjoyed reading this. Of course, there was a lot of interesting stuff, but I'm too lazy to write it all here :)
-                    <br><h2 style="margin-top: 5px;" id="donateTitle">Want to donate?</h2><span id="donateText">This is easy to do using Telegram Stars. Many people use this messenger, and topping up the in-app wallet is very simple. You just need to visit <a href="https://bebkalive.t.me">my channel</a> and leave a "star reaction." To do this, you need to have funds in your account.</span>
-                    <br><h2 style="margin-top: 5px;" id="contactTitle">How to contact me?</h2><span id="contactText">Email me at <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> or message the <a href="https://bebka16bot.t.me">Telegram bot</a>. I’d be happy to chat with you and help out if needed.</span>
+    <section id="projects" class="services-section">
+        <div class="container">
+            <h2 id="projectsTitle">Projects</h2>
+            <p class="text-muted" style="margin-bottom: 8px;" id="projectsSubtitle">A short list of the things I currently maintain and care about.</p>
+            <div class="services-grid">
+                <div class="service-card">
+                    <div class="card-icon"><img style="width: 30px;" src="images/code-xml-stroke-rounded.svg"/></div>
+                    <h3>Snail Note</h3>
+                    <p id="desc1">A dedicated code editor without unnecessary features.</p>
+                    <a id="goto1" href="note.html" class="link-icon">Go to <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="card-icon"><img style="width: 30px;" src="images/audio-lines-stroke-rounded.svg"/></div>
+                    <h3>Decibel Media Player</h3>
+                    <p id="desc2">A media player focused on convenient music library search.</p>
+                    <a id="goto2" href="player.html" class="link-icon">Go to <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="card-icon"><img style="width: 30px;" src="images/security-check-stroke-rounded.svg"/></div>
+                    <h3>Decibel Antivirus</h3>
+                    <p id="desc3">An antivirus with its own engine that uses hashes to detect viruses.</p>
+                    <a id="goto3" href="legacy.html" class="link-icon">Go to <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i></a>
+                </div>
+                <div class="service-card">
+                    <div class="card-icon"><img style="width: 30px;" src="images/eye-off-stroke-rounded.svg"/></div>
+                    <h3>Other projects</h3>
+                    <p id="desc4">I've hidden many old projects from 2022–2025 to start with a clean slate. Some of them might still crop up in the future, but for now, that's how it stands.</p>
                 </div>
             </div>
         </div>
-    </div>
+    </section>
 
-    <footer class="footer">
-        <span id="footerText">© 2022 — 2026, bebka16, all rights are reserved. The use of resources without attribution is prohibited by copyright law.</span>
-        <div class="footer-links">
-            <a href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a>
+    <section id="history" class="feature-section">
+        <div class="container">
+            <div class="feature-grid">
+                <div>
+                    <span class="badge"><i class="fas fa-clock-rotate-left"></i> Since 2022</span>
+                    <h2 id="historyTitle">History</h2>
+                    <div class="history-text" id="historyText"></div>
+                </div>
+                <div>
+                    <div class="side-card">
+                        <h3 id="donateTitle">Want to donate?</h3>
+                        <span id="donateText">This is easy to do using Telegram Stars. Many people use this messenger, and topping up the in-app wallet is very simple. You just need to visit <a href="https://bebkalive.t.me" style="color:#1f1f1f;">my channel</a> and leave a "star reaction." To do this, you need to have funds in your account.</span>
+                    </div>
+                    <div class="side-card">
+                        <h3 id="contactTitle">How to contact me?</h3>
+                        <span id="contactText">Email me at <a href="mailto:bebka4@gmail.com" style="color:#1f1f1f;">bebka4@gmail.com</a> or message the <a href="https://bebka16bot.t.me" style="color:#1f1f1f;">Telegram bot</a>. I'd be happy to chat with you and help out if needed.</span>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+    </section>
+</main>
 
-</div>
+<footer>
+    <div class="container">
+        <div class="footer-inner">
+            <p id="footerText">© 2022 — 2026, bebka16, all rights are reserved. The use of resources without attribution is prohibited by copyright law.</p>
+            <div class="footer-links">
+                <a href="https://en.wikipedia.org/wiki/MIT_License">MIT License</a>
+            </div>
+        </div>
+    </div>
+</footer>
+
 <script>
     (function() {
         const translations = {
             en: {
+                heroBadge: `<i class="fas fa-code" style="font-size: 0.7rem;"></i> indie developer, open source`,
+                heroTitle: "Hi, I'm bebka16.",
+                heroSubtitle: "I build small, focused Windows and web tools without unnecessary features — and now most of them are open source.",
+                heroBtn1: `View projects <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                heroBtn2: "Read my story",
                 promoTitle: "Custom website development",
                 promoDescription: `I decided to start developing custom websites so that my years-long programming hobby would finally start generating income. I'd be grateful if you spread the word or use my services. To contact me, write to the <a href="https://bebka16bot.t.me">Telegram bot</a>.`,
                 projectsTitle: "Projects",
+                projectsSubtitle: "A short list of the things I currently maintain and care about.",
                 desc1: "A dedicated code editor without unnecessary features.",
                 desc2: "A media player focused on convenient music library search.",
                 desc3: "An antivirus with its own engine that uses hashes to detect viruses.",
-                desc4: "I’ve hidden many old projects from 2022–2025 to start with a clean slate. Some of them might still crop up in the future, but for now, that’s how it stands.",
+                desc4: "I've hidden many old projects from 2022–2025 to start with a clean slate. Some of them might still crop up in the future, but for now, that's how it stands.",
+                goto1: `Go to <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto2: `Go to <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto3: `Go to <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
                 historyTitle: "History",
-                historyText: `Hi there. I've been developing Windows software since 2022. At first, I tried to make my own simple antivirus for one specific virus. It was an incredibly simple command-line program. Then the idea grew. <br>I started writing other programs — I made an archiver with encryption, built my own notepad with extended functionality, and then I moved into web development. I tried building a social network, a message board, cloud storage, and a secure anonymous messenger. I made my own analog of check-host.net, wrote browser extensions that warn about dangerous websites, and even published one in the Firefox Add-ons store. <br>All of this was brought together under one big roof — the Decibel Project — and everything was done within its framework. But over time, audience interest faded, and I completely shut down the old project. It was clunky, and its structure was hard to navigate. <br>Now I've decided to focus on specific projects that interest me the most, in order to make them useful for you. They're also now open source. Anyway, thanks for stopping by — I hope you enjoyed reading this. Of course, there was a lot of interesting stuff, but I'm too lazy to write it all here :)`,
+                historyText: `Hi there. I've been developing Windows software since 2022. At first, I tried to make my own simple antivirus for one specific virus. It was an incredibly simple command-line program. Then the idea grew.<br><br>I started writing other programs — I made an archiver with encryption, built my own notepad with extended functionality, and then I moved into web development. I tried building a social network, a message board, cloud storage, and a secure anonymous messenger. I made my own analog of check-host.net, wrote browser extensions that warn about dangerous websites, and even published one in the Firefox Add-ons store.<br><br>All of this was brought together under one big roof — the Decibel Project — and everything was done within its framework. But over time, audience interest faded, and I completely shut down the old project. It was clunky, and its structure was hard to navigate.<br><br>Now I've decided to focus on specific projects that interest me the most, in order to make them useful for you. They're also now open source. Anyway, thanks for stopping by — I hope you enjoyed reading this. Of course, there was a lot of interesting stuff, but I'm too lazy to write it all here :)`,
                 donateTitle: "Want to donate?",
-                donateText: `This is easy to do using Telegram Stars. Many people use this messenger, and topping up the in-app wallet is very simple. You just need to visit <a href="https://bebkalive.t.me">my channel</a> and leave a "star reaction." To do this, you need to have funds in your account.`,
-                contactTitle: "How to contact me?", goto1: "Go to →", goto2: "Go to →", goto3: "Go to →",
-                contactText: `Email me at <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> or message the <a href="https://bebka16bot.t.me">Telegram bot</a>. I’d be happy to chat with you and help out if needed.`,
+                donateText: `This is easy to do using Telegram Stars. Many people use this messenger, and topping up the in-app wallet is very simple. You just need to visit <a href="https://bebkalive.t.me" style="color:#1f1f1f;">my channel</a> and leave a "star reaction." To do this, you need to have funds in your account.`,
+                contactTitle: "How to contact me?",
+                contactText: `Email me at <a href="mailto:bebka4@gmail.com" style="color:#1f1f1f;">bebka4@gmail.com</a> or message the <a href="https://bebka16bot.t.me" style="color:#1f1f1f;">Telegram bot</a>. I'd be happy to chat with you and help out if needed.`,
                 footer: "© 2022 — 2026, bebka16, all rights are reserved. The use of resources without attribution is prohibited by copyright law."
             },
             be: {
+                heroBadge: `<i class="fas fa-code" style="font-size: 0.7rem;"></i> незалежны распрацоўшчык, адкрыты код`,
+                heroTitle: "Прывітанне, я bebka16.",
+                heroSubtitle: "Я раблю невялікія, сфакусаваныя праграмы для Windows і вэба без лішніх функцый — і цяпер большасць з іх з адкрытым зыходным кодам.",
+                heroBtn1: `Праекты <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                heroBtn2: "Мая гісторыя",
                 promoTitle: "Распрацоўка сайтаў на заказ",
                 promoDescription: `Я вырашыў займацца распрацоўкай сайтаў на заказ, каб маё шматгадовае хобі праграмавання нарэшце стала прыносіць мне прыбытак. Буду ўдзячны, калі вы раскажаце пра гэта ці скарыстаецеся маімі паслугамі. Каб звязацца са мной, напішыце ў <a href="https://bebka16bot.t.me">Telegram-бота</a>.`,
                 projectsTitle: "Праекты",
+                projectsSubtitle: "Кароткі спіс таго, чым я зараз займаюся і апекуюся.",
                 desc1: "Свой уласны рэдактар кода без лішніх функцый.",
                 desc2: "Медыяплэер з акцэнтам на зручны пошук музычнай бібліятэкі.",
                 desc3: "Антывірус з уласным рухавіком, які выкарыстоўвае хэшы для выяўлення.",
                 desc4: "Я схаваў шмат старых праектаў 2022–2025 гадоў, каб пачаць з чыстага аркуша. Некаторыя з іх яшчэ могуць з'явіцца ў будучыні, але пакуль так.",
+                goto1: `Перайсці <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto2: `Перайсці <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto3: `Перайсці <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
                 historyTitle: "Гісторыя",
-                historyText: `Прывітанне. Я распрацоўваю праграмнае забеспячэнне для Windows з 2022 года. Спачатку я спрабаваў зрабіць свой просты антывірус для аднаго канкрэтнага віруса. Гэта была неверагодна простая камандная праграма. Потым ідэя вырасла. <br>Я пачаў пісаць іншыя праграмы — зрабіў архіватар з шыфраваннем, стварыў уласны блокнот з пашыранай функцыянальнасцю, а потым перайшоў у вэб-распрацоўку. Я спрабаваў пабудаваць сацыяльную сетку, дошку аб'яваў, воблачнае сховішча і бяспечны ананімны месенджар. Я зрабіў свой аналог check-host.net, напісаў пашырэнні для браўзера, якія папярэджваюць пра небяспечныя сайты, і нават апублікаваў адно ў краме дапаўненняў Firefox. <br>Усё гэта было аб'яднана пад адным дахам — праектам Decibel — і ўсё рабілася ў яго рамках. Але з часам цікавасць аўдыторыі знікла, і я цалкам закрыў стары праект. Ён быў грувасткім, і яго структура была цяжкай для навігацыі. <br>Цяпер я вырашыў засяродзіцца на канкрэтных праектах, якія цікавяць мяне найбольш, каб зрабіць іх карыснымі для вас. Яны таксама цяпер з адкрытым зыходным кодам. У любым выпадку, дзякуй, што завіталі — спадзяюся, вам спадабалася чытаць. Вядома, было шмат цікавага, але мне лень пісаць усё тут :)`,
+                historyText: `Прывітанне. Я распрацоўваю праграмнае забеспячэнне для Windows з 2022 года. Спачатку я спрабаваў зрабіць свой просты антывірус для аднаго канкрэтнага віруса. Гэта была неверагодна простая камандная праграма. Потым ідэя вырасла.<br><br>Я пачаў пісаць іншыя праграмы — зрабіў архіватар з шыфраваннем, стварыў уласны блокнот з пашыранай функцыянальнасцю, а потым перайшоў у вэб-распрацоўку. Я спрабаваў пабудаваць сацыяльную сетку, дошку аб'яваў, воблачнае сховішча і бяспечны ананімны месенджар. Я зрабіў свой аналог check-host.net, напісаў пашырэнні для браўзера, якія папярэджваюць пра небяспечныя сайты, і нават апублікаваў адно ў краме дапаўненняў Firefox.<br><br>Усё гэта было аб'яднана пад адным дахам — праектам Decibel — і ўсё рабілася ў яго рамках. Але з часам цікавасць аўдыторыі знікла, і я цалкам закрыў стары праект. Ён быў грувасткім, і яго структура была цяжкай для навігацыі.<br><br>Цяпер я вырашыў засяродзіцца на канкрэтных праектах, якія цікавяць мяне найбольш, каб зрабіць іх карыснымі для вас. Яны таксама цяпер з адкрытым зыходным кодам. У любым выпадку, дзякуй, што завіталі — спадзяюся, вам спадабалася чытаць. Вядома, было шмат цікавага, але мне лень пісаць усё тут :)`,
                 donateTitle: "Хочаце падтрымаць?",
-                donateText: `Гэта лёгка зрабіць з дапамогай Telegram Stars. Многія людзі карыстаюцца гэтым месенджарам, а папаўненне ўнутранага кашалька вельмі простае. Вам проста трэба наведаць <a href="https://bebkalive.t.me">мой канал</a> і пакінуць "зорачную рэакцыю". Для гэтага трэба мець сродкі на рахунку.`,
-                contactTitle: "Як са мной звязацца?", goto1: "Перайсці →", goto2: "Перайсці →", goto3: "Перайсці →",
-                contactText: `Напішыце мне на <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> або паведамленне ў <a href="https://bebka16bot.t.me">Telegram-бота</a>. Я з задавальненнем пагавару з вамі і дапамагу, калі трэба.`,
+                donateText: `Гэта лёгка зрабіць з дапамогай Telegram Stars. Многія людзі карыстаюцца гэтым месенджарам, а папаўненне ўнутранага кашалька вельмі простае. Вам проста трэба наведаць <a href="https://bebkalive.t.me" style="color:#1f1f1f;">мой канал</a> і пакінуць "зорачную рэакцыю". Для гэтага трэба мець сродкі на рахунку.`,
+                contactTitle: "Як са мной звязацца?",
+                contactText: `Напішыце мне на <a href="mailto:bebka4@gmail.com" style="color:#1f1f1f;">bebka4@gmail.com</a> або паведамленне ў <a href="https://bebka16bot.t.me" style="color:#1f1f1f;">Telegram-бота</a>. Я з задавальненнем пагавару з вамі і дапамагу, калі трэба.`,
                 footer: "© 2022 — 2026, bebka16, усе правы абаронены. Выкарыстанне рэсурсаў без указання аўтарства забаронена законам аб аўтарскіх правах."
             },
             ru: {
+                heroBadge: `<i class="fas fa-code" style="font-size: 0.7rem;"></i> независимый разработчик, открытый код`,
+                heroTitle: "Привет, я bebka16.",
+                heroSubtitle: "Я делаю небольшие, сфокусированные программы для Windows и веба без лишних функций — и теперь большинство из них с открытым исходным кодом.",
+                heroBtn1: `Проекты <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                heroBtn2: "Моя история",
                 promoTitle: "Разработка сайтов на заказ",
-                promoDescription: `Я решил заниматься разработкой сайтов на заказ, чтобы моё многолетнее хобби программирования наконец-то стало приносить мне доход. Буду признателен, если вы распроните это или воспользуетесь моими услугами. Чтобы связаться со мной, напишите в <a href="https://bebka16bot.t.me">Telegram-бота</a>.`,
+                promoDescription: `Я решил заниматься разработкой сайтов на заказ, чтобы моё многолетнее хобби программирования наконец-то стало приносить мне доход. Буду признателен, если вы распространите это или воспользуетесь моими услугами. Чтобы связаться со мной, напишите в <a href="https://bebka16bot.t.me">Telegram-бота</a>.`,
                 projectsTitle: "Проекты",
+                projectsSubtitle: "Короткий список того, чем я сейчас занимаюсь и что поддерживаю.",
                 desc1: "Собственный редактор кода без лишних функций.",
                 desc2: "Медиаплеер с акцентом на удобный поиск музыкальной библиотеки.",
                 desc3: "Антивирус с собственным движком, использующим хэши для баз.",
                 desc4: "Я скрыл много старых проектов 2022–2025 годов, чтобы начать с чистого листа. Некоторые из них могут ещё появиться в будущем, но пока так.",
+                goto1: `Перейти <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto2: `Перейти <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto3: `Перейти <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
                 historyTitle: "История",
-                historyText: `Привет. Я разрабатываю программное обеспечение для Windows с 2022 года. Сначала я пытался сделать свой простой антивирус для одного конкретного вируса. Это была невероятно простая командная программа. Потом идея выросла. <br>Я начал писать другие программы — сделал архиватор с шифрованием, создал свой блокнот с расширенной функциональностью, а затем перешёл в веб-разработку. Я пытался построить социальную сеть, доску объявлений, облачное хранилище и безопасный анонимный мессенджер. Я сделал свой аналог check-host.net, написал расширения для браузера, предупреждающие об опасных сайтах, и даже опубликовал одно в магазине дополнений Firefox. <br>Всё это было объединено под одной крышей — проектом Decibel — и всё делалось в его рамках. Но со временем интерес аудитории угас, и я полностью закрыл старый проект. Он был громоздким, и его структура была трудной для навигации. <br>Теперь я решил сосредоточиться на конкретных проектах, которые интересуют меня больше всего, чтобы сделать их полезными для вас. Они также теперь с открытым исходным кодом. В любом случае, спасибо, что заглянули — надеюсь, вам понравилось читать. Конечно, было много интересного, но мне лень писать всё здесь :)`,
+                historyText: `Привет. Я разрабатываю программное обеспечение для Windows с 2022 года. Сначала я пытался сделать свой простой антивирус для одного конкретного вируса. Это была невероятно простая командная программа. Потом идея выросла.<br><br>Я начал писать другие программы — сделал архиватор с шифрованием, создал свой блокнот с расширенной функциональностью, а затем перешёл в веб-разработку. Я пытался построить социальную сеть, доску объявлений, облачное хранилище и безопасный анонимный мессенджер. Я сделал свой аналог check-host.net, написал расширения для браузера, предупреждающие об опасных сайтах, и даже опубликовал одно в магазине дополнений Firefox.<br><br>Всё это было объединено под одной крышей — проектом Decibel — и всё делалось в его рамках. Но со временем интерес аудитории угас, и я полностью закрыл старый проект. Он был громоздким, и его структура была трудной для навигации.<br><br>Теперь я решил сосредоточиться на конкретных проектах, которые интересуют меня больше всего, чтобы сделать их полезными для вас. Они также теперь с открытым исходным кодом. В любом случае, спасибо, что заглянули — надеюсь, вам понравилось читать. Конечно, было много интересного, но мне лень писать всё здесь :)`,
                 donateTitle: "Хотите поддержать?",
-                donateText: `Это легко сделать с помощью Telegram Stars. Многие люди пользуются этим мессенджером, а пополнение внутреннего кошелька очень простое. Вам просто нужно посетить <a href="https://bebkalive.t.me">мой канал</a> и оставить "звёздную реакцию". Для этого нужно иметь средства на счету.`,
-                contactTitle: "Как со мной связаться?", goto1: "Перейти →", goto2: "Перейти →", goto3: "Перейти →",
-                contactText: `Напишите мне на <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> или сообщение в <a href="https://bebka16bot.t.me">Telegram-бота</a>. Я с удовольствием пообщаюсь с вами и помогу, если нужно.`,
+                donateText: `Это легко сделать с помощью Telegram Stars. Многие люди пользуются этим мессенджером, а пополнение внутреннего кошелька очень простое. Вам просто нужно посетить <a href="https://bebkalive.t.me" style="color:#1f1f1f;">мой канал</a> и оставить "звёздную реакцию". Для этого нужно иметь средства на счету.`,
+                contactTitle: "Как со мной связаться?",
+                contactText: `Напишите мне на <a href="mailto:bebka4@gmail.com" style="color:#1f1f1f;">bebka4@gmail.com</a> или сообщение в <a href="https://bebka16bot.t.me" style="color:#1f1f1f;">Telegram-бота</a>. Я с удовольствием пообщаюсь с вами и помогу, если нужно.`,
                 footer: "© 2022 — 2026, bebka16, все права защищены. Использование ресурсов без указания авторства запрещено законом об авторских правах."
             },
             uk: {
+                heroBadge: `<i class="fas fa-code" style="font-size: 0.7rem;"></i> незалежний розробник, відкритий код`,
+                heroTitle: "Привіт, я bebka16.",
+                heroSubtitle: "Я роблю невеликі, сфокусовані програми для Windows і вебу без зайвих функцій — і тепер більшість із них з відкритим вихідним кодом.",
+                heroBtn1: `Проєкти <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                heroBtn2: "Моя історія",
                 promoTitle: "Розробка сайтів на замовлення",
                 promoDescription: `Я вирішив займатися розробкою сайтів на замовлення, щоб моє багаторічне хобі програмування нарешті стало приносити мені дохід. Буду вдячний, якщо ви розкажете про це або скористаєтеся моїми послугами. Щоб зв'язатися зі мною, напишіть у <a href="https://bebka16bot.t.me">Telegram-бота</a>.`,
                 projectsTitle: "Проєкти",
+                projectsSubtitle: "Короткий список того, чим я зараз займаюся і що підтримую.",
                 desc1: "Виділений редактор коду без зайвих функцій.",
                 desc2: "Медіаплеєр з акцентом на зручний пошук музичної бібліотеки.",
                 desc3: "Антивірус з власним рушієм, що використовує хеші для виявлення вірусів.",
                 desc4: "Я сховав багато старих проєктів 2022–2025 років, щоб почати з чистого аркуша. Деякі з них ще можуть з'явитися в майбутньому, але поки так.",
+                goto1: `Перейти <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto2: `Перейти <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto3: `Перейти <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
                 historyTitle: "Історія",
-                historyText: `Привіт. Я розробляю програмне забезпечення для Windows з 2022 року. Спочатку я намагався зробити свій простий антивірус для одного конкретного вірусу. Це була неймовірно проста командна програма. Потім ідея виросла. <br>Я почав писати інші програми — зробив архіватор з шифруванням, створив власний блокнот з розширеною функціональністю, а потім перейшов у веб-розробку. Я намагався побудувати соціальну мережу, дошку оголошень, хмарне сховище та безпечний анонімний месенджер. Я зробив свій аналог check-host.net, написав розширення для браузера, які попереджають про небезпечні сайти, і навіть опублікував одне в магазині доповнень Firefox. <br>Усе це було об'єднано під одним дахом — проєктом Decibel — і все робилося в його рамках. Але з часом інтерес аудиторії згас, і я повністю закрив старий проєкт. Він був громіздким, і його структура була важкою для навігації. <br>Тепер я вирішив зосередитися на конкретних проєктах, які цікавлять мене найбільше, щоб зробити їх корисними для вас. Вони також тепер з відкритим вихідним кодом. У будь-якому випадку, дякую, що завітали — сподіваюся, вам сподобалося читати. Звичайно, було багато цікавого, але мені лінь писати все тут :)`,
+                historyText: `Привіт. Я розробляю програмне забезпечення для Windows з 2022 року. Спочатку я намагався зробити свій простий антивірус для одного конкретного вірусу. Це була неймовірно проста командна програма. Потім ідея виросла.<br><br>Я почав писати інші програми — зробив архіватор з шифруванням, створив власний блокнот з розширеною функціональністю, а потім перейшов у веб-розробку. Я намагався побудувати соціальну мережу, дошку оголошень, хмарне сховище та безпечний анонімний месенджер. Я зробив свій аналог check-host.net, написав розширення для браузера, які попереджають про небезпечні сайти, і навіть опублікував одне в магазині доповнень Firefox.<br><br>Усе це було об'єднано під одним дахом — проєктом Decibel — і все робилося в його рамках. Але з часом інтерес аудиторії згас, і я повністю закрив старий проєкт. Він був громіздким, і його структура була важкою для навігації.<br><br>Тепер я вирішив зосередитися на конкретних проєктах, які цікавлять мене найбільше, щоб зробити їх корисними для вас. Вони також тепер з відкритим вихідним кодом. У будь-якому випадку, дякую, що завітали — сподіваюся, вам сподобалося читати. Звичайно, було багато цікавого, але мені лінь писати все тут :)`,
                 donateTitle: "Хочете підтримати?",
-                donateText: `Це легко зробити за допомогою Telegram Stars. Багато людей користуються цим месенджером, а поповнення внутрішнього гаманця дуже просте. Вам просто потрібно відвідати <a href="https://bebkalive.t.me">мій канал</a> і залишити "зіркову реакцію". Для цього потрібно мати кошти на рахунку.`,
-                contactTitle: "Як зі мною зв'язатися?", goto1: "Перейти →", goto2: "Перейти →", goto3: "Перейти →",
-                contactText: `Напишіть мені на <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> або повідомлення в <a href="https://bebka16bot.t.me">Telegram-бота</a>. Я з задоволенням поспілкуюся з вами та допоможу, якщо потрібно.`,
+                donateText: `Це легко зробити за допомогою Telegram Stars. Багато людей користуються цим месенджером, а поповнення внутрішнього гаманця дуже просте. Вам просто потрібно відвідати <a href="https://bebkalive.t.me" style="color:#1f1f1f;">мій канал</a> і залишити "зіркову реакцію". Для цього потрібно мати кошти на рахунку.`,
+                contactTitle: "Як зі мною зв'язатися?",
+                contactText: `Напишіть мені на <a href="mailto:bebka4@gmail.com" style="color:#1f1f1f;">bebka4@gmail.com</a> або повідомлення в <a href="https://bebka16bot.t.me" style="color:#1f1f1f;">Telegram-бота</a>. Я з задоволенням поспілкуюся з вами та допоможу, якщо потрібно.`,
                 footer: "© 2022 — 2026, bebka16, всі права захищені. Використання ресурсів без зазначення авторства заборонено законом про авторські права."
+            },
+            mo: {
+                heroBadge: `<i class="fas fa-code" style="font-size: 0.7rem;"></i> програматор индепендент, код дескис`,
+                heroTitle: "Салют, еу сынт bebka16.",
+                heroSubtitle: "Еу креез програме мичь, фокализате пентру Windows ши веб фэрэ функционалитэць инутиле — ши акум мажоритатя дин еле ау код сурсэ дескис.",
+                heroBtn1: `Програме <i class="fas fa-arrow-right" style="margin-left: 5px; font-size: 0.7rem;"></i>`,
+                heroBtn2: "Повестя мя",
+                promoTitle: "Дезволтаря саитурилор ла командэ",
+                promoDescription: `Ам хотэрыт сэ мэ окуп де креаря саитурилор ла командэ, пентру ка пасюня мя де програмаре де ань де зиле сэ ынчапэ, ын сфыршит, сэ-мь адукэ венитурь. Вой фи рекуноскэтор дакэ вець рэспынди ворба сау аппелаць ла сервичииле меле. Пентру а мэ контактa, скриеци ботулуй <a href="https://bebka16bot.t.me">Telegram</a>.`,
+                projectsTitle: "Проекте",
+                projectsSubtitle: "О листэ скуртэ а лукрурилор пе каре ле ынтрецин ши де каре ымь пасэ ын презент.",
+                desc1: "Ун едитор де код дедикат, фэрэ функционалитэць инутиле.",
+                desc2: "Ун плеер медиа ориентат пе кэутаря комодэ а библиотечий музикале.",
+                desc3: "Ун антивирус ку проприул сэу мотор каре фолосеште хашуриле пентру а детекта вируший.",
+                desc4: "Ам аскунс мулте проекте векь дин 2022–2025 пентру а ынчепе де ла зеро. Унеле дин еле пот сэ апарэ ын континуаре ын виитор, дар деокамдатэ аша стау лукруриле.",
+                goto1: `Тречь <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto2: `Тречь <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                goto3: `Тречь <i class="fas fa-chevron-right" style="font-size: 0.65rem;"></i>`,
+                historyTitle: "Историе",
+                historyText: `Салют. Дезволт софт пентру Windows дин 2022. Ла ынчепут, ам ынчеркат сэ фак проприул меу антивирус симплу пентру ун ануме вирус. Ера ун програм де линие де командэ инкредибил де симплу. Апой идея а крескут.<br><br>Ам ынчепут сэ скриу алте програме — ам фэкут ун архиватор ку чифраре, ам конструит проприул меу блокнот ку функционалитате екстинсэ, ши апой ам трекут ла дезволтаря веб. Ам ынчеркат сэ конструеск о реця сочиалэ, ун паноу де анунцурь, стокаре ын нор ши ун месенджер аноним сигуру. Ам фэкут проприул меу аналог ал check-host.net, ам скрис екстенсий де браузер каре авертизязэ деспре саитуриле перикулоасе ши кяр ам публикат уна ын магазинул де екстенсий Firefox.<br><br>Тоате ачестя ау фост реуните суб ун сингур акопериш — проиектул Decibel — ши тотул с-а фэкут ын кадрул луй. Дар ын тимп, интересул публикулуй а скэзут, ши ам ынкис комплект векьул проект. Ера греой, ши структура луй ера греу де навигат.<br><br>Акум ам дечис сэ мэ кончентрез пе анумите проиекте каре мэ интересязэ чел май мулт, пентру а ле фаче утиле пентру тине. Де асеменя, акум ау ши код сурсэ дескис. Орикум, мулцумеск кэ ай трекут пе аич — спер кэ ць-а плэкут сэ читешть. Десигур, ау фост мулте лукрурь интересате, дар ми-е лене сэ ле скриу пе тоате аич :)`,
+                donateTitle: "Врей сэ донезь?",
+                donateText: `Ачаста се фаче ушор ку Telegram Stars. Мулць оамень фолосеск ачест месенджер, яр комплетаря портофелулуй дин апликацие есте фоарте симплэ. Требуе сэ визитезь <a href="https://bebkalive.t.me" style="color:#1f1f1f;">каналул меу</a> ши сэ лашь о "реакцие стя". Пентру ачаста, требуе сэ ай бань ын конт.`,
+                contactTitle: "Кум мэ пот контактa?",
+                contactText: `Скрие-мь ун емаил ла <a href="mailto:bebka4@gmail.com" style="color:#1f1f1f;">bebka4@gmail.com</a> сау ун месаж <a href="https://bebka16bot.t.me" style="color:#1f1f1f;">ботулуй Telegram</a>. Аш фи ынкынтат сэ стау де ворбэ ку тине ши сэ те ажут, дакэ есте невое.`,
+                footer: "© 2022 — 2026, bebka16, тоате дрептуриле резервате. Фолосиря ресурселор фэрэ менционе а ауторулуй е интерзисэ де леӂя дрептурилор де аутор."
             }
         };
 
@@ -608,20 +700,30 @@
         function setLanguage(lang) {
             if (!translations[lang]) lang = 'en';
             const t = translations[lang];
+            document.getElementById('heroBadge').innerHTML = t.heroBadge;
+            document.getElementById('heroTitle').textContent = t.heroTitle;
+            document.getElementById('heroSubtitle').textContent = t.heroSubtitle;
+            document.getElementById('heroBtn1').innerHTML = t.heroBtn1;
+            document.getElementById('heroBtn2').textContent = t.heroBtn2;
             document.getElementById('promoTitle').textContent = t.promoTitle;
             document.getElementById('promoDescription').innerHTML = t.promoDescription;
             document.getElementById('projectsTitle').textContent = t.projectsTitle;
+            document.getElementById('projectsSubtitle').textContent = t.projectsSubtitle;
             document.getElementById('desc1').textContent = t.desc1;
             document.getElementById('desc2').textContent = t.desc2;
             document.getElementById('desc3').textContent = t.desc3;
             document.getElementById('desc4').textContent = t.desc4;
-            document.getElementById('goto1').textContent = t.goto1; document.getElementById('goto2').textContent = t.goto2; document.getElementById('goto3').textContent = t.goto3;
+            document.getElementById('goto1').innerHTML = t.goto1;
+            document.getElementById('goto2').innerHTML = t.goto2;
+            document.getElementById('goto3').innerHTML = t.goto3;
             document.getElementById('historyTitle').textContent = t.historyTitle;
-            document.getElementById('historyText').innerHTML = t.historyText + 
-                '<br><h2 style="margin-top: 5px;" id="donateTitle">' + t.donateTitle + '</h2><span id="donateText">' + t.donateText + '</span>' +
-                '<br><h2 style="margin-top: 5px;" id="contactTitle">' + t.contactTitle + '</h2><span id="contactText">' + t.contactText + '</span>';
+            document.getElementById('historyText').innerHTML = '<p>' + t.historyText.split('<br><br>').join('</p><p>') + '</p>';
+            document.getElementById('donateTitle').textContent = t.donateTitle;
+            document.getElementById('donateText').innerHTML = t.donateText;
+            document.getElementById('contactTitle').textContent = t.contactTitle;
+            document.getElementById('contactText').innerHTML = t.contactText;
             document.getElementById('footerText').textContent = t.footer;
-            currentLangLabel.textContent = lang === 'en' ? 'English' : lang === 'be' ? 'Беларуская' : lang === 'ru' ? 'Русский' : 'Українська';
+            currentLangLabel.textContent = lang === 'en' ? 'English' : lang === 'be' ? 'Беларуская' : lang === 'ru' ? 'Русский' : lang === 'uk' ? 'Українська' : 'Молдовеняскэ (кирилицэ)';
             localStorage.setItem('bebka16-lang', lang);
             langMenu.classList.remove('show');
         }
@@ -647,8 +749,7 @@
             });
         });
 
-        const initialLang = getStoredLang();
-        setLanguage(initialLang);
+        setLanguage(getStoredLang());
     })();
 </script>
 </body>
