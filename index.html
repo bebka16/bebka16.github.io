@@ -434,7 +434,7 @@
             .history-year { min-width: auto; }
             .footer { flex-direction: column; gap: 0.5rem; align-items: flex-start; }
             .custom-promo-block { flex-direction: column; align-items: flex-start; }
-            .promo-image { width: 100%; height: 140px; }
+            //.promo-image { width: 100%; height: 140px; }
         }
         a:link {color: #0969da!important;}  a:visited {color: #0969da!important;}
     </style>
@@ -479,7 +479,7 @@
             <div class="card-content">
                 <div class="project-name">Snail Note</div>
                 <div class="project-description" id="desc1">A dedicated code editor without unnecessary features.</div>
-                <div class="project-link"><a href="note.html">Go to →</a></div>
+                <div id="goto" class="project-link"><a href="note.html">Go to →</a></div>
             </div>
         </div>
 
@@ -488,7 +488,7 @@
             <div class="card-content">
                 <div class="project-name">Decibel Media Player</div>
                 <div class="project-description" id="desc2">A media player focused on convenient music library search.</div>
-                <div class="project-link"><a href="player.html">Go to →</a></div>
+                <div  id="goto" class="project-link"><a href="player.html">Go to →</a></div>
             </div>
         </div>
 
@@ -497,7 +497,7 @@
             <div class="card-content">
                 <div class="project-name">Decibel Antivirus</div>
                 <div class="project-description" id="desc3">An antivirus with its own engine that uses hashes to detect viruses.</div>
-                <div class="project-link"><a href="legacy.html">Go to →</a></div>
+                <div  id="goto" class="project-link"><a href="legacy.html">Go to →</a></div>
             </div>
         </div>
 
@@ -547,7 +547,7 @@
                 historyText: `Hi there. I've been developing Windows software since 2022. At first, I tried to make my own simple antivirus for one specific virus. It was an incredibly simple command-line program. Then the idea grew. <br>I started writing other programs — I made an archiver with encryption, built my own notepad with extended functionality, and then I moved into web development. I tried building a social network, a message board, cloud storage, and a secure anonymous messenger. I made my own analog of check-host.net, wrote browser extensions that warn about dangerous websites, and even published one in the Firefox Add-ons store. <br>All of this was brought together under one big roof — the Decibel Project — and everything was done within its framework. But over time, audience interest faded, and I completely shut down the old project. It was clunky, and its structure was hard to navigate. <br>Now I've decided to focus on specific projects that interest me the most, in order to make them useful for you. They're also now open source. Anyway, thanks for stopping by — I hope you enjoyed reading this. Of course, there was a lot of interesting stuff, but I'm too lazy to write it all here :)`,
                 donateTitle: "Want to donate?",
                 donateText: `This is easy to do using Telegram Stars. Many people use this messenger, and topping up the in-app wallet is very simple. You just need to visit <a href="https://bebkalive.t.me">my channel</a> and leave a "star reaction." To do this, you need to have funds in your account.`,
-                contactTitle: "How to contact me?",
+                contactTitle: "How to contact me?", goto: "Go to →",
                 contactText: `Email me at <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> or message the <a href="https://bebka16bot.t.me">Telegram bot</a>. I’d be happy to chat with you and help out if needed.`,
                 footer: "© 2022 — 2026, bebka16, all rights are reserved. The use of resources without attribution is prohibited by copyright law."
             },
@@ -563,7 +563,7 @@
                 historyText: `Прывітанне. Я распрацоўваю праграмнае забеспячэнне для Windows з 2022 года. Спачатку я спрабаваў зрабіць свой просты антывірус для аднаго канкрэтнага віруса. Гэта была неверагодна простая камандная праграма. Потым ідэя вырасла. <br>Я пачаў пісаць іншыя праграмы — зрабіў архіватар з шыфраваннем, стварыў уласны блокнот з пашыранай функцыянальнасцю, а потым перайшоў у вэб-распрацоўку. Я спрабаваў пабудаваць сацыяльную сетку, дошку аб'яваў, воблачнае сховішча і бяспечны ананімны месенджар. Я зрабіў свой аналог check-host.net, напісаў пашырэнні для браўзера, якія папярэджваюць пра небяспечныя сайты, і нават апублікаваў адно ў краме дапаўненняў Firefox. <br>Усё гэта было аб'яднана пад адным дахам — праектам Decibel — і ўсё рабілася ў яго рамках. Але з часам цікавасць аўдыторыі знікла, і я цалкам закрыў стары праект. Ён быў грувасткім, і яго структура была цяжкай для навігацыі. <br>Цяпер я вырашыў засяродзіцца на канкрэтных праектах, якія цікавяць мяне найбольш, каб зрабіць іх карыснымі для вас. Яны таксама цяпер з адкрытым зыходным кодам. У любым выпадку, дзякуй, што завіталі — спадзяюся, вам спадабалася чытаць. Вядома, было шмат цікавага, але мне лень пісаць усё тут :)`,
                 donateTitle: "Хочаце падтрымаць?",
                 donateText: `Гэта лёгка зрабіць з дапамогай Telegram Stars. Многія людзі карыстаюцца гэтым месенджарам, а папаўненне ўнутранага кашалька вельмі простае. Вам проста трэба наведаць <a href="https://bebkalive.t.me">мой канал</a> і пакінуць "зорачную рэакцыю". Для гэтага трэба мець сродкі на рахунку.`,
-                contactTitle: "Як са мной звязацца?",
+                contactTitle: "Як са мной звязацца?", goto: "Перайсці →",
                 contactText: `Напішыце мне на <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> або паведамленне ў <a href="https://bebka16bot.t.me">Telegram-бота</a>. Я з задавальненнем пагавару з вамі і дапамагу, калі трэба.`,
                 footer: "© 2022 — 2026, bebka16, усе правы абаронены. Выкарыстанне рэсурсаў без указання аўтарства забаронена законам аб аўтарскіх правах."
             },
@@ -579,7 +579,7 @@
                 historyText: `Привет. Я разрабатываю программное обеспечение для Windows с 2022 года. Сначала я пытался сделать свой простой антивирус для одного конкретного вируса. Это была невероятно простая командная программа. Потом идея выросла. <br>Я начал писать другие программы — сделал архиватор с шифрованием, создал свой блокнот с расширенной функциональностью, а затем перешёл в веб-разработку. Я пытался построить социальную сеть, доску объявлений, облачное хранилище и безопасный анонимный мессенджер. Я сделал свой аналог check-host.net, написал расширения для браузера, предупреждающие об опасных сайтах, и даже опубликовал одно в магазине дополнений Firefox. <br>Всё это было объединено под одной крышей — проектом Decibel — и всё делалось в его рамках. Но со временем интерес аудитории угас, и я полностью закрыл старый проект. Он был громоздким, и его структура была трудной для навигации. <br>Теперь я решил сосредоточиться на конкретных проектах, которые интересуют меня больше всего, чтобы сделать их полезными для вас. Они также теперь с открытым исходным кодом. В любом случае, спасибо, что заглянули — надеюсь, вам понравилось читать. Конечно, было много интересного, но мне лень писать всё здесь :)`,
                 donateTitle: "Хотите поддержать?",
                 donateText: `Это легко сделать с помощью Telegram Stars. Многие люди пользуются этим мессенджером, а пополнение внутреннего кошелька очень простое. Вам просто нужно посетить <a href="https://bebkalive.t.me">мой канал</a> и оставить "звёздную реакцию". Для этого нужно иметь средства на счету.`,
-                contactTitle: "Как со мной связаться?",
+                contactTitle: "Как со мной связаться?", goto: "Перейти →",
                 contactText: `Напишите мне на <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> или сообщение в <a href="https://bebka16bot.t.me">Telegram-бота</a>. Я с удовольствием пообщаюсь с вами и помогу, если нужно.`,
                 footer: "© 2022 — 2026, bebka16, все права защищены. Использование ресурсов без указания авторства запрещено законом об авторских правах."
             },
@@ -595,7 +595,7 @@
                 historyText: `Привіт. Я розробляю програмне забезпечення для Windows з 2022 року. Спочатку я намагався зробити свій простий антивірус для одного конкретного вірусу. Це була неймовірно проста командна програма. Потім ідея виросла. <br>Я почав писати інші програми — зробив архіватор з шифруванням, створив власний блокнот з розширеною функціональністю, а потім перейшов у веб-розробку. Я намагався побудувати соціальну мережу, дошку оголошень, хмарне сховище та безпечний анонімний месенджер. Я зробив свій аналог check-host.net, написав розширення для браузера, які попереджають про небезпечні сайти, і навіть опублікував одне в магазині доповнень Firefox. <br>Усе це було об'єднано під одним дахом — проєктом Decibel — і все робилося в його рамках. Але з часом інтерес аудиторії згас, і я повністю закрив старий проєкт. Він був громіздким, і його структура була важкою для навігації. <br>Тепер я вирішив зосередитися на конкретних проєктах, які цікавлять мене найбільше, щоб зробити їх корисними для вас. Вони також тепер з відкритим вихідним кодом. У будь-якому випадку, дякую, що завітали — сподіваюся, вам сподобалося читати. Звичайно, було багато цікавого, але мені лінь писати все тут :)`,
                 donateTitle: "Хочете підтримати?",
                 donateText: `Це легко зробити за допомогою Telegram Stars. Багато людей користуються цим месенджером, а поповнення внутрішнього гаманця дуже просте. Вам просто потрібно відвідати <a href="https://bebkalive.t.me">мій канал</a> і залишити "зіркову реакцію". Для цього потрібно мати кошти на рахунку.`,
-                contactTitle: "Як зі мною зв'язатися?",
+                contactTitle: "Як зі мною зв'язатися?", goto: "Перейти →",
                 contactText: `Напишіть мені на <a href="mailto:bebka4@gmail.com">bebka4@gmail.com</a> або повідомлення в <a href="https://bebka16bot.t.me">Telegram-бота</a>. Я з задоволенням поспілкуюся з вами та допоможу, якщо потрібно.`,
                 footer: "© 2022 — 2026, bebka16, всі права захищені. Використання ресурсів без зазначення авторства заборонено законом про авторські права."
             }
@@ -615,6 +615,7 @@
             document.getElementById('desc2').textContent = t.desc2;
             document.getElementById('desc3').textContent = t.desc3;
             document.getElementById('desc4').textContent = t.desc4;
+            document.getElementById('goto').textContent = t.goto;
             document.getElementById('historyTitle').textContent = t.historyTitle;
             document.getElementById('historyText').innerHTML = t.historyText + 
                 '<br><h2 style="margin-top: 5px;" id="donateTitle">' + t.donateTitle + '</h2><span id="donateText">' + t.donateText + '</span>' +
